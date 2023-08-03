@@ -1,0 +1,237 @@
+<div class="page page-table contention" data-ng-controller="PlansPromoCtrl">
+
+    <section class="panel panel-default table-dynamic" ng-if="tabindex == 0">
+        <div class="panel-heading"><strong>Promoção Planos</strong></div>
+
+        <div class="table-filters">
+            <div class="row">
+                <form>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="text"
+                                placeholder="Pesquisar..."
+                                class="form-control"
+                                data-ng-model="searchKeywords"
+                                data-ng-keyup="search()">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive" name="table_promo">
+            <thead>
+                <tr>
+                    <th><div class="th">
+                        ID
+                        <span class="fa fa-angle-up"
+                                data-ng-click=" order('id') "
+                                data-ng-class="{active: row == 'id'}"></span>
+                        <span class="fa fa-angle-down"
+                                data-ng-click=" order('-id') "
+                                data-ng-class="{active: row == '-id'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Status
+                        <span class="fa fa-angle-up"
+                                data-ng-click=" order('status') "
+                                data-ng-class="{active: row == 'status'}"></span>
+                        <span class="fa fa-angle-down"
+                                data-ng-click=" order('-status') "
+                                data-ng-class="{active: row == '-status'}"></span>
+                    </div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="promo in currentPagePromos" ng-click="setSelected();">
+                    <td>{{promo.id}}</td>
+                    <td>{{promo.status == true ? 'Ativo' : 'Inativo'   }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show 
+                        <select data-ng-model="numPerPage"
+                                data-ng-options="num for num in numPerPageOpt"
+                                data-ng-change="onNumPerPageChange()">
+                        </select> 
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 pagination-container">
+                    <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="filteredAirports.length"
+                                max-size="4"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true"></pagination>
+                </div>
+                <div class="col-md-4 text-right page-num-info">
+                    <span>
+                        Showing {{filteredPromos.length}}/{{promos.length}} entries
+                    </span>              
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <button type="button" ng-click="newPromo();" class="btn btn-info">Novo</button>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <section class="panel panel-default" ng-if="tabindex == 1">
+        <div class="panel-heading"><strong>Promoção Planos</strong></div>
+        <div class="panel-body">
+            <div class="ui-tab-container">
+                <tabset justified="true" class="ui-tab">
+                    <tab heading="Dados do Perfil">
+                        <form class="form-horizontal" name="form_user">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4">Status
+                                <span class="ui-select">
+                                    <select ng-model="selected.status">
+                                        <option class="form-control" ng-value="false">Desativado</option>
+                                        <option class="form-control" ng-value="true">Ativado</option>
+                                    </select>
+                                </span></label>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Companhia</label>
+                                <div class="col-sm-4">
+                                    <ui-select multiple ng-model="selected.airlines" theme="bootstrap" close-on-select="false" style="width: 300px; height: 50px;" title="Selecione as Companhias">
+                                        <ui-select-match placeholder="Selecione as Companhias...">{{$item}}</ui-select-match>
+                                        <ui-select-choices repeat="airline in ['LATAM', 'GOL', 'AZUL', 'AVIANCA'] | filter:$select.search">
+                                            {{airline}}
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+        
+                                <label for="" class="col-sm-2">Tipo</label>
+                                <div class="col-sm-4">
+                                    <ui-select multiple ng-model="selected.airlinesTypes" theme="bootstrap" close-on-select="false" style="width: 300px; height: 50px;" title="Selecione os tipos">
+                                        <ui-select-match placeholder="Selecione os tipos...">{{$item}}</ui-select-match>
+                                        <ui-select-choices repeat="type in ['nacional', 'internacional', 'executivo'] | filter:$select.search">
+                                            {{type}}
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Desconto</label>
+                                <div class="col-sm-4">
+                                    <input type="number" ng-model="selected.discountMarkup" class="form-control">
+                                </div>
+
+                                <label for="" class="col-sm-2">Tipo Desconto</label>
+                                <div class="col-sm-4">
+                                    <select class="form-control" ng-model="selected.discountType">
+                                        <option class="form-control" value="D">D</option>
+                                        <option class="form-control" value="P">P</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Data Inicio</label>
+                                <div class="col-sm-4">
+                                    <input type="datetime-local" ng-model="selected._startDate" class="form-control">
+                                </div>
+        
+                                <label for="" class="col-sm-2">Data Fim</label>
+                                <div class="col-sm-4">
+                                    <input type="datetime-local" ng-model="selected._endDate" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Clientes</label>
+                                <div class="col-sm-10">
+                                    <ui-select multiple ng-model="selected.clients" theme="bootstrap" close-on-select="false" style="width: 600px; height: 50px;" title="Selecione os clientes">
+                                        <ui-select-match placeholder="Selecione os clietnes...">{{$item.name}}</ui-select-match>
+                                        <ui-select-choices repeat="client in clients | filter:$select.search">
+                                            {{client.name}}
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="selected.clients == '' ">
+                                <div class="col-sm-6">
+                                    <label class="switch">Promoção para todos os clientes
+                                    <input type="checkbox" ng-model="selected.for_all_clients" ng-checked="selected.for_all_clients"><i></i></label>
+                                </div>
+                            </div>
+                        </form>
+                    </tab>
+                    <tab heading="{{keyAirline}}" ng-repeat="(keyAirline, airline) in controlAirline" ng-if="selected.airlines.indexOf(keyAirline) > -1">
+                        <form class="form-horizontal" ng-repeat="(keyType, type) in airline" ng-if="selected.airlinesTypes.indexOf(keyType) > -1">
+                            <div class="form-group">
+                                <label for="" class="col-sm-12">{{keyType}} - {{keyAirline}}</label>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <section class="panel panel-default">
+                                        <div class="panel-heading"><strong>CONFIGURAÇÃO DE PREÇO DE MILHA</strong></div>
+                                        <div class="panel-body">
+                                            <div class="form-group" ng-repeat="control in type.configs">
+                                                <div class="col-sm-2">
+                                                    Qtd.Milhas Ini
+                                                    <input type="text" ng-model="control.minimumPoints" class="form-control" ui-number-mask="0">
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    Qtd. Milhas Fim
+                                                    <input type="text" ng-model="control.maximumPoints" class="form-control" ui-number-mask="0">
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    Valor da Milha
+                                                    <input type="checkbox" ng-model="control.useFixedValue" ng-checked="control.useFixedValue">
+                                                        <i>Usar valor fixo</i>
+                                                    </label>
+                                                    <input type="text" ng-if="!control.useFixedValue" ng-model="control.value" class="form-control" ui-money-mask="6">
+                                                    <input type="text" ng-if="control.useFixedValue" ng-model="control.fixesAmount" class="form-control" ui-money-mask="2">
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    Markup - Desconto
+                                                    <input type="number" ng-model="control.discountMarkup" class="form-control" ui-money-mask="2">
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    Tipo Markup
+                                                    <select class="form-control" ng-model="control.discountType">
+                                                        <option class="form-control" value="D">D</option>
+                                                        <option class="form-control" value="P">P</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-12">
+                                                    Editar
+                                                    <button class="btn btn-danger" ng-if="type.configs.length > 0" ng-click="type.configs.pop()">-</button>
+                                                    <button class="btn btn-info" ng-click="type.configs.push({ minimumPoints: type.configs[type.configs.length - 1].maximumPoints + 1 })">+</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                            <hr class="high-border" />
+                        </form>
+                    </tab>
+                </tabset>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <button class="btn btn-warning" ng-click="cancelEdit();">cancelar</button>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <button type="submit" class="btn btn-success" ng-click="savePromo()">confirmar</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

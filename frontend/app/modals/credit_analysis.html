@@ -1,0 +1,67 @@
+<div class="modal-header">
+    <h3>{{header}}</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal ng-pristine ng-valid">
+        <div class="form-group">
+            <label for="" class="col-sm-1">Score Agência</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" ng-model="partner.creditAnalysis">
+            </div>
+
+            <label for="" class="col-sm-1">CNPJ Regular</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" ng-model="partner.registrationCodeCheck">
+            </div>
+
+            <label for="" class="col-sm-1">Endereço Confere</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" ng-model="partner.adressCheck">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="" class="col-sm-2">Registro de débito</label>
+            <div class="col-sm-10">
+                <textarea type="text" class="form-control" ng-model="partner.creditDescription"/>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <div class="col-sm-12">
+                <button type="button" class="btn btn-info" ng-click="saveCreditAnalysis()">Salvar</button>
+            </div>
+        </div>
+        <hr />
+        <div ng-repeat="creditAnalysis in creditsAnalysis">
+            <div class="form-group">
+                <label for="" class="col-sm-1">Score Agência</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" ng-model="creditAnalysis.score" disabled>
+                </div>
+        
+                <label for="" class="col-sm-1">CNPJ Regular</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" ng-model="creditAnalysis.registrationCodeCheck" disabled>
+                </div>
+        
+                <label for="" class="col-sm-1">Endereço Confere</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" ng-model="creditAnalysis.adressCheck" disabled>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-2">Registro de débito</label>
+                <div class="col-sm-8">
+                    <textarea type="text" class="form-control" ng-model="creditAnalysis.creditDescription" disabled />
+                </div>
+
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-danger smallBtn" ng-click="removeCreditAnalysis(creditAnalysis)">Excluir</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" ng-click="cancel();">Cancel</button>
+</div>

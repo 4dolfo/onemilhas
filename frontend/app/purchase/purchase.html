@@ -1,0 +1,541 @@
+<div id="purchase_page" class="page page-table contention zoom" data-ng-controller="PurchaseCtrl">
+
+    <section class="panel panel-default table-dynamic" ng-show="isTable">
+        <div class="panel-heading"><strong></span> Compras Realizadas</strong></div>
+
+        <div class="table-filters">
+            <div class="row">
+                <form>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="text"
+                                   placeholder="Pesquisar..."
+                                   class="form-control"
+                                   data-ng-model="searchKeywords"
+                                   data-ng-model-options="{ debounce: 750 }"
+                                   data-ng-change="search()">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-w-md btn-gap-v btn-line-primary" ng-click="print();"><span class="glyphicon glyphicon-print"></span>Relatorio</button>
+                    </div>
+                    <div class="col-sm-2">
+                            <script type="text/ng-template" id="Purchase.html">
+                                <div class="modal-header">
+                                    <h3>Pesquisa Avaçada</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-horizontal ng-pristine ng-valid">
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Nome Fornecedor</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model-options='{ debounce: 500 }' ng-change="searchProviders()" ng-model="filter.providerName" typeahead="provider.name for provider in providers | filter:$viewValue | limitTo:8" placeholder="Pesquisar" > 
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Companhia</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.airline" placeholder="Companhia.." > 
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Status</label>
+                                            <div class="col-sm-8">
+                                                <span class="ui-select">
+                                                    <select ng-model="filter.status">
+                                                        <option class="form-control" ng-repeat="status in statusPrucases" value="{{status}}">{{status}}</option>
+                                                    </select>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Metodo pagamento</label>
+                                            <div class="col-sm-8">
+                                                <span class="ui-select">
+                                                    <select ng-model="filter.paymentMethod">
+                                                        <option class="form-control" value="prepaid">Pre pago</option>
+                                                        <option class="form-control" value="after_payment">Pós pago</option>
+                                                        <option class="form-control" value="after_use">PGTO APÓS USO</option>
+                                                    </select>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-12">Data da Compra</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">De</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group ui-datepicker">
+                                                    <input type="date" 
+                                                       id='DateFrom'
+                                                       ng-model="filter.purchaseDateFrom"
+                                                       class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Até</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group ui-datepicker">
+                                                    <input type="date" 
+                                                       id='DateTo'
+                                                       ng-model="filter.purchaseDateTo"
+                                                       class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-12">Data de Vencimento</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">De</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group ui-datepicker">
+                                                    <input type="date" 
+                                                       id='DateFrom'
+                                                       ng-model="filter.dueDateFrom"
+                                                       class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Até</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group ui-datepicker">
+                                                    <input type="date" 
+                                                       id='DateTo'
+                                                       ng-model="filter.dueDateTo"
+                                                       class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" ng-click="ok();">OK</button>
+                                    <button class="btn btn-warning" ng-click="cancel();">Cancel</button>
+                                </div>
+                            </script>
+                            <button class="btn btn-default" ng-click="openSearchModal()"><span class="glyphicon glyphicon-search"></span> Pesquisa Avançada</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive">
+            <thead>
+                <tr>
+                    <th><div class="th">
+                        ID
+                        <span class="fa fa-angle-up"
+                                data-ng-click=" order('id') "
+                                data-ng-class="{active: row == 'id'}"></span>
+                        <span class="fa fa-angle-down"
+                                data-ng-click=" orderDown('id') "
+                                data-ng-class="{active: row == '-id'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Nome
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('partnerName') "
+                              data-ng-class="{active: row == 'partnerName'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('partnerName') "
+                              data-ng-class="{active: row == '-partnerName'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Email
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('email') "
+                              data-ng-class="{active: row == 'email'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('email') "
+                              data-ng-class="{active: row == '-email'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Telefone
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('phoneNumber') "
+                              data-ng-class="{active: row == 'phoneNumber'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('phoneNumber') "
+                              data-ng-class="{active: row == '-phoneNumber'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Cartão
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('card_number') "
+                              data-ng-class="{active: row == 'card_number'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('card_number') "
+                              data-ng-class="{active: row == '-card_number'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Companhia
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('airline') "
+                              data-ng-class="{active: row == 'airline'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('airline') "
+                              data-ng-class="{active: row == '-airline'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Tipo de Cartão
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('card_type') "
+                              data-ng-class="{active: row == 'card_type'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('card_type') "
+                              data-ng-class="{active: row == '-card_type'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Milhas
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('purchaseMiles') "
+                              data-ng-class="{active: row == 'purchaseMiles'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('purchaseMiles') "
+                              data-ng-class="{active: row == '-purchaseMiles'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Valor
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('cost_per_thousand') "
+                              data-ng-class="{active: row == 'cost_per_thousand'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('cost_per_thousand') "
+                              data-ng-class="{active: row == '-cost_per_thousand'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Vencimento
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('milesDueDate') "
+                              data-ng-class="{active: row == 'milesDueDate'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('milesDueDate') "
+                              data-ng-class="{active: row == '-milesDueDate'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Data Compra
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('purchaseDate') "
+                              data-ng-class="{active: row == 'purchaseDate'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('purchaseDate') "
+                              data-ng-class="{active: row == '-purchaseDate'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Restante
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('leftover') "
+                              data-ng-class="{active: row == 'leftover'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('leftover') "
+                              data-ng-class="{active: row == '-leftover'}"></span>
+                    </div></th>
+                    <th ng-if="filter.status == 'Canceladas' "><div class="th">
+                        Remover
+                    </div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="purchase in purchases" class="draggable">
+                    <td ng-click="setSelected();">{{purchase.id}}</td>
+                    <td ng-click="setSelected();">{{purchase.partnerName}}</td>
+                    <td ng-click="setSelected();">{{purchase.email}}</td>
+                    <td ng-click="setSelected();">{{purchase.phoneNumber}}</td>
+                    <td ng-click="setSelected();">{{purchase.cardNumber}}</td>
+                    <td ng-click="setSelected();">{{purchase.airline}}</td>
+                    <td ng-click="setSelected();">{{purchase.card_type}}</td>
+                    <td ng-click="setSelected();"><div class="text-right">{{formatNumber(purchase.purchaseMiles, 0)}}</div></td>
+                    <td ng-click="setSelected();"><div class="text-right">{{formatNumber(purchase.costPerThousand)}}</div></td>
+                    <td ng-click="setSelected();">{{  purchase.milesDueDate == '' ? '' : (findDate(purchase.milesDueDate) | date:'dd/MM/yyyy') }}</td>
+                    <td ng-click="setSelected();">{{purchase.purchaseDate | date:'dd/MM/yyyy'}}</td>
+                    <td ng-click="setSelected();">{{formatNumber(purchase.leftover, 0)}}</td>
+                    <td ng-if="filter.status == 'Canceladas' ">
+                        <button type="button" class="btn btn-primary smallBtn" ng-click="removePurchase(purchase);">Remover</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show 
+                        <select data-ng-model="numPerPage"
+                                data-ng-options="num for num in numPerPageOpt"
+                                data-ng-change="onNumPerPageChange()">
+                        </select> 
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 pagination-container">
+                    <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="totalData"
+                                max-size="4"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true"></pagination>
+                </div>
+                <div class="col-md-4 text-right page-num-info">
+                    <span>
+                        Showing {{filteredPurchases.length}}/{{totalData}} entries
+                    </span>              
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <!-- Input -->
+    <section class="panel panel-default" ng-hide="isTable">
+
+        <div class="panel-heading"><strong>Dados da Compra</strong></div>
+        <div class="panel-body">
+            <div class="divider"></div>
+            <div class="ui-tab-container">
+                <div class="col-sm-2">
+                    <script type="text/ng-template" id="PurchaseLogModalCtrl.html">
+                        <div class="modal-header">
+                            <h3>Informar motivos para alterações</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal ng-pristine ng-valid">
+                                <div class="form-group">
+                                  <textarea type="text" class="form-control" ng-model="selected.resolveDescription"/>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-warning" ng-click="cancel();">Cancel</button>
+                            <button type="button" class="btn btn-info" ng-click="save();">Salvar</button>
+                        </div>
+                    </script>
+                </div>
+                <tabset justified="true" class="ui-tab">
+                    <tab heading="Dados da Compra">
+                        <div class="panel-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="" class="col-sm-2">Nome</label>
+                                    <div class="col-sm-5">
+                                        <input type="text" ng-model="selected.partnerName" class="form-control" id="label-focus" ng-readonly="true">
+                                    </div>
+
+                                    <label for="" class="col-sm-1">CPF</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" ng-model="selected.partnerRegistrationCode" class="form-control" id="label-focus" ng-readonly="true">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-2">Email</label>
+                                    <div class="col-sm-4">
+                                        <input type="email" class="form-control ng-pristine ng-valid-email ng-invalid ng-invalid-required ng-touched" required="" data-ng-model="selected.email" tabindex="0" aria-required="true" aria-invalid="true" ng-readonly="!main.isMaster">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-2">Companhia</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" ng-model="selected.airline" typeahead="state for state in states | filter:$viewValue | limitTo:8" class="form-control" placeholder="Pesquisar" ng-readonly="true">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-2">Milhas</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" id="purchasemiles" ng-model="selected.purchaseMiles" ng-change="setTotalCost()" class="form-control" ng-readonly="!main.isMaster">
+                                    </div>
+
+                                    <label for="" class="col-sm-2">Valor por Milhar</label>
+                                    <div class="col-sm-2" ng-hide="main.milesBench && !main.isMaster">
+                                        <input type="text" id="purchasecostperthousand" ng-model="selected.costPerThousand" ng-blur="setTotalCost()" class="form-control" ng-readonly="!main.isMaster">
+                                    </div>
+
+                                    <label for="" class="col-sm-2">Valor Total</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" id="purchasetotalcost" ng-model="selected.totalCost" class="form-control" ng-readonly="!main.isMaster">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-2">Perdas</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" id="milesLoesses" ng-model="selected.losses" ng-blur="setCostPerThousand()" class="form-control" ng-readonly="!main.isMaster">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-2">Observação</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="label-focus" ng-model="selected.description">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="label-focus" class="col-sm-2">Vencimento</label>
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <input type="date" ng-model="milesDueDateDate" class="form-control" ng-readonly="!main.isMaster">
+                                        </div>
+                                    </div>
+                                    <label for="label-focus" class="col-sm-2">Data Compra</label>
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <input type="date" id='purchaseDate' ng-model="purchaseDate" class="form-control" ng-readonly="!main.isMaster">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-2">Numero Cartão</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="label-focus" ng-model="selected.cardNumber">
+                                    </div>
+
+                                    <label for="" class="col-sm-2">Senha Resgate</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="label-focus" ng-model="selected.recoveryPassword">
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-show="airlineShowFields">
+                                    <label for="" class="col-sm-2">Senha Multiplus</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="label-focus" ng-model="selected.accessPassword">
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-if="selected.airline == 'LATAM' ">
+                                    <label for="label-focus" class="col-sm-2">Tipo Emissao</label>
+                                    <span class="ui-select col-sm-2">
+                                        <select ng-model="selected.onlyInter">
+                                            <option selected class="form-control" value="null">Nenhum</option>
+                                            <option class="form-control" value="todas">Todas</option>
+                                            <option class="form-control" value="true">Internacional</option>
+                                            <option class="form-control" value="false">Nacional</option>
+                                        </select>
+                                    </span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-2">Tipo de Cartão</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="label-focus" ng-model="selected.card_type">
+                                    </div>
+
+                                    <label for="" class="col-sm-2">Token</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="label-focus" ng-model="selected.token">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-2">Chip</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" ng-model="selected.chip_number">
+                                    </div>
+
+                                    <label for="" class="col-sm-2">Metodo pagamento</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" disabled class="form-control" ng-model="selected.paymentMethod">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-2">Bloqueado</label>
+                                    <label class="switch">
+                                    <input type="checkbox" ng-model="selected.is_bloqued" ng-checked="selected.is_bloqued"><i></i></label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="label-focus" class="col-sm-2">Marcar compra como promoção</label>
+                                    <label class="switch" class="col-sm-1">
+                                        <input type="checkbox" ng-model="selected.isPromo" ng-checked="selected.isPromo"><i></i>
+                                    </label>
+                                </div>
+                                <div class="form-group"></div>
+                                <div class="form-group"></div>
+                                <div ng-repeat="dueDate in MilesDueDate">
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-1">Restante</label>
+                                        <div class="col-sm-3">
+                                            <input type="number" class="form-control" ng-model="dueDate.miles" readonly>
+                                        </div>
+                                        <label for="" class="col-sm-1">Vencimento</label>
+                                        <div class="col-sm-3">
+                                            <input type="date" class="form-control" ng-model="dueDate._milesDueDate" readonly>
+                                        </div>
+                                        <label for="" class="col-sm-1">Original</label>
+                                        <div class="col-sm-3">
+                                            <input type="number" class="form-control" ng-model="dueDate.milesOriginal" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group"></div>
+                                <div class="form-group"></div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-2">Cartão para taxas</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" typeahead="cards.card_number for cards in internalCards | filter:$viewValue | limitTo:8"  class="form-control" id="label-focus" ng-model="selected.card_tax">
+                                    </div>
+
+                                    <label for="" class="col-sm-2">Definir prioridade no Cartão</label>
+                                    <div class="col-sm-4">
+                                      <label class="switch">
+                                      <input type="checkbox" ng-model="selected.isPriority" ng-checked="selected.isPriority"><i></i></label>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="" class="col-sm-3">Prioridade em função de dias para embarque</label>
+                                    <div class="col-sm-4">
+                                        <input type="number" class="form-control" ng-model="selected.daysPriority">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-2">Restante Compra</label>
+                                    <div class="col-sm-4 ">
+                                        <input type="text" class="form-control" id="label-focus" ng-model="selected.leftover" ng-readonly="!main.isMaster">
+                                    </div>
+
+                                    <label for="" class="col-sm-2">Remover Restante do estoque de milhas</label>
+                                    <div class="col-sm-4">
+                                      <label class="switch">
+                                      <input type="checkbox" ng-model="selected.removeFromMilesbench" ng-checked="selected.removeFromMilesbench"><i></i></label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-2">Restante Estoque</label>
+                                    <div class="col-sm-4 ">
+                                        {{formatNumber(cards.leftOver, 0)}}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-6">
+                                        <button class="btn btn-danger" ng-click="toggleFormTable();">Cancelar</button>
+                                    </div>
+                                    <div class="col-sm-6 text-right">
+                                        <button class="btn btn-success" ng-click="intencionToSave();">Confirmar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </tab>
+                    <tab heading="Historico da Compra">
+                      <div class="col-md-12">
+                          <div class="panel panel-profile">
+                            <div class="panel-body">
+                              <form class="form-horizontal">
+                                <ul ng-repeat="log in PurchaseHistory" class="list-unstyled list-info">
+                                    <li>
+                                        <label>Data: {{findDate(log.issue_date) | date:'dd/MM/yyyy HH:mm:ss'}}</label>
+                                        <label>Usuario: {{log.userName}}</label>
+                                        {{log.description}}
+                                    </li>
+                                </ul>
+                                <button class="btn btn-success" ng-click="intencionToSave();">Confirmar</button>
+                                <button class="btn btn-danger" ng-click="toggleFormTable();">Cancelar</button>
+                              </form>
+                            </div>
+                          </div>
+                      </div>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </section>
+    <!-- end Input -->
+</div>  

@@ -1,0 +1,1 @@
+ALTER TABLE `sale` ADD `payment_method` VARCHAR(255) NULL ;

@@ -1,0 +1,781 @@
+<div class="page page" data-ng-controller="WizardSaleCtrl">
+    <section class="panel panel-default" ng-show="tabindex == 0">
+        <div class="panel-heading"><strong>Nova Venda</strong></div>
+        <div class="panel-body">
+        <div>
+            <form class="form-horizontal ng-pristine ng-valid" name='wsale_client'>
+                <div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-1">Cliente</label>
+                        <div class="col-sm-4">
+                            <input type="text" ng-model="order.client_name" typeahead="client.name for client in clients | filter:$viewValue | limitTo:8" class="form-control" placeholder="Pesquisar" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-1">Emissor</label>
+                        <div class="col-sm-4">
+                            <input type="text" ng-model="order.issuing" typeahead="issuing.name for issuing in issuings | filter:$viewValue | limitTo:8" class="form-control" placeholder="Pesquisar">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-1">Observação</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" ng-model="order.comments">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-1">Valor Total</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" ng-model="order.totalValue" id="total_value">
+                        </div>
+                    </div>
+                </div>
+                <div class="text-right" ng-show="showNextStep">
+                    <button class="btn btn-line-info" ng-click="validClient();">Proximo</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </section>
+
+    <section class="panel panel-default" ng-show="tabindex == 1">
+        <div class="panel-heading"><strong>Cadastro de trecho - Cliente: {{order.client_name}}</strong></div>
+        <div class="panel-body">
+            <form class="form-horizontal ng-pristine ng-valid" name='wsale_formairline'>
+                <div class="row padding10">
+                    <label for="" class="col-sm-1">Companhia*</label>
+                    <div class="col-sm-2">
+                        <span class="ui-select">
+                            <select ng-model="flight.airline" ng-required="!hotel">
+                                <option class="form-control" ng-repeat="airline in airlines" value="{{airline.name}}">{{airline.name}}</option>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+                <div class="row padding10">
+                    <div class="col-sm-2">
+                        <input type="checkbox" ng-model="divers" ng-click="checkOperation('D')">Venda de Cartão<br>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="checkbox" ng-model="noCard" ng-click="checkOperation('C')">Convencional<br>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="checkbox" ng-model="partner" ng-click="checkOperation('P')">Emissão por parceiro<br>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="checkbox" ng-model="common" ng-click="checkOperation()">Comum<br>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="checkbox" ng-model="safe" ng-click="checkOperation('S')">Seguro<br>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="checkbox" ng-model="refound" ng-click="checkOperation('R')">Reembolso<br>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="checkbox" ng-model="repricing" ng-click="checkOperation('X')">Remarcação<br>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="checkbox" ng-model="hotel" ng-click="checkOperation('H')">Hotel<br>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="checkbox" ng-model="baggage" ng-click="checkOperation('B')">Bagagem<br>
+                    </div>
+                </div>
+                <div class="row padding10" ng-hide="divers || hotel">
+                    <label for="" class="col-sm-1" ng-hide="safe">Origem*</label>
+                    <div class="col-sm-4" ng-hide="safe">
+                        <input type="text" ng-model="flight.airport_description_from" typeahead="airport.label for airport in airports | filter:$viewValue | limitTo:8" class="form-control" placeholder="Pesquisar" ng-required="!divers && !safe && !hotel">
+                    </div>
+                    <label for="" class="col-sm-1">Destino*</label>
+                    <div class="col-sm-4">
+                        <input type="text" ng-model="flight.airport_description_to" typeahead="airport.label for airport in airports | filter:$viewValue | limitTo:8" class="form-control" placeholder="Pesquisar" ng-required="!divers && !hotel">
+                    </div>
+                </div>
+                <div class="row padding10" ng-hide="divers || baggage">
+                    <label for="" class="col-sm-1">Embarque*</label>
+                    <div class="col-sm-3">
+                        <input type="datetime-local" class="form-control" ng-model="flight.boardingDate" ng-required="!divers && !baggage">
+                    </div>
+                    <label for="" class="col-sm-1">Desembarque*</label>
+                    <div class="col-sm-3">
+                        <input type="datetime-local" class="form-control" ng-model="flight.landing_date" ng-required="!divers && !baggage">
+                    </div>
+                    <label for="" class="col-sm-1">Duração*</label>
+                    <div class="col-sm-3">
+                        <input type="text" id="time" class="form-control" ng-model="flight.flight_time" ng-required="!divers && !safe && !baggage">
+                    </div>
+                </div>
+                <div class="row padding10" ng-hide="divers || safe">
+                    <label for="" class="col-sm-1">Voo</label><div ng-show="hotel"> - Hotel</div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" ng-model="flight.flight" ng-required="!divers && !safe">
+                    </div>
+                    <label for="" class="col-sm-1" ng-hide="baggage">Conexões</label>
+                    <div class="col-sm-3" ng-hide="baggage">
+                        <input type="text" class="form-control" ng-model="flight.connection">
+                    </div>
+                </div>
+                <div ng-repeat="pax in paxs" class="row padding10" ng-hide="divers">
+                    <label for="" class="col-sm-1">Pax - Nome*</label>
+                    <span ng-if="pax.quant > 0" ng-click="openPaxUsedCards(pax)" class="badge badge-danger">{{pax.quant}}</span>
+                    <div class="col-sm-2">
+                        <input type="text"
+                            class="form-control"
+                            ng-model="pax.pax_name"
+                            data-ng-model-options="{ debounce: 500 }"
+                            data-ng-change="loadPaxUsedCards(pax)"
+                            ng-required="noCard || partner || common || safe || refound || repricing || hotel">
+                    </div>
+                    <label for="" class="col-sm-1" ng-hide="baggage">Pax - Identificação</label>
+                    <div class="col-sm-2" ng-hide="baggage">
+                        <input type="text" class="form-control" ng-model="pax.identification">
+                    </div>
+                    <label for="" class="col-sm-1" ng-hide="baggage">Pax - Nascimento</label>
+                    <div class="col-sm-2" ng-hide="baggage">
+                        <input type="date" class="form-control" ng-model="pax.paxBirthdate">
+                    </div>
+                    <div class="col-sm-1">
+                        <select class="form-control" ng-model="pax.type">
+                            <option class="form-control" value="ADT">ADT</option>
+                            <option class="form-control" value="CHD">CHD</option>
+                            <option class="form-control" value="INF">INF</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-1">
+                        <select class="form-control" ng-model="pax.gender">
+                            <option class="form-control" value="M">M</option>
+                            <option class="form-control" value="F">F</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" ng-click="removePax()" class="btn btn-line-primary">-</button>
+                        <button type="button" ng-click="addPax()" class="btn btn-line-primary">+</button>
+                    </div>
+                </div>
+                <div class="row padding10" ng-hide="noCard || safe || repricing || hotel || baggage">
+                    <label for="" class="col-sm-1">Milhas Trecho*</label>
+                    <div class="col-sm-2">
+                        <input type="text" id="miles" class="form-control" ng-model="flight.miles_original" ng-required="common || partner || divers || refound">
+                    </div>
+                </div>
+                <div class="row padding10" ng-hide="divers || safe || repricing || hotel || baggage">
+                    <label for="" class="col-sm-1">Valor Trecho*</label>
+                    <div class="col-sm-2">
+                        <input type="text" ui-money-mask class="form-control" ng-model="flight.cost" ng-required="common || partner || divers || refound">
+                    </div>
+                    <label for="" class="col-sm-1">Taxa Embarque*</label>
+                    <div class="col-sm-2">
+                        <input type="text" ui-money-mask class="form-control" ng-model="flight.tax" ng-required="common || partner || divers || refound">
+                    </div>
+                    <div ng-show="noCard">
+                        <label for="" class="col-sm-1">Valor Comissional*</label>
+                        <div class="col-sm-2">
+                            <input type="text" id="commission" class="form-control" ng-model="flight.commission" ng-required="noCard">
+                        </div>
+                    </div>
+                </div>
+                <div class="row padding10" ng-hide="divers || noCard || repricing">
+                    <label for="" class="col-sm-1">Valor Pago*</label>
+                    <div class="col-sm-2">
+                        <input type="text" ui-money-mask class="form-control" ng-keyup="setSafe();" ng-model="flight.amount_paid" ng-required="partner || common || safe || refound">
+                    </div>
+                </div>
+                <div class="row padding10" ng-show="safe">
+                    <label for="" class="col-sm-1">Valor Comissional*</label>
+                    <div class="col-sm-2">
+                        <input type="text" id="safe_commission" class="form-control" ng-model="flight.safe_commission" ng-required="safe">
+                    </div>
+                </div>
+                <div class="row padding10" ng-show="repricing">
+                    <label for="" class="col-sm-1">Diferença em Milhas*</label>
+                    <div class="col-sm-2">
+                        <input type="text" id="milesDiference" class="form-control" ng-model="flight.milesDiference" ng-required="repricing">
+                    </div>
+
+                    <label for="" class="col-sm-1">Custo Remarcação*</label>
+                    <div class="col-sm-2">
+                        <input type="text" id="repricing_cost" class="form-control" ng-model="flight.repricing_cost" ng-required="repricing">
+                    </div>
+                </div>
+                <div class="row padding10" ng-show="divers || repricing">
+                    <label for="" class="col-sm-1">Valor p/1000*</label>
+                    <div class="col-sm-2">
+                        <input type="text" id="cost_per_thousand" class="form-control" ng-model="flight.costPerThousand" ng-required="divers || repricing">
+                    </div>
+                </div>
+                <div class="row padding10" ng-show="partner || safe || refound || common || hotel || repricing">
+                    <label for="" class="col-sm-1">Parceiro</label>
+                    <!-- <input type="text" ng-model="flight.partner" typeahead="part.name for part in partners | filter:$viewValue | limitTo:8" class="form-control" placeholder="Pesquisar"> -->
+                    <div class="col-sm-8">
+                        <span class="ui-select">
+                        <select ng-model="flight.partner">
+                            <option class="form-control" ng-repeat="sale in saleMethods" value="{{sale.method}}">{{sale.method}}</option>
+                        </select>
+                        </span>
+                    </div>
+                </div>
+                <div class="row padding10">
+                    <div class="col-sm-6">
+                        <button class="btn btn-line-warning" ng-click="priorWizardStage();">Anterior</button>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <button class="btn btn-line-info" ng-click="loadCards();">Proximo</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="panel panel-default table-dynamic" ng-show="tabindex == 2">
+        <div class="panel-heading"><strong>Selecione o Cartão</strong></div>
+        <div class="table-filters">
+            <div class="row">
+                <form>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="text"
+                                   placeholder="Pesquisar..."
+                                   class="form-control"
+                                   data-ng-model="searchKeywords"
+                                   data-ng-keyup="search()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                      <div data-ng-controller="FindAllCardsManualCtrl">
+                          <script type="text/ng-template" id="FindAllCardsManualCtrl.html">
+                            <div class="modal-header">
+                              <h3>Permissão</h3>
+                            </div>
+                            <div class="modal-body">
+                              <form class="form-horizontal ng-pristine ng-valid">
+                                <div class="form-group">
+                                  <label for="" class="col-sm-4">PIN</label>
+                                  <div class="col-sm-4">
+                                    <input type="password" class="form-control" ng-model="flight_selected.pinCode">
+                                  </div>
+                                    <button type="button" class="btn btn-primary" ng-click="check();">Confirmar</button>
+                                </div>
+                              </form>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-primary" ng-click="ok();">Confirmar</button>
+                              <button type="button" class="btn btn-warning" ng-click="cancel();">Cancelar</button>
+                            </div>
+                          </script>
+                          <button type="button" class="btn btn-line-info smallBtn" ng-click="open()">Buscar todos os Cartoes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive">
+            <thead>
+                <tr>
+                    <th><div class="th">
+                        Fornecedor
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('name') "
+                              data-ng-class="{active: row == 'name'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-name') "
+                              data-ng-class="{active: row == '-name'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Email
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('email') "
+                              data-ng-class="{active: row == 'email'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-email') "
+                              data-ng-class="{active: row == '-email'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Telefone
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('phoneNumber') "
+                              data-ng-class="{active: row == 'phoneNumber'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-phoneNumber') "
+                              data-ng-class="{active: row == '-phoneNumber'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Cartão
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('card_number') "
+                              data-ng-class="{active: row == 'card_number'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-card_number') "
+                              data-ng-class="{active: row == '-card_number'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Companhia
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('airline') "
+                              data-ng-class="{active: row == 'airline'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-airline') "
+                              data-ng-class="{active: row == '-airline'}"></span>
+                    </div></th>
+                    <th><div class="th text-right">
+                        Milhas
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('leftover') "
+                              data-ng-class="{active: row == 'leftover'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-leftover') "
+                              data-ng-class="{active: row == '-leftover'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Vencimento
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('due_date') "
+                              data-ng-class="{active: row == 'due_date'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-due_date') "
+                              data-ng-class="{active: row == '-due_date'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Contrato
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('contract_due_date') "
+                              data-ng-class="{active: row == 'contract_due_date'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-contract_due_date') "
+                              data-ng-class="{active: row == '-contract_due_date'}"></span>
+                    </div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="mile in currentPageMiles" ng-click="setCards();">
+                    <td><span class="{{orderMiles(mile)}}">{{mile.name}}</span></td>
+                    <td>{{mile.email}}</td>
+                    <td>{{mile.phoneNumber}}</td>
+                    <td><span class="{{orderMiles(mile)}}">{{mile.card_number}}</span></td>
+                    <td>{{mile.airline}}</td>
+                    <td class="text-right"><span class="{{orderMiles(mile)}}">{{formatNumber(mile.leftover,0)}}</span></td>
+                    <td><span class="{{orderMiles(mile)}}">{{setToClientDate(mile.due_date)}}</span></td>
+                    <td>{{setToClientDate(mile.contract_due_date)}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show 
+                        <select data-ng-model="numPerPage"
+                                data-ng-options="num for num in numPerPageOpt"
+                                data-ng-change="onNumPerPageChange()">
+                        </select> 
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 pagination-container">
+                    <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="filteredMiles.length"
+                                max-size="4"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true"></pagination>
+                </div>
+                <div class="col-md-4 text-right page-num-info">
+                    <span>
+                        Showing {{filteredMiles.length}}/{{miles.length}} entries
+                    </span>              
+                </div>
+                <div class="panel-body">
+                  <div class="col-sm-12 text-right">
+                      <button type="button" ng-click="priorWizardStage();" class="btn btn-line-warning">anterior</button>
+                  </div>
+              </div>
+           </div>
+        </footer>
+    </section>
+
+    <section class="panel panel-default" ng-show="tabindex == 3">
+        <div class="panel-heading"><strong>Resumo</strong></div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-profile">
+                        <ul class="list-unstyled list-info">
+                            <li>
+                                <span class="icon glyphicon glyphicon-plane"></span>
+                                <label>Cliente</label>
+                                {{order.client_name}}
+
+                                <div data-ng-controller="CardTaxCardData">
+                                  <script type="text/ng-template" id="CardTaxCardData.html">
+                                    <div class="modal-header">
+                                        <h3>Cartão para Taxa</h3>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="form-horizontal ng-pristine ng-valid">
+                                            <div class="form-group">
+                                                <label for="" class="col-sm-4">Pesquisar</label>
+                                                <span class="ui-select">
+                                                  <select ng-model="filter.card_number" ng-change="search()">
+                                                      <option class="form-control" ng-repeat="card in resume_creditCards" value="{{card.card_number}}">{{card.card_number}}</option>
+                                                  </select>
+                                                </span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="" class="col-sm-4">Numero Cartão</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" ng-model="flight_selected.tax_card"class="form-control" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="" class="col-sm-4">Senha</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" ng-model="flight_selected.tax_password"class="form-control" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="" class="col-sm-4">Tipo</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" ng-model="flight_selected.tax_cardType" class="form-control" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="" class="col-sm-4">Vencimento</label>
+                                                <div class="col-sm-8">
+                                                    {{findDate(flight_selected.tax_dueDate) | date:'MM/yyyy'}}
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="" class="col-sm-4">Fornecedor</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" ng-model="flight_selected.tax_providerName" class="form-control" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                              <label for="" class="col-sm-4">CPF</label>
+                                              <div class="col-sm-8">
+                                                <input type="text" ng-model="flight_selected.provider_registration" class="form-control" readonly>
+                                              </div>
+                                            </div>
+                                            <div class="form-group">
+                                              <label for="" class="col-sm-4">Endereço</label>
+                                              <div class="col-sm-8">
+                                                <input type="text" ng-model="flight_selected.provider_adress" class="form-control" readonly>
+                                              </div>
+                                            </div>
+                                            <div class="form-group">
+                                              <label for="" class="col-sm-4">Endereço 2</label>
+                                              <div class="col-sm-8">
+                                                <input type="text" ng-model="flight_selected.providerAdress" class="form-control" readonly>
+                                              </div>
+                                            </div>
+                                            <div class="form-group">
+                                              <label for="" class="col-sm-4">Nascimento</label>
+                                              <div class="col-sm-8">
+                                                {{findDate(flight_selected.birthdate) | date:'dd/MM/yyyy'}}
+                                              </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="submit" class="btn btn-primary" ng-click="ok();">Confirmar</button>
+                                      <button class="btn btn-warning" ng-click="cancel();">Cancelar</button>
+                                    </div>
+                                  </script>
+                                  <button ng-show="common" class="btn btn-line-info smallBtn" ng-click="open()">Cartão de Crédito</button>
+                                </div>
+                            </li>
+                            <li>
+                                <br>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-1">Localizador</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control" ng-model="flight.flight_locator" ng-change="flightLocator()">
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-show="safe || flight.partner == 'Rextur Advance'">  
+                                    <label for="" class="col-sm-1">Tipo Venda</label>
+                                    <span class="ui-select">
+                                        <select ng-model="flight.safeType">
+                                            <option class="form-control" ng-repeat="possibilities in safePossibilities" value="{{possibilities.method}}">{{possibilities.method}}</option>
+                                        </select>
+                                    </span>
+                                </div>
+                                <div class="form-group" ng-show="safe || baggage">
+                                    <label for="" class="col-sm-1">Du</label>
+                                    <div class="col-sm-2">
+                                        <input type="number" class="form-control" ng-model="flight.du_tax">
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-show="baggage">
+                                    <label for="" class="col-sm-1">Bagagem</label>
+                                    <div class="col-sm-2">
+                                        <input type="number" class="form-control" ng-model="flight.baggage">
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-show="refound">  
+                                    <label for="" class="col-sm-1">Status Reembolso</label>
+                                    <span class="ui-select">
+                                        <select ng-model="flight.refound">
+                                            <option class="form-control" ng-repeat="refound in refoundPossibilities" value="{{refound.method}}">{{refound.method}}</option>
+                                        </select>
+                                    </span>
+                                </div>
+                                <div ng-show="flight.refound == 'Reembolso Solicitado'">
+                                    <label for="" class="col-sm-1">Custo para Ideal</label>
+                                    <div class="col-sm-2">
+                                        <input type="number" class="form-control" ng-model="flight.valueRefund">
+                                    </div>
+
+                                    <label for="" class="col-sm-1">Valor para cliente</label>
+                                    <div class="col-sm-2">
+                                        <input type="number" class="form-control" ng-model="flight.value">
+                                    </div>
+                                </div>
+                                <br><br>
+                            </li>
+                            <li ng-hide="divers">
+                                <br><br>
+                                <span class="icon glyphicon glyphicon-plane"></span>
+                                <label>Vôos</label>
+                                  <table class="table table-bordered table-striped table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th><div class="th">
+                                                Companhia
+                                            </div></th>
+                                            <th><div class="th">
+                                                Vôo
+                                            </div></th>
+                                            <th><div class="th">
+                                                Conexões
+                                            </div></th>
+                                            <th><div class="th">
+                                                Embarque
+                                            </div></th>
+                                            <th><div class="th">
+                                                Desembarque
+                                            </div></th>
+                                            <th><div class="th">
+                                                De
+                                            </div></th>
+                                            <th><div class="th">
+                                                Para
+                                            </div></th>
+                                            <th><div class="th">
+                                                Tempo de vôo
+                                            </div></th>
+                                            <th><div class="th">
+                                                Taxa
+                                            </div></th>
+                                            <th><div class="th">
+                                                Total de Milhas
+                                            </div></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{flight.airline}}</td>
+                                            <td>{{flight.flight}}</td>
+                                            <td>{{flight.connection}}</td>
+                                            <td>{{flight._boardingDate | date:'dd/MM/yyyy'}}<br>{{flight._boardingDate | date:'HH:mm:ss'}}</td>
+                                            <td>{{flight._landingDate | date:'dd/MM/yyyy'}}<br>{{flight._landingDate | date:'HH:mm:ss'}}</td>
+                                            <td>{{flight.airport_description_from}}</td>
+                                            <td>{{flight.airport_description_to}}</td>
+                                            <td>{{flight.flight_time}} hs</td>
+                                            <td>{{flight.tax}}</td>
+                                            <td><div class="text-right">{{formatNumber(flight.miles_used,0)}}</td>
+                                        </tr>
+                                    </tbody>
+                              </table>
+                            </li>
+                            <li ng-hide="noCard">
+                                <span class="icon glyphicon glyphicon-credit-card"></span>
+                                <label>Cartão</label>
+                                  <table class="table table-bordered table-striped table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th><div class="th">
+                                                Companhia
+                                            </div></th>
+                                            <th><div class="th">
+                                                Võo
+                                            </div></th>
+                                            <th><div class="th">
+                                                Passageiro
+                                            </div></th>
+                                            <th ng-click="openAllPaxUsedCards()">
+                                                <div class="th">
+                                                CPF / Número
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <div class="th">
+                                                    Documento 2
+                                                </div>
+                                            </th>
+                                            <th><div class="th">
+                                                Senha
+                                            </div></th>
+                                            <th><div class="th">
+                                                Senha de Resgate
+                                            </div></th>
+                                            <th><div class="th">
+                                                Token
+                                            </div></th>
+                                            <th><div class="th">
+                                                Pontos Voo
+                                            </div></th>
+                                            <th><div class="th">
+                                                Alterar Dados
+                                            </div></th>
+                                            <th><div class="th">
+                                                Alterar Cartão
+                                            </div></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="pax in paxs">
+                                            <td>{{flight.airline}}</td>
+                                            <td>{{flight.flight}}</td>
+                                            <td>{{pax.pax_name}}</td>
+                                            <td ng-click="openPaxUsedCards(pax)">
+                                                <div ng-if="!pax.quant || pax.quant == 0">
+                                                    {{pax.card_registrationCode}}  / {{pax.card_number}}
+                                                </div>
+                                                <div ng-if="pax.quant > 0">
+                                                    <strike>{{pax.card_registrationCode}}  / {{pax.card_number}}</strike>
+                                                </div>
+                                                <span ng-if="pax.quant > 0" class="badge badge-danger">{{pax.quant}}</span>
+                                            </td>
+                                            <td>
+                                                {{pax.code}}
+                                            </td>
+                                            <td>{{pax.recovery_password}}</td>
+                                            <td>{{pax.access_password}}</td>
+                                            <td>{{pax.token}}</td>
+                                            <td class="text-right">{{formatNumber(pax.miles_used,0)}}<div ng-show="flight.money"><br>M+M {{formatNumber(pax.money)}}</div></td>
+                                            <td><div data-ng-controller="FlightData" ng-show="common || refound">
+                                                  <script type="text/ng-template" id="FlightData.html">
+                                                    <div class="modal-header">
+                                                      <h3>Dados do Vôo</h3>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                      <form class="form-horizontal ng-pristine ng-valid">
+                                                        <div class="form-group">
+                                                          <label for="" class="col-sm-4">Milhas Usadas</label>
+                                                          <div class="col-sm-8">
+                                                            <input type="text" class="form-control" ng-model="flight_selected.miles_used"> 
+                                                          </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                          <label for="" class="col-sm-4">Taxa DU</label>
+                                                          <div class="col-sm-8">
+                                                            <input type="text" class="form-control" ng-model="flight_selected.du_tax"> 
+                                                          </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="" class="col-sm-4">Bagagem</label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text" class="form-control" ng-model="flight_selected.baggage"> 
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="" class="col-sm-4">Assento Conforto</label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text" class="form-control" ng-model="flight_selected.special_seat"> 
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                          <label for="" class="col-sm-4">Localizador</label>
+                                                          <div class="col-sm-8">
+                                                            <input type="text" class="form-control" ng-model="flight_selected.flight_locator"> 
+                                                          </div>
+                                                        </div>
+                                                        <div class="form-group" ng-show="flight_selected.airline=='TAM' || flight_selected.airline=='LATAM' || flight_selected.airline=='AVIANCA' ">
+                                                          <label for="" class="col-sm-4">E-ticket</label>
+                                                          <div class="col-sm-8">
+                                                            <input type="text" class="form-control" ng-model="flight_selected.ticket_code"> 
+                                                          </div>
+                                                        </div>
+                                                        <div class="form-group" ng-show="flight_selected.airline=='GOL'">
+                                                          <div class="col-sm-8">
+                                                            <input type="checkbox" ng-model="milesMoney">Milhas + Money<br>
+                                                          </div><br><br>
+                                                          <div ng-show="milesMoney">
+                                                            <label for="" class="col-sm-4">Milhas + Money</label>
+                                                            <div class="col-sm-8">
+                                                              <input type="number" class="form-control" ng-model="flight_selected.money">
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                      <button type="button" class="btn btn-primary" ng-click="ok();">Confirmar</button>
+                                                      <button type="button" class="btn btn-warning" ng-click="cancel();">Cancelar</button>
+                                                    </div>
+                                                  </script>
+                                                  <button type="button" class="btn btn-line-info smallBtn" ng-click="open()">Alterar dados</button>
+                                                </div>
+                                                <div id="miscCanvas"></div>
+                                            </td>
+                                            <td ng-show="common || refound">
+                                              <button type="button" class="btn btn-line-info smallBtn" ng-click="loadCards(); flight_selected = this.pax;">Cartão Milhas</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                              </table>
+                            </li>
+                            <li ng-show="noCard">
+                                <span class="icon glyphicon glyphicon-credit-card"></span>
+                                <label>Financeiro</label>
+                                  <table class="table table-bordered table-striped table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th><div class="th">
+                                                Passageiro
+                                            </div></th>
+                                            <th><div class="th">
+                                                Valor Trecho
+                                            </div></th>
+                                            <th><div class="th">
+                                                Taxa Embarque
+                                            </div></th>
+                                            <th><div class="th">
+                                                Comissional
+                                            </div></th>
+                                            <th><div class="th">
+                                                Total a pagar
+                                            </div></th>
+                                            <th><div class="th">
+                                                Total a receber
+                                            </div></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <td>{{flight.pax_name}}</td>
+                                        <td class="text-right">{{formatNumber(flight.cost)}}</td>
+                                        <td class="text-right">{{formatNumber(flight.tax)}}</td>
+                                        <td class="text-right">{{formatNumber(flight.commission)}}</td>
+                                        <td class="text-right">{{formatNumber(getParcial())}}</td>
+                                        <td class="text-right">{{formatNumber(getTotal())}}</td>
+                                    </tbody>
+                              </table>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <button type="button" ng-click="tabindex = 1" class="btn btn-line-warning">anterior</button>
+                </div>
+                <div class="col-sm-12 text-right">
+                    <a href="#/dashboard" type="button" ng-click="saveOrder()" class="btn btn-line-info"><i></i>confirmar</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

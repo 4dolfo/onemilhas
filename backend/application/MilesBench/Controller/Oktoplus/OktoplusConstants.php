@@ -1,0 +1,10 @@
+<?php
+
+namespace MilesBench\Controller\Oktoplus;
+
+class OktoplusConstants {
+
+    const notification_url = 'https://gestor-api.marketmilhas.com.br/emissoes/';
+    const token = 'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjb250YSI6eyJub21lIjoiUG9wIE1pbGhhcyIsImRhdGFWYWxpZGFkZSI6IjIwMzAtMDYtMTVUMDA6MDA6MDAuMDAwWiIsInRpcG8iOiJtaWxoYXMiLCJjb25jaWVyZ2UiOmZhbHNlLCJpZCI6IjU3ZTJmZGQ1ZjU3NDhhZjI0YzRlYjU0NSJ9LCJub21lIjoiUG9wIE1pbGhhcyIsImxvZ2luIjoibW1zLnZpYWdlbnMiLCJlbWFpbCI6ImVtaXNzYW9AcG9wbWlsaGFzLmNvbS5iciIsInBlcmZpbCI6ImFkbWluIiwiaWQiOiI1N2UyZmRkNWY1NzQ4YWYyNGM0ZWI1NDQifQ.sQ7kCFh1Z-7t6zVjl6GPOcQsonDVU55tOaUGmrDMnHw';
+
+}

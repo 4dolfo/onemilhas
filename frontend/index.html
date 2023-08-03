@@ -1,0 +1,108 @@
+<!doctype html>
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>ONE MILHAS</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+        <meta http-equiv="cache-control"   content="no-cache" />
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <link href="styles/googlefonts.css" rel="stylesheet" type="text/css">
+        <!-- needs images, font... therefore can not be part of ui.css -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+        <link rel="stylesheet" href="styles/weather-icons.min.css">
+        <!-- end needs images -->
+
+        <link rel="stylesheet" href="styles/main.css" id="main_stylesheet">
+        <link rel="stylesheet" href="styles/style.css">
+
+        <!-- calendar -->
+        <link rel="stylesheet" href="node_modules/fullcalendar/dist/fullcalendar.css"/>
+        <link rel="stylesheet" type="text/css" href="node_modules/angular-ui-grid/ui-grid.min.css">
+
+        <!-- ui select -->
+        <link rel="stylesheet" href="node_modules/ui-select/dist/select.css">
+
+        <!-- Google Analytics Script -->
+        <script src="scripts/analytics.js"></script>
+
+       
+    </head>
+    <body data-ng-app="app" id="app" data-custom-background data-off-canvas-nav class="ng-scope nav-min" style="zoom: 0.967;">
+        <!--[if lt IE 9]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div data-ng-controller="AppCtrl">
+            <div data-ng-hide="isSpecificPage()" data-ng-cloak>
+                <section data-ng-include=" 'app/layout/header.html' " id="header" class="top-header"></section>
+
+                <aside data-ng-include=" 'app/layout/nav.html' " id="nav-container"></aside>
+            </div>
+
+            <div class="view-container">
+                <section data-ng-view id="content" class="animate-fade-up"></section>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="scripts/vendor.js"></script>
+
+        <script type="text/javascript" src="scripts/ui.js"></script>
+
+        <script type="text/javascript" src="scripts/app.js?v=1630438887104"></script>
+
+        <script type="text/javascript" src="assets/dist/functions.js?v=1630438887104"></script>
+
+        <script type="text/javascript" src="scripts/assets/jquery.number.js"></script>
+
+        <!-- js pdf -->
+        <script type="text/javascript" src="scripts/assets/jspdf.min.js"></script>
+        <script type="text/javascript" src="scripts/assets/jspdf.plugin.autotable.js"></script>
+
+        <script type="text/javascript" src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
+
+        <script type="text/javascript" src="scripts/assets/jquery.maskMoney.min.js"></script>
+
+        <script type="text/javascript" src="scripts/assets/jquery-barcode.js"></script>
+
+        <script type="text/javascript" src="scripts/assets/jquery-barcode.min.js"></script>
+
+        <script type="text/javascript" src="scripts/assets/html2canvas.js"></script>
+
+        <!-- calendar -->
+        <script type="text/javascript" src="node_modules/moment/min/moment.min.js"></script>
+        <script type="text/javascript" src="bower_components/angular-ui-calendar/src/calendar.js"></script>
+        <script type="text/javascript" src="node_modules/fullcalendar/dist/fullcalendar.min.js"></script>
+        <script type="text/javascript" src="node_modules/fullcalendar/dist/gcal.js"></script>
+
+        <!-- grid -->
+        <script type="text/javascript" src="scripts/assets/angular-touch.js"></script>
+        <script type="text/javascript" src="scripts/assets/angular-animate.js"></script>
+        <script type="text/javascript" src="node_modules/angular-ui-grid/ui-grid.min.js"></script>
+
+        <!-- mask -->
+        <script type="text/javascript" src="bower_components/angular-ui-mask/dist/mask.js"></script>
+
+        <script type="text/javascript" src="assets/dist/all.min.js?v=1630438887104"></script>
+
+        <!-- socket -->
+        <script type="text/javascript" src="node_modules/socket.io-client/dist/socket.io.min.js"></script>
+
+        <!-- ui select -->
+        <script type="text/javascript" src="node_modules/ui-select/dist/select.min.js"></script>
+
+        <!-- lodash -->
+        <script type="text/javascript" src="node_modules/lodash/lodash.min.js"></script>
+
+        <!-- mask -->
+        <script type="text/javascript" src="node_modules/angular-input-masks/releases/angular-input-masks-standalone.min.js"></script>
+
+        <script>
+            /*if(window.location.href.includes('18.208.226.173')){
+                document.title = "CML VIAGENS (HOMOLOGACAO)";
+                document.getElementById("main_stylesheet").setAttribute('href', "styles/main_homologacao.css");
+            }*/
+        </script>
+    </body>
+</html>

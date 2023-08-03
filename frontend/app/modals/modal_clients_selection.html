@@ -1,0 +1,32 @@
+<div class="modal-header">
+    <h2 class="text-center">Seleção de clientes</h2>
+</div>
+<div class="modal-body" style="min-height: 420px">
+    <div class="form-group">
+        <div class="col-sm-12">
+            <input type="text"
+                placeholder="Pesquisar..."
+                class="form-control"
+                data-ng-model="searchKeywords"
+                data-ng-model-options="{ debounce: 500 }"
+                data-ng-change="search()">
+        </div>
+    </div>
+    <hr />
+    <div class="form-group" ng-repeat="client in filteredClients | limitTo:20">
+        <div class="col-sm-12">
+            <label for="" class="col-sm-2">Nome</label>
+            <div class="col-sm-6">
+                <input type="text" disabled ng-model="client.name" class="form-control">
+            </div>
+            <div class="col-sm-4">
+                <label class="switch">Check
+                <input type="checkbox" ng-model="client.selected" ng-checked=" clients.indexOf(client.id) > -1 " ng-click="setSelected(client)"><i></i></label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" ng-click="cancel();">Cancel</button>
+    <button class="btn btn-info" ng-click="ok();">Confirmar</button>
+</div>

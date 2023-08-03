@@ -1,0 +1,292 @@
+<div id="future_boardings_page" class="page page-table contention" data-ng-controller="FutureBoardingsCtrl">
+
+    <section class="panel panel-default table-dynamic" ng-show="isTable">
+        <div class="panel-heading"><strong></span> Embarques Futuros </strong></div>
+
+        <div class="table-filters">
+            <div class="row">
+                <div class="col-sm-2" data-ng-controller="BoardingsModalDemoCtrl">
+                  <script type="text/ng-template" id="Boardings.html">
+                      <div class="modal-header">
+                          <h3>Pesquisa Avaçada</h3>
+                      </div>
+                      <div class="modal-body">
+                          <form class="form-horizontal ng-pristine ng-valid">
+                              <div class="form-group">
+                                  <label for="" class="col-sm-4">Companhia</label>
+                                  <div class="col-sm-8">
+                                      <input type="text" class="form-control" ng-model="filter.airline">
+                                  </div>
+                              </div>
+                              <div class="form-group">
+                                  <label for="" class="col-sm-12">Data Embarque</label>
+                              </div>
+                              <div class="form-group">
+                                  <label for="" class="col-sm-4">De</label>
+                                  <div class="col-sm-8">
+                                      <div class="input-group ui-datepicker">
+                                          <input type="date" 
+                                             id='saleboardingDateFrom'
+                                             ng-model="filter.boardingDateFrom"
+                                             class="form-control">
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="form-group">
+                                  <label for="" class="col-sm-4">Até</label>
+                                  <div class="col-sm-8">
+                                      <div class="input-group ui-datepicker">
+                                          <input type="date" 
+                                             id='saleboardingDateTo'
+                                             ng-model="filter.boardingDateTo"
+                                             class="form-control">
+                                      </div>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+                      <div class="modal-footer">
+                          <button type="submit" class="btn btn-primary" ng-click="ok();">OK</button>
+                          <button class="btn btn-warning" ng-click="cancel();">Cancel</button>
+                      </div>
+                  </script>
+                  <button class="btn btn-default" ng-click="open()"><span class="glyphicon glyphicon-search"></span> Pesquisa Avançada</button>
+              </div>
+              <div class="col-md-2">
+                  <button class="btn btn-w-md btn-gap-v btn-line-primary" ng-click="print();"><span class="glyphicon glyphicon-print"></span>  Emitir</button>
+              </div>
+              <div class="col-md-2">
+                  <button class="btn btn-info" ng-click="saveSelected();">Salvar</button>
+              </div>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive" name="table_client">
+            <thead>
+                <tr>
+                    <th><div class="th">
+                        Companhia
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('airline') "
+                              data-ng-class="{active: row == 'airline'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-airline') "
+                              data-ng-class="{active: row == '-airline'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Embarque
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('boardingDate') "
+                              data-ng-class="{active: row == 'boardingDate'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-boardingDate') "
+                              data-ng-class="{active: row == '-boardingDate'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Voo
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('flight') "
+                              data-ng-class="{active: row == 'flight'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-flight') "
+                              data-ng-class="{active: row == '-flight'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Passageiro
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('paxName') "
+                              data-ng-class="{active: row == 'paxName'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-paxName') "
+                              data-ng-class="{active: row == '-paxName'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Localizador
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('flightLocator') "
+                              data-ng-class="{active: row == 'flightLocator'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-flightLocator') "
+                              data-ng-class="{active: row == '-flightLocator'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Ticket
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('ticket_code') "
+                              data-ng-class="{active: row == 'ticket_code'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-ticket_code') "
+                              data-ng-class="{active: row == '-ticket_code'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Trecho
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('from') "
+                              data-ng-class="{active: row == 'from'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-from') "
+                              data-ng-class="{active: row == '-from'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        CheckIn
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('checkinState') "
+                              data-ng-class="{active: row == 'checkinState'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-checkinState') "
+                              data-ng-class="{active: row == '-checkinState'}"></span>
+                    </div></th>
+                    <th><div class="th">Ocorrencia</div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="boardings in currentPageBoardings">
+                    <td>{{boardings.airline}}</td>
+                    <td>{{findDate(boardings.boardingDate) | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                    <td>{{boardings.flight}}</td>
+                    <td>{{boardings.paxName}}</td>
+                    <td>{{boardings.flightLocator}}</td>
+                    <td>{{boardings.ticket_code}}</td>
+                    <td>{{boardings.from}} - {{boardings.to}}</td>
+                    <td>
+                        <label class="switch">
+                        <input  type="checkbox" ng-model="boardings.checkinState" ng-checked="boardings.checkinState"><i></i></label>
+                    </td>
+                    <td><div>
+                        <script type="text/ng-template" id="FutureBoardingsModalCtrl.html">
+                          <div class="modal-header">
+                            <h3>Evento</h3>
+                          </div>
+                          <div class="modal-body">
+                            <form class="form-horizontal ng-pristine ng-valid">
+                              <div class="form-group">
+                                <label for="" class="col-sm-4">Embarque</label>
+                                <div class="col-sm-8">
+                                  <input type="datetime-local" class="form-control" ng-model="saleSelected._boardingDate" disabled>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="" class="col-sm-4">Pax</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control" ng-model="saleSelected.paxName" disabled>
+                                </div>
+                              </div>
+                              <hr />
+                              <div class="form-group">
+                                <label for="" class="col-sm-4">Fornecedor</label>
+                              </div>
+                              <div class="form-group">
+                                <label for="" class="col-sm-4">Nome</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control" ng-model="saleSelected.providerName" disabled>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="" class="col-sm-4">CPF</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control" ng-model="saleSelected.providerRegistrationCode" disabled>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="" class="col-sm-4">Email</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control" ng-model="saleSelected.providerEmail" disabled>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="" class="col-sm-4">Telefone</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control" ng-model="saleSelected.providerPhone" disabled>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="" class="col-sm-4">Numero Cartão</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control" ng-model="saleSelected.providerCardNumber" disabled>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="" class="col-sm-4">Senha</label>
+                                <div class="col-sm-8">
+                                    {{decript(saleSelected.providerPassword)}}
+                                </div>
+                              </div>
+                              <hr />
+                              <div class="form-group">
+                                <label for="" class="col-sm-4">Localizador</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control" ng-model="saleSelected.flightLocator" disabled>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="" class="col-sm-4">Ocorrencia</label>
+                                <div class="col-sm-8">
+                                    <span class="ui-select">
+                                        <select ng-model="saleSelected.occurrence">
+                                            <option class="form-control" ng-repeat="status in salesOccurrences" value="{{status}}">{{status}}</option>
+                                        </select>
+                                    </span>
+                                </div>
+                              </div>
+                              <div class="form-group" ng-show="saleSelected.occurrence == 'Outros' ">
+                                <label for="" class="col-sm-4">Descrição</label>
+                                <div class="col-sm-8">
+                                    <textarea type="text" class="form-control" ng-model="saleSelected.saleDescription" />
+                                </div>
+                              </div>
+                              <div class="form-group"></div>
+                              <div class="form-group"></div>
+                              <div class="form-group" ng-repeat="description in logDescriptions">
+                                <label for="" class="col-sm-4">{{findDate(description.issue_date) | date:'dd/MM/yyyy'}}<br>{{findDate(description.issue_date) | date:'HH:mm:ss'}}</label>
+                                <div class="col-sm-8">
+                                    <textarea type="text" class="form-control" ng-model="description.description" disabled/>
+                                </div>
+                              </div>
+                              <div class="form-group"></div>
+                              <div class="form-group"></div>
+                            </form>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-warning" ng-click="cancel();">Cancelar</button>
+                            <button type="button" class="btn btn-primary" ng-click="ok();">Confirmar</button>
+                          </div>
+                        </script>
+                        <button type="button" class="{{getClass(boardings);}}" ng-click="openModalLog()">{{boardings.occurrence}}</button>
+                      </div>
+                  </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-3 page-num-info">
+                    <span>
+                        Show 
+                        <select data-ng-model="numPerPage"
+                                data-ng-options="num for num in numPerPageOpt"
+                                data-ng-change="onNumPerPageChange()">
+                        </select> 
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-5 pagination-container">
+                    <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="filteredBoardings.length"
+                                max-size="4"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true"></pagination>
+                </div>
+                <div class="col-md-4 text-right page-num-info">
+                    <span>
+                        Showing {{filteredBoardings.length}}/{{Boardings.length}} entries
+                    </span>              
+                </div>
+            </div>
+        </footer>
+    </section>
+

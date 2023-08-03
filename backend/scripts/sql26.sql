@@ -1,0 +1,1 @@
+ALTER TABLE `businesspartner` ADD `prefixo` VARCHAR(16) NULL ;

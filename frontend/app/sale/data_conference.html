@@ -1,0 +1,447 @@
+<div id="sale_page" class="page page-table contention" ng-controller="DataConferenceCtrl">
+
+    <section class="panel panel-default table-dynamic" ng-show="tabindex == 0">
+        <div class="panel-heading"><strong></span> Vendas Realizadas</strong> - Milhas Filtradas: {{findMiles();}}  - Total Pago filtrado: {{findAmountPaid();}}</div>
+
+        <div class="table-filters">
+            <div class="row">
+                <form>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text"
+                                   placeholder="Pesquisar..."
+                                   class="form-control"
+                                   data-ng-model="searchKeywords"
+                                   data-ng-keyup="search()">
+                        </div>
+                        <div class="col-sm-2" data-ng-controller="SaleModalDemoCtrl">
+                            <script type="text/ng-template" id="Sale.html">
+                                <div class="modal-header">
+                                    <h3>Pesquisa Avaçada</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-horizontal ng-pristine ng-valid">
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Pesquisa</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Nome Fornecedor</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.providerName" typeahead="provider.name for provider in providers | filter:$viewValue | limitTo:8" placeholder="Pesquisar" > 
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">CPF Fornecedor</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.providerRegistrationCode">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Cliente</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.client" typeahead="client.name for client in clients | filter:$viewValue | limitTo:8" placeholder="Pesquisar" ng-keyup="findIssuers()"> 
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Emissor</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.issuer" typeahead="issuer.name for issuer in issuers | filter:$viewValue | limitTo:8" placeholder="Pesquisar" > 
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Usuario</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.user" typeahead="profile.name for profile in profiles | filter:$viewValue | limitTo:8" placeholder="Pesquisar" > 
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4"></label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4"></label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Cartão</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.cardNumber">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Passageiro</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.paxName">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Companhia</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.airline">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Localizador</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.flightLocator">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">ID Pedido Online</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.externalid">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Status</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.status" typeahead="status for status in saleStatus | filter:$viewValue | limitTo:8" placeholder="Pesquisar" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4"></label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Pontuação</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Pontuação Minima</label>
+                                            <div class="col-sm-8">
+                                                <input type="number" class="form-control" ng-model="filter.minMiles">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Pontuação Maxima</label>
+                                            <div class="col-sm-8">
+                                                <input type="number" class="form-control" ng-model="filter.maxMiles">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4"></label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Data</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-12">Data Embarque</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">De</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group ui-datepicker">
+                                                    <input type="date" 
+                                                       id='saleboardingDateFrom'
+                                                       ng-model="filter.boardingDateFrom"
+                                                       class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Até</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group ui-datepicker">
+                                                    <input type="date" 
+                                                       id='saleboardingDateTo'
+                                                       ng-model="filter.boardingDateTo"
+                                                       class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-12">Data Venda</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">De</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group ui-datepicker">
+                                                    <input type="date" 
+                                                       ng-model="filter.saleDateFrom"
+                                                       class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Até</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group ui-datepicker">
+                                                    <input type="date" 
+                                                       ng-model="filter.saleDateTo"
+                                                       class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" ng-click="ok();">OK</button>
+                                    <button class="btn btn-warning" ng-click="cancel();">Cancel</button>
+                                </div>
+                            </script>
+                            <button class="btn btn-default" ng-click="open()"><span class="glyphicon glyphicon-search"></span> Pesquisa Avançada</button>
+                        </div>
+                        <div class="col-sm-2" data-ng-controller="DataConferenceModalCtrl">
+                            <script type="text/ng-template" id="DataConferenceModalCtrl.html">
+                                <div class="modal-header">
+                                    <h3>Divergencias</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-horizontal ng-pristine ng-valid">
+                                        <div class="form-group" ng-repeat="divergence in divergences">
+                                            <div class="col-sm-5">
+                                                {{divergence.pax}}
+                                            </div>
+                                            <div class="col-sm-3">
+                                                {{divergence.loc}}
+                                            </div>
+                                            <div class="col-sm-3">
+                                                {{divergence.dataEmissao}}
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-warning" ng-click="cancel();">Fechar</button>
+                                </div>
+                            </script>
+                        </div>
+                        <button class="btn btn-info" ng-click="validateData()">Validar</button>
+                        <div class="col-sm-2">
+                            <button class="btn btn-info" ng-click="dataConferenceSales()">Validar Backend</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive">
+            <thead>
+                <tr>
+                    <th><div class="th">
+                        ID
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('id') "
+                              data-ng-class="{active: row == 'id'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-id') "
+                              data-ng-class="{active: row == '-id'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Data Venda
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('issueDate') "
+                              data-ng-class="{active: row == 'issueDate'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-issueDate') "
+                              data-ng-class="{active: row == '-issueDate'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Status
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('status') "
+                              data-ng-class="{active: row == 'status'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-status') "
+                              data-ng-class="{active: row == '-status'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Cliente
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('client') "
+                              data-ng-class="{active: row == 'client'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-client') "
+                              data-ng-class="{active: row == '-client'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Companhia
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('airline') "
+                              data-ng-class="{active: row == 'airline'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-airline') "
+                              data-ng-class="{active: row == '-airline'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Passageiro
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('paxName') "
+                              data-ng-class="{active: row == 'paxName'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-paxName') "
+                              data-ng-class="{active: row == '-paxName'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Localizador
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('flightLocator') "
+                              data-ng-class="{active: row == 'flightLocator'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-flightLocator') "
+                              data-ng-class="{active: row == '-flightLocator'}"></span>
+                    </div></th>
+                    <th><input type="checkbox" ng-model="from"><div ng-show="from">Desabilitar</div><div ng-hide="from">Habilitar</div><br><div class="th" ng-show="from">
+                        Origem
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('from') "
+                              data-ng-class="{active: row == 'from'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-from') "
+                              data-ng-class="{active: row == '-from'}"></span>
+                    </div></th>
+                    <th><input type="checkbox" ng-model="to"><div ng-show="to">Desabilitar</div><div ng-hide="to">Habilitar</div><br><div class="th" ng-show="to">
+                        Destino
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('to') "
+                              data-ng-class="{active: row == 'to'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-to') "
+                              data-ng-class="{active: row == '-to'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Milhas Usadas
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('milesused') "
+                              data-ng-class="{active: row == 'milesused'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-milesused') "
+                              data-ng-class="{active: row == '-milesused'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Embarque
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('boardingDate') "
+                              data-ng-class="{active: row == 'boardingDate'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-boardingDate') "
+                              data-ng-class="{active: row == '-boardingDate'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        External ID
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('externalId') "
+                              data-ng-class="{active: row == 'externalId'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-externalId') "
+                              data-ng-class="{active: row == '-externalId'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Pago
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('amountPaid') "
+                              data-ng-class="{active: row == 'amountPaid'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-amountPaid') "
+                              data-ng-class="{active: row == '-amountPaid'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Custo
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('totalCost') "
+                              data-ng-class="{active: row == 'totalCost'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-totalCost') "
+                              data-ng-class="{active: row == '-totalCost'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Taxa
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('tax') "
+                              data-ng-class="{active: row == 'tax'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-tax') "
+                              data-ng-class="{active: row == '-tax'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        DU
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('duTax') "
+                              data-ng-class="{active: row == 'duTax'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-duTax') "
+                              data-ng-class="{active: row == '-duTax'}"></span>
+                    </div></th>
+                    <th><input type="checkbox" ng-model="issuing"><div ng-show="issuing">Desabilitar</div><div ng-hide="issuing">Habilitar</div><br><div class="th" ng-show="issuing">
+                        Emissor
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('issuing') "
+                              data-ng-class="{active: row == 'issuing'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-issuing') "
+                              data-ng-class="{active: row == '-issuing'}"></span>
+                    </div></th>
+                    <th><input type="checkbox" ng-model="providerName"><div ng-show="providerName">Desabilitar</div><div ng-hide="providerName">Habilitar</div><br><div class="th" ng-show="providerName">
+                        Ficha
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('providerName') "
+                              data-ng-class="{active: row == 'providerName'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-providerName') "
+                              data-ng-class="{active: row == '-providerName'}"></span>
+                    </div></th>
+                    <th><input type="checkbox" ng-model="user"><div ng-show="user">Desabilitar</div><div ng-hide="user">Habilitar</div><br><div class="th" ng-show="user">
+                        Usuario
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('user') "
+                              data-ng-class="{active: row == 'user'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-user') "
+                              data-ng-class="{active: row == '-user'}"></span>
+                    </div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="sale in currentPageSales">
+                    <td>{{sale.id}}</td>
+                    <td>{{findDate(sale.issueDate) | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                    <td><span class="{{saleTag(sale.status)}}">{{sale.status}}</span></td>
+                    <td>{{sale.client}}</td>
+                    <td>{{sale.airline}}</td>
+                    <td>{{sale.paxName}}</td>
+                    <td>{{sale.flightLocator}}</td>
+                    <td><div ng-show="from">{{sale.from}}</div></td>
+                    <td><div ng-show="to">{{sale.to}}</div></td>
+                    <td><div class="text-right">{{formatNumber(sale.milesused,0)}}</div></td>
+                    <td>{{findDate(sale.boardingDate) | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                    <td>{{sale.externalId}}</td>
+                    <td><div class="text-right">{{formatNumber(sale.amountPaid)}}</div></td>
+                    <td><div class="text-right">{{formatNumber(sale.totalCost)}}</div></td>
+                    <td><div class="text-right">{{formatNumber(sale.tax)}}</div></td>
+                    <td><div class="text-right">{{formatNumber(sale.duTax)}}</div></td>
+                    <td><div ng-show="issuing">{{sale.issuing}}</div></td>
+                    <td><div ng-show="providerName">{{sale.providerName}}</div></td>
+                    <td><div ng-show="user">{{sale.user}}</div></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show 
+                        <select data-ng-model="numPerPage"
+                                data-ng-options="num for num in numPerPageOpt"
+                                data-ng-change="onNumPerPageChange()">
+                        </select> 
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 pagination-container">
+                    <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="filteredSales.length"
+                                max-size="4"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true"></pagination>
+                </div>
+                <div class="col-md-4 text-right page-num-info">
+                    <span>
+                        Showing {{filteredSales.length}}/{{sales.length}} entries
+                    </span>              
+                </div>
+            </div>
+        </footer>
+    </section>
+
+</div>

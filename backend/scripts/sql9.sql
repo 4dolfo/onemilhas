@@ -1,0 +1,1 @@
+ALTER TABLE `businesspartner` ADD `bank_slip_social_name` VARCHAR(5) NULL DEFAULT 'false' ;

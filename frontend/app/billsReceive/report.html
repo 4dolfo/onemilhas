@@ -1,0 +1,159 @@
+<div class="page page-table contention" data-ng-controller="RiskAnalysisCtrl">
+    <section class="panel panel-default table-dynamic">
+        <div class="panel-heading"><strong></span> Analise de Risco - {{client.name}}</strong></div>
+        <div class="panel-body">
+            <div>
+                <form class="form-horizontal ng-pristine ng-valid">
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" ng-model="selected.name" typeahead="client.name for client in clients | filter:$viewValue | limitTo:8" class="form-control" placeholder="Informe o Cliente/Agência e clique em próximo para analisar">
+                        </div>
+                        <div class="col-sm-2 text-right">
+                            <button type="button" ng-click="setSelected();" class="btn btn-line-info">Verificar</button>
+                        </div>
+                        <div class="col-sm-2 text-right">
+                            <button type="button" ng-click="exportAnalysis();" class="btn btn-line-info">Relatorio</button>
+                        </div>
+                        <div class="col-md-2">
+                          <a href="#/billsReceive/billet" class="btn btn-line-info">  Boletos a receber</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section ng-show="tabindex">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-default">
+              <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> Boletos gerados</strong></div>
+              <div class="panel-body">
+                  <table class="table">
+                      <thead>
+                          <tr>
+                              <th>Data Emissão</th>
+                              <th>Status</th>
+                              <th>Vencimento</th>
+                              <th>Valor Atual</th>
+                              <th>Nosso Numero</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr data-ng-repeat="Billet in Billets" ng-show="Billet.actual_value > 0 && Billet.status == 'E' ">
+                              <td>{{Billet.IssueDate | date:'dd/MM/yyyy'}}</td>
+                              <td>{{getStatusDesc(Billet.status)}}</td>
+                              <td>{{Billet.due_date | date:'dd/MM/yyyy'}}</td>
+                              <td class="text-right">{{formatNumber(Billet.actual_value)}}</td>
+                              <td>{{Billet.ourNumber}}</td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-xsm-6">
+            <div class="panel mini-box">
+                <div class="box-info">
+                    <p class="size-h3">Vencidos: R${{formatNumber(getDueValue())}}</p>
+                    <p class="text-muted"><span>Em {{count}} boletos</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-xsm-6">
+            <div class="panel mini-box">
+                <div class="box-info">
+                    <p class="size-h3">Vencimentos futuros: R${{formatNumber(alreadyGenerated())}}</p>
+                    <p class="text-muted"><span>Em {{count2}} boletos</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-xsm-6">
+          <div class="panel mini-box">
+          </div>
+        </div>
+        <div class="col-lg-6 col-xsm-6"></div>
+
+        <div class="col-lg-6 col-xsm-6">
+            <div class="panel mini-box">
+                <div class="box-info">
+                    <p class="size-h3">Balanço: R$ {{formatNumber((getDueValue() + alreadyGenerated()) - cancelCost())}}</p>
+                    <p class="size-h2 text-muted"><span class="{{getClass()}}">STATUS: {{getStatus()}}</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-xsm-6">
+            <div class="panel mini-box">
+                <div class="box-info">
+                    <p class="size-h3">Bilhetes Futuros: R${{formatNumber(getTotal())}}</p>
+                    <p class="text-muted"><span>Em {{Sales.length}} Bilhetes</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-xsm-6">
+            <div class="panel mini-box">
+                <div class="box-info">
+                    <p class="size-h3">Cancelamento: R${{formatNumber(getTotalCancelCost())}}</p>
+                    <p class="text-muted"><span>Em {{Sales.length}} Bilhetes</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="panel panel-default">
+              <div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span>Bilhetes futuros</strong></div>
+              <div class="panel-body">
+                  <table class="table">
+                      <thead>
+                          <tr>
+                              <th></th>
+                              <th>Data Emissão</th>
+                              <th>CIA</th>
+                              <th>PAX</th>
+                              <th>Embarque</th>
+                              <th>Trecho</th>
+                              <th>Voo</th>
+                              <th>Localizador</th>
+                              <th>Pago</th>
+                              <th>Custo</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr data-ng-repeat="Sale in Sales">
+                              <td><input ng-model="Sale.checked" type="checkbox"></td>
+                              <td>{{Sale.issueDate | date:'dd/MM/yyyy'}}</td>
+                              <td>{{Sale.airline}}</td>
+                              <td>{{Sale.paxName}}</td>
+                              <td>{{Sale.boardingDate | date:'dd/MM/yyyy'}}</td>
+                              <td>{{Sale.from}}-{{Sale.to}}</td>
+                              <td>{{Sale.flight}}</td>
+                              <td>{{Sale.flightLocator}}</td>
+                              <td>{{formatNumber(Sale.amountPaid)}}</td>
+                              <td>{{formatNumber(Sale.cancelCost)}}</td>
+                          </tr>
+                          <tr>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>{{formatNumber(getTotal())}}</td>
+                              <td>{{formatNumber(getTotalCancelCost())}}</td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+</div>

@@ -1,0 +1,99 @@
+<div id="nav-wrapper">
+    <ul id="nav"
+        data-ng-controller="NavCtrl"
+        data-collapse-nav
+        data-highlight-active>
+        <li><a href="#/dashboard"> <i class="fas fa-tachometer-alt"><span class="icon-bg bg-danger"></span></i><span data-i18n="Dashboard*"></span> </a></li>
+        <li ng-show="(main.wizardSale || main.isMaster || main.sale || main.commercial || main.conference || main.onlineCardsInUse || main.wizarSaleEvent) || main.dealer">
+                <span class="badge badge-danger clients-status" ng-show="orderWaiting.length > 0">{{orderWaiting.length}}</span>
+            <a href="#/online"><i class="fa fa-laptop"><span class="icon-bg bg-orange"></span></i><span data-i18n="Pedidos Online"></span></a>
+            <ul>
+                <li ng-if="(main.wizardSale || main.isMaster || main.conference || main.commercial || main.wizarSaleEvent) || main.dealer"><a href="#/online/online_order"><i class="fa fa-caret-right"></i><span data-i18n="Pedidos"></span></a></li>
+                <li ng-if="(main.wizardSale || main.isMaster || main.conference || main.commercial || main.wizarSaleEvent) && !main.dealer"><a href="#/online/online_order_waiting"><i class="fa fa-caret-right"></i><span data-i18n="Pedidos Em Espera"></span></a></li>
+                <!-- <li ng-if="main.isMaster || main.onlineBalanceOrder"><a href="#/online/balance_order"><i class="fa fa-caret-right"></i><span data-i18n="Balanço Emissões"></span></a></li> -->
+                <!-- <li ng-if="main.isMaster || main.onlineCardsInUse"><a href="#/online/cards_in_use"><i class="fa fa-caret-right"></i><span data-i18n="Cartões em uso"></span></a></li> -->
+            </ul>
+        </li>
+        <li ng-show="main.wizardPurchase || main.isMaster || main.purchase || main.purchaseProvider || main.purchasePaymentPruchase || main.purchaseEndPruchase || main.purchasePruchases || main.purchaseCardsPendency">
+            <a href="#/compra"><i class="fa fa-cart-arrow-down"><span class="icon-bg bg-warning"></span></i><span data-i18n="Compras"></span></a>
+            <ul>
+                <li ng-if="main.wizardPurchase || main.isMaster || main.purchase || main.purchaseProvider"><a href="#/purchase/provider"><i class="fa fa-caret-right"></i><span data-i18n="Fornecedores"></span> <span class="badge badge-success"></span></a></li>
+                <li ng-if="main.wizardPurchase || main.isMaster"><a href="#/purchase/wizard_purchase"><i class="fa fa-caret-right"></i><span data-i18n="Nova Compra"></span></a></li>
+                <!-- <li ng-if="main.purchase || main.isMaster || main.purchasePaymentPruchase"><a href="#/purchase/billsPay_purchase"><i class="fa fa-caret-right"></i><span data-i18n="Pagamento compra"></span></a></li> -->
+                <li ng-if="main.wizardPurchase || main.isMaster || main.purchaseEndPruchase"><a href="#/purchase/end_purchase"><i class="fa fa-caret-right"></i><span data-i18n="Finalizar Compra"></span></a></li>
+                <li ng-if="main.purchase || main.isMaster || main.purchasePruchases"><a href="#/purchase/purchase"><i class="fa fa-caret-right"></i><span data-i18n="Compras Realizadas"></span></a></li>
+                <!-- <li ng-if="main.purchase || main.isMaster"><a href="#/purchase/balance_purchase"><i class="fa fa-caret-right"></i><span data-i18n="Balanço Compras"></span></a></li> -->
+                <!-- <li ng-if="main.purchase || main.isMaster || main.purchaseCardsPendency"><a href="#/purchase/cards_pendency"><i class="fa fa-caret-right"></i><span data-i18n="Cartões Bloqueados"></span></a></li>
+                <li ng-if="main.purchase || main.isMaster || main.purchaseCardsPendency"><a href="#/purchase/cards_losses"><i class="fa fa-caret-right"></i><span data-i18n="Cartões Bloqueados - Perdas"></span></a></li> -->
+            </ul>
+        </li>
+        <li ng-show="main.isMaster || main.sale || main.wizardSale || main.commercial || main.wizardPurchase || main.internRefund || main.client || main.internCommercial || main.salePlansEdit || main.milesBench || main.conference || main.wizarSaleEvent">
+            <span class="badge badge-warning clients-status" ng-show="clientStatus.length > 0">{{clientStatus.length}}</span>
+            <a href="#/vendas"><i class="fa fa-fire"><span class="icon-bg bg-success"></span></i><span data-i18n="Vendas"></span></a>
+            <ul>
+                <li ng-if="main.wizardSale || main.isMaster || main.milesBench"><a href="#/sale/wizard_sale"><i class="fa fa-caret-right"></i><span data-i18n="Novo Pedido"></span></a></li>
+                <li ng-if="main.isMaster || main.sale || main.dealer || main.client"><a href="#/sale/sale"><i class="fa fa-caret-right"></i><span data-i18n="Vendas Realizadas"></span></a></li>
+                <li ng-if="main.isMaster || main.commercial || main.wizardPurchase || main.internCommercial"><a href="#/sale/client"><i class="fa fa-caret-right"></i><span data-i18n="Clientes"></span></a></li>
+                <!-- <li ng-if="main.isMaster || main.sale || main.commercial"><a href="#/sale/balance_clients"><i class="fa fa-caret-right"></i><span data-i18n="Balanço Comercial"></span></a></li> -->
+                <!-- <li ng-if="main.isMaster || main.sale || main.wizardSale || main.conference"><a href="#/sale/future_boardings"><i class="fa fa-caret-right"></i><span data-i18n="Embarques Futuros"></span></a></li> -->
+                <!-- <li ng-if="main.isMaster || main.sale || main.wizardSale || main.internRefund || main.conference || main.wizarSaleEvent"><a href="#/sale/refound"><i class="fa fa-caret-right"></i><span data-i18n="Evento de Venda"></span></a></li> -->
+                <!-- <li ng-if="main.isMaster || main.changeMiles"><a href="#/sale/cards_waiting"><i class="fa fa-caret-right"></i><span data-i18n="Cartões em espera"></span></a></li> -->
+                <!-- <li ng-if="main.isMaster"><a href="#/sale/data_conference"><i class="fa fa-caret-right"></i><span data-i18n="Conferencia"></span></a></li> -->
+            </ul>
+        </li>
+        <li ng-show="main.isMaster">
+            <a href="#/marketing"><i class="fas fa-sitemap"><span class="icon-bg bg-success"></span></i><span data-i18n="Marketing"></span></a>
+            <ul>
+                <!-- <li ng-if="main.isMaster"><a href="#/marketing/modal_promo"><i class="fa fa-caret-right"></i><span data-i18n="Modal Promo"></span></a></li> -->
+                <!-- <li ng-if="main.isMaster"><a href="#/marketing/promo_plans"><i class="fa fa-caret-right"></i><span data-i18n="Planos Promo"></span></a></li> -->
+                <li ng-if="main.isMaster || main.salePlansEdit"><a href="#/marketing/plans_sale"><i class="fa fa-caret-right"></i><span data-i18n="Planos"></span></a></li>
+                <!-- <li ng-if="main.isMaster"><a href="#/marketing/systems_data"><i class="fa fa-caret-right"></i><span data-i18n="Sistemas"></span></a></li> -->
+            </ul>
+        </li>
+        <li ng-show="main.milesBench || main.isMaster || main.conference || main.internRefund || main.purchase">
+            <a href="#/milhas"><i class="fa fa-cubes"><span class="icon-bg bg-primary-light"></span></i><span data-i18n="Milhas"></span></a>
+            <ul class="sub-nav">
+                <li ng-if="main.milesBench || main.isMaster || main.internRefund || main.purchase"><a href="#/miles/miles_bench"><i class="fa fa-caret-right"></i><span data-i18n="Estoque de Milhas"></span> <span class="badge badge-warning"></span></a></li>
+                <!-- <li ng-if="main.isMaster || main.onlineBalanceOrder"><a href="#/miles/balance_miles"><i class="fa fa-caret-right"></i><span data-i18n="Balanço Milhas"></span> <span class="badge badge-warning"></span></a></li> -->
+                <!-- <li ng-if="main.isMaster || main.onlineBalanceOrder"><a href="#/miles/balance_cards"><i class="fa fa-caret-right"></i><span data-i18n="Controle de Pontos"></span> <span class="badge badge-warning"></span></a></li> -->
+                <!-- <li ng-if="main.isMaster || main.milesBench || main.conference"><a href="#/miles/miles_conference"><i class="fa fa-caret-right"></i><span data-i18n="Conferencia de Extrato"></span> <span class="badge badge-warning"></span></a></li> -->
+            </ul>
+        </li>
+        <!-- <li ng-show="main.financial || main.isMaster">
+            <a href="#/financeiro"><i class="fas fa-money-bill-alt"><span class="icon-bg bg-primary"></span></i><span data-i18n="Financeiro"></span></a>
+            <ul class="sub-nav">
+                <li><a href="#/billsReceive/billet"><i class="fa fa-caret-right"></i><span data-i18n="Boletos a Receber"></span> <span class="badge badge-warning"></span></a></li>
+                <li><a href="#/billsReceive/customer"><i class="fa fa-caret-right"></i><span data-i18n="Dados/Clientes"></span></a></li>
+                <li><a href="#/billsReceive/risk_analysis"><i class="fa fa-caret-right"></i><span data-i18n="Analise de Risco"></span> <span class="badge badge-warning"></span></a></li>
+                <li ng-if="main.isMaster"><a href="#/billsReceive/balance_billets"><i class="fa fa-caret-right"></i><span data-i18n="Balanço Financeiro"></span> <span class="badge badge-warning"></span></a></li>
+                <li><a href="#/cashFlow/book_entry"><i class="fa fa-caret-right"></i><span data-i18n="Lançamentos"></span> <span class="badge badge-warning"></span></a></li>
+                <li><a href="#/billsReceive/manual_invoice"><i class="fa fa-caret-right"></i><span data-i18n="NFS Manual"></span> <span class="badge badge-warning"></span></a></li>
+            </ul>
+        </li> -->
+        <!-- <li ng-show="main.financial || main.isMaster">
+            <a href="#/billsPay"><i class="fa fa-credit-card"><span class="icon-bg bg-primary"></span></i><span data-i18n="A Pagar"></span></a>
+            <ul class="sub-nav">
+                <li><a href="#/billsPay/bills_pay"><i class="fa fa-caret-right"></i><span data-i18n="Contas a Pagar"></span> <span class="badge badge-warning"></span></a></li>
+                <li><a href="#/billsPay/cost_center"><i class="fa fa-caret-right"></i><span data-i18n="Centro de Custo"></span> <span class="badge badge-warning"></span></a></li>
+                <li><a href="#/billsPay/banks"><i class="fa fa-caret-right"></i><span data-i18n="Bancos"></span> <span class="badge badge-warning"></span></a></li>
+            </ul>
+        </li> -->
+        <!-- <li ng-show="main.isMaster || main.pagseguro">
+            <a href="#/pagSeguro"><i class="fa fa-credit-card"><span class="icon-bg bg-primary"></span></i><span data-i18n="Pag Seguro"></span></a>
+            <ul class="sub-nav">
+                <li><a href="#/pagseguro/transactions"><i class="fa fa-caret-right"></i><span data-i18n="Transações"></span> <span class="badge badge-warning"></span></a></li>
+            </ul>
+        </li> -->
+        <li ng-show="(main.isMaster || main.permission || main.users || main.creditCard || main.changeMiles || main.commercial) && !main.dealer">
+            <a href="#/Configuração"><i class="fa fa-cogs"><span class="icon-bg bg-violet"></span></i><span data-i18n="Configurações"></span></a>
+            <ul class="sub-nav">
+                <li ng-if="main.users || main.isMaster || main.commercial"><a href="#/page/user"><i class="fa fa-caret-right"></i><span data-i18n="Usuário"></span> <span class="badge badge-warning"></span></a></li>
+                <li ng-if="main.isMaster || main.changeMiles"><a href="#/maintenance/airport"><i class="fa fa-caret-right"></i><span data-i18n="Aeroporto"></span> <span class="badge badge-warning"></span></a></li>
+                <li ng-if="main.isMaster || main.changeMiles"><a href="#/maintenance/airline"><i class="fa fa-caret-right"></i><span data-i18n="Companhia Aérea"></span> <span class="badge badge-warning"></span></a></li>
+                <!-- <li ng-if="main.isMaster || main.changeMiles"><a href="#/maintenance/control_airline"><i class="fa fa-caret-right"></i><span data-i18n="Multas/Custos"></span> <span class="badge badge-warning"></span></a></li> -->
+                <li ng-if="main.isMaster || main.creditCard"><a href="#/maintenance/internal_cards"><i class="fa fa-caret-right"></i><span data-i18n="Cartões de Crédito"></span> <span class="badge badge-warning"></span></a></li>
+                <li ng-if="main.isMaster || main.permission || main.commercial"><a href="#/maintenance/permissions"><i class="fa fa-caret-right"></i><span data-i18n="Permissões"></span> <span class="badge badge-warning"></span></a></li>
+            </ul>
+        </li>
+    </ul>
+</div>

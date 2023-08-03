@@ -1,0 +1,916 @@
+<div id="online_page" class="page page-table contention" data-ng-controller="OnlineOrderWaitingCtrl" >
+
+    <section class="panel panel-default table-dynamic" ng-show="tabindex == 0">
+        <div class="panel-heading"><strong>Pedidos Online Em Espera</strong> - Milhas Filtradas: {{findMilesOrder();}}</div>
+
+        <div class="table-filters">
+            <div class="row">
+                <form>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text"
+                                    placeholder="Pesquisar..."
+                                    class="form-control"
+                                    data-ng-model="searchKeywords"
+                                    data-ng-keyup="search()">
+                        </div>
+                        <div class="col-sm-2">
+                            <script type="text/ng-template" id="ModalCtrl.html">
+                                <div class="modal-header">
+                                    <h3>Pesquisa Avaçada</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-horizontal ng-pristine ng-valid">
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Status</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.status" typeahead="status for status in saleStatus | filter:$viewValue | limitTo:8" placeholder="Pesquisar" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-12">Data Pedido</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">De</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group ui-datepicker">
+                                                    <input type="date" 
+                                                        id='saleboardingDateFrom'
+                                                        ng-model="filter.issueDateFrom"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Até</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group ui-datepicker">
+                                                    <input type="date" 
+                                                        id='saleboardingDateTo'
+                                                        ng-model="filter.issueDateTo"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" ng-click="ok();">OK</button>
+                                    <button type="button" class="btn btn-warning" ng-click="cancel();">Cancel</button>
+                                </div>
+                            </script>
+                            <button class="btn btn-default" ng-click="openSearchModal()"><span class="glyphicon glyphicon-search"></span> Pesquisa Avançada</button>
+                        </div>
+                        <div class="col-sm-2" data-ng-controller="OnlineModalPermissionCtrl">
+                            <script type="text/ng-template" id="OnlineModalPermissionCtrl.html">
+                                <div class="modal-header">
+                                    <h3>Autorização de OP</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-horizontal ng-pristine ng-valid">
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">PIN</label>
+                                            <div class="col-sm-4">
+                                            <input type="password" class="form-control" ng-model="permissions.pinCode">
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-if="!permissions.type">
+                                            <div class="col-sm-4">
+                                            <button type="button" class="btn btn-primary" ng-click="check();">Confirmar</button>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-if="permissions.type == 'Comercial'">
+                                            <div class="col-sm-4">
+                                            <button type="button" class="btn btn-primary" ng-click="checkCommercial();">Confirmar Comercial</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-warning" ng-click="cancel();">Cancel</button>
+                                    <button type="button" class="btn btn-info" ng-click="email();">Enviar Email</button>
+                                    <button type="button" class="btn btn-info" ng-click="emailCommecial();" ng-show="response.partner_limit == 'true' ">Email p/ Comercial</button>
+                                </div>
+                            </script>
+                        </div>
+                        <div class="col-sm-2">Atualização Automatica
+                            <label class="switch">
+                            <input type="checkbox" ng-model="atualizations" ng-checked="atualizations"><i></i></label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th><div class="th">
+                        ID
+                        <span class="fa fa-angle-up"
+                                data-ng-click="order('id') "
+                                data-ng-class="{active: row == 'id'}"></span>
+                        <span class="fa fa-angle-down"
+                                data-ng-click="order('-id') "
+                                data-ng-class="{active: row == '-id'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                            Cliente
+                        <span class="fa fa-angle-up"
+                                data-ng-click="order('client_name') "
+                                data-ng-class="{active: row == 'client_name'}"></span>
+                        <span class="fa fa-angle-down"
+                                data-ng-click="order('-client_name') "
+                                data-ng-class="{active: row == '-client_name'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Login
+                        <span class="fa fa-angle-up"
+                                data-ng-click="order('client_login') "
+                                data-ng-class="{active: row == 'client_login'}"></span>
+                        <span class="fa fa-angle-down"
+                                data-ng-click="order('-client_login') "
+                                data-ng-class="{active: row == '-client_login'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Status
+                        <span class="fa fa-angle-up"
+                                data-ng-click="order('status') "
+                                data-ng-class="{active: row == 'status'}"></span>
+                        <span class="fa fa-angle-down"
+                                data-ng-click="order('-status') "
+                                data-ng-class="{active: row == '-status'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Companhia
+                        <span class="fa fa-angle-up"
+                                data-ng-click="order('airline') "
+                                data-ng-class="{active: row == 'airline'}"></span>
+                        <span class="fa fa-angle-down"
+                                data-ng-click="order('-airline') "
+                                data-ng-class="{active: row == '-airline'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Criando em
+                        <span class="fa fa-angle-up"
+                                data-ng-click="order('created_at') "
+                                data-ng-class="{active: row == 'created_at'}"></span>
+                        <span class="fa fa-angle-down"
+                                data-ng-click="order('-created_at') "
+                                data-ng-class="{active: row == '-created_at'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Total Milhas
+                        <span class="fa fa-angle-up"
+                                data-ng-click="order('miles_used') "
+                                data-ng-class="{active: row == 'miles_used'}"></span>
+                        <span class="fa fa-angle-down"
+                                data-ng-click="order('-miles_used') "
+                                data-ng-class="{active: row == '-miles_used'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Valor total
+                        <span class="fa fa-angle-up"
+                                data-ng-click="order('total_cost') "
+                                data-ng-class="{active: row == 'total_cost'}"></span>
+                        <span class="fa fa-angle-down"
+                                data-ng-click="order('-total_cost') "
+                                data-ng-class="{active: row == '-total_cost'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Observações
+                        <span class="fa fa-angle-up"
+                                data-ng-click="order('comments') "
+                                data-ng-class="{active: row == 'comments'}"></span>
+                        <span class="fa fa-angle-down"
+                                data-ng-click="order('-comments') "
+                                data-ng-class="{active: row == '-comments'}"></span>
+                    </div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="onlineorder in currentPageOnlineOrder" bgcolor='{{findColor(onlineorder);}}' class="draggable">
+                    <td ng-click="setSelected(); $event.stopPropagation();">{{onlineorder.id}} / {{onlineorder.notificationCode}}</td>
+                    <td ng-click="setSelected(); $event.stopPropagation();">{{onlineorder.client_name}}<br>{{onlineorder.userSession}}</td>
+                    <td ng-click="setSelected(); $event.stopPropagation();">{{onlineorder.client_login}}</td>
+                    <td ng-click="setSelected(); $event.stopPropagation();"><div><span class="{{orderTagClient(onlineorder)}}">{{onlineorder.status}}</div></span></td>
+                    <td ng-click="setSelected(); $event.stopPropagation();">{{onlineorder.airline}}</td>
+                    <td ng-click="setSelected(); $event.stopPropagation();">{{findDate(onlineorder.created_at) | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                    <td ng-click="setSelected(); $event.stopPropagation();"><div class="text-right">{{formatNumber(onlineorder.miles_used,0)}}</div></td>
+                    <td ng-click="setSelected(); $event.stopPropagation();"><div class="text-right">{{formatNumber(onlineorder.total_cost)}}</td>
+                    <td ng-click="setSelected(); $event.stopPropagation();">{{onlineorder.comments}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show 
+                        <select data-ng-model="numPerPage"
+                                data-ng-options="num for num in numPerPageOpt"
+                                data-ng-change="onNumPerPageChange()">
+                        </select> 
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 text-right pagination-container">
+                    <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="filteredOnlineOrders.length"
+                                max-size="4"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true"></pagination>
+                </div>
+                <div class="col-md-4 text-right page-num-info">
+                    <span>
+                        Showing {{filteredOnlineOrders.length}}/{{onlineorder.length}} entries
+                    </span>              
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <section class="panel panel-default table-dynamic" ng-show="tabindex == 3">
+        <div class="panel-heading"><strong></span> Dados do Cliente <label ng-show="response != undefined">   ***Status do Cliente - {{response.status}} - Tipo de Pagamento: {{response.paymentType}}</label></strong></div>
+        <div class="panel-body">
+        <div>
+            <form class="form-horizontal" name="wsale_formorder">
+                <div class="form-group">
+                    <label class="col-sm-2">Cliente</label>
+                    <div class="col-sm-10">
+                        <input type="text" ng-model="wsale.client" ng-readonly="response != undefined" typeahead="client.name for client in clients | filter:$viewValue | limitTo:8" class="form-control" placeholder="Pesquisar" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2">Emissor</label>
+                    <div class="col-sm-10">
+                        <input type="text" ng-model="selected.issuing" ng-readonly="response != undefined" typeahead="issuing.name for issuing in issuings | filter:$viewValue | limitTo:8" class="form-control" placeholder="Pesquisar">
+                    </div>
+                </div>
+                <div class="form-group" ng-hide="response != undefined">
+                    <label class="col-sm-2">Emissor Parceiro</label>
+                    <div class="col-sm-10">
+                        <input type="text" ng-model="wsale.partnername" typeahead="partner.name for partner in partners | filter:$viewValue | limitTo:8" class="form-control" ng-readonly="response != undefined" placeholder="Pesquisar">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2">Observação</label>
+                    <div class="col-sm-10">
+                        <input type="text" ng-model="selected.comments" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-6">
+                        <button type="button" ng-click="backToList()" class="btn btn-warning"> anterior</button>
+                    </div>
+                    <div class="col-sm-6 text-right" ng-show="showNextStep">
+                        <button type="button" ng-click="validOrder();" class="btn btn-line-info">proximo</button>
+                    </div>
+                    <div class="col-sm-12 text-center">
+                        <div class="btn-group dropdown" dropdown is-open="isopenDropDown">
+                            <button type="button" class="btn btn-info dropdown-toggle" dropdown-toggle ng-disabled="disabled">Opções <span class="caret"></span> </button>
+                            <div class="dropdown-menu with-arrow panel panel-default">
+                                <ul class="list-group">
+                                    <li class="list-group-item" ng-show="main.isMaster || main.sale">
+                                        <button type="button" ng-click="cancelOrder();" class="btn btn-danger">Cancelar OP</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12 text-center" ng-show="cancel">
+                        <input type="text" ng-model="selected.cancelReason" class="form-control">
+                        <br>
+                        <div class="col-sm-12 text-center" ng-show="cancel">
+                        <button type="button" ng-click="cancelOnlineOrder();" class="btn btn-danger">Confirmar Cancelameto</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        </div>
+    </section>
+
+    <section class="panel panel-default" ng-show="tabindex == 4">
+        <div class="panel-heading">
+            <strong>Resumo - {{findDate(selected.created_at) | date:'dd/MM/yyyy HH:mm:ss'}}
+                <div ng-if="commercial_free.partner">
+                    - Liberado comercial: {{commercial_free.partner}} - {{ findDate(commercial_free.issue_date) | date:'dd/MM/yyyy HH:mm:ss' }}
+
+                </div>
+            </strong>
+            <div style="display:  inline;">
+                <button class="btn btn-info smallBtn opts-notification-order" ng-click="openOrdersNotificationModal()">Historico</button>
+                <button ng-if="main.isMaster || main.sale || main.commercial" class="btn btn-danger smallBtn opts-notification-order margin-left" ng-click="confirOrderToEmit()">Forçar para emissão / Confirmar recebimento</button>
+                <!--<button ng-if="main.isMaster || main.sale || main.commercial" class="btn btn-warning smallBtn opts-notification-order margin-left" ng-click="confirmPayment()">Confirmar Pagamento para emissao pagante</button>-->
+            </div>
+        </div>
+        <div>
+            <script type="text/ng-template" id="ClientWarningModalCtrl.html">
+            <div class="modal-header">
+                <h3>Aviso de Cliente</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal ng-pristine ng-valid">
+                <div class="form-group">
+                    <label for="" class="col-sm-12">FOI IDENTIFICADO PENDENCIA PARA O CLIENTE</label>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-12">FAVOR CONSULTAR O FINANCEIRO ANTES DE PROSSEGUIR</label>
+                </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" ng-click="cancel();">OK</button>
+            </div>
+            </script>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-profile">
+                        <ul class="list-unstyled list-info">
+                            <li>
+                                <span class="icon fas fa-money-bill-alt"></span>
+                                <label>Total Pedido</label>
+                                <table class="table table-bordered table-striped table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th><div class="th">
+                                                Cliente
+                                            </div></th>
+                                            <th><div class="th">
+                                                Emissor
+                                            </div></th>
+                                            <th><div class="th">
+                                                Email
+                                            </div></th>
+                                            <th><div class="th">
+                                                Total Milhas
+                                            </div></th>
+                                            <th><div class="th">
+                                                Cartão Global
+                                            </div></th>
+                                            <th><div class="th">
+                                                Total Tarifa
+                                            </div></th>
+                                            <th><div class="th">
+                                                Total Taxa
+                                            </div></th>
+                                            <th><div class="th">
+                                                Total Desconto
+                                            </div></th>
+                                            <th><div class="th">
+                                                Valor total
+                                            </div></th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody style="font-weight: 900">
+                                        <tr>
+                                            <td bgcolor='#5D7B9D'><font color='#ffffff'>{{selected.client_name}}</font></td>
+                                            <td bgcolor='#5D7B9D'><font color='#ffffff'>{{selected.issuing}}</font></td>
+                                            <td bgcolor='#5D7B9D'><font color='#ffffff'>{{selected.client_email}}</font></td>
+                                            <td bgcolor='#5D7B9D'><font color='#ffffff'><div class="text-right">{{formatNumber(selected.miles_used,0)}}</div></font></td>
+                                            <td bgcolor='#5D7B9D'>
+                                                <!-- <button type="button" ng-hide="(selected.status == 'EMITIDO' || selected.status == 'VERIFICADO' ) || getFlightsAirlines()" class="btn btn-info smallBtn" ng-click="loadOrderMiles()">
+                                                    <font color='#ffffff'>Cartão Milhas</font>
+                                                </button> -->
+                                            </td>
+                                            <td bgcolor='#5D7B9D'><font color='#ffffff'><div class="text-right">{{formatNumber(getTotal())}}</font></td>
+                                            <td bgcolor='#5D7B9D'><font color='#ffffff'><div class="text-right">{{formatNumber(getTotalTax())}}</font></td>
+                                            <td bgcolor='#5D7B9D'><font color='#ffffff'><div class="text-right">{{formatNumber(getTotalDiscount())}}</font></td>
+                                            <td bgcolor='#5D7B9D'><font color='#ffffff'><div class="text-right">{{formatNumber(getTotalValue())}}</font></td>
+                                        </tr>
+                                    </tbody>
+                                </table>                                                          
+                            </li>
+                            <li>
+                                <span class="icon glyphicon glyphicon-credit-card"></span>
+                                <label>Observações</label>
+                                <table class="table table-bordered table-striped table-responsive">
+                                <tbody >
+                                    <td style="font-size: 15px"><strong>{{selected.comments}}</strong></td>
+                                </tbody>
+                                </table>
+                            </li>
+                            <li>
+                                <span class="icon glyphicon glyphicon-plane"></span>
+                                <label>Vôos</label>
+                                    <table class="table table-bordered table-striped table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th><div class="th">
+                                                Companhia
+                                            </div></th>
+                                            <th><div class="th">
+                                                Vôo
+                                            </div></th>
+                                            <th><div class="th">
+                                                Conexôes
+                                            </div></th>
+                                            <th><div class="th">
+                                                Embarque
+                                            </div></th>
+                                            <th><div class="th">
+                                                De
+                                            </div></th>
+                                            <th><div class="th">
+                                                Para
+                                            </div></th>
+                                            <th><div class="th">
+                                                Desembarque
+                                            </div></th>
+                                            <th><div class="th">
+                                                Milhas Voo
+                                            </div></th>
+                                            <th><div class="th">
+                                                Tarifa (Trecho)
+                                            </div></th>
+                                            <th><div class="th">
+                                                Taxa
+                                            </div></th>
+                                            <th><div class="th">
+                                                Valor Total
+                                            </div></th>
+                                            <th><div class="th">
+                                                Classe
+                                            </div></th>
+                                            <th><div class="th">
+                                                Cartão Vôo
+                                            </div></th>
+                                            <th><div class="th">
+                                                Cartão de Crédito
+                                            </div></th>
+                                            <th><div class="th">
+                                                Dados Vôo
+                                            </div></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="font-weight: 900">
+                                        <tr data-ng-repeat="onlineflight in resume_flights" ng-click="setSelectedFlight();">
+                                            <td bgcolor='#5D7B9D' style="color: #ffffff">{{onlineflight.airline}}</td>
+                                            <td bgcolor='#5D7B9D' style="color: #ffffff">{{onlineflight.flight}}</td>
+                                            <td bgcolor='#5D7B9D' style="color: #ffffff">{{onlineflight.connection}}</td>
+                                            <td bgcolor='#5D7B9D' style="color: #ffffff">{{findDate(onlineflight.boarding_date) | date:'dd/MM/yyyy'}}<br>{{findDate(onlineflight.boarding_date) | date:'HH:mm:ss'}}</td>
+                                            <td bgcolor='#5D7B9D' style="color: #ffffff"> <div ng-class="{'label label-warning': onlineflight.flight_category != '' }">{{onlineflight.airport_code_from}}</div> <div ng-if="onlineflight.flight_category != '' "><br/>{{onlineflight.flight_category}}</div> </td>
+                                            <td bgcolor='#5D7B9D' style="color: #ffffff"> <div ng-class="{'label label-warning': onlineflight.flight_category != '' }">{{onlineflight.airport_code_to}}</div> </td>
+                                            <td bgcolor='#5D7B9D' style="color: #ffffff">{{findDate(onlineflight.landing_date) | date:'dd/MM/yyyy'}}<br>{{findDate(onlineflight.landing_date) | date:'HH:mm:ss'}}</td>
+                                            <td bgcolor='#5D7B9D' style="color: #ffffff">
+                                                <div class="text-right" ng-if="onlineflight.emissionMethod != 'Companhia' ">{{formatNumber(onlineflight.original_miles,0)}}</div>
+                                                <div class="text-right" ng-if="onlineflight.emissionMethod == 'Companhia' ">Companhia - Pagante</div>
+                                            </td>
+                                            <td class="text-right" bgcolor='#5D7B9D' style="color: #ffffff">{{formatNumber(onlineflight.cost)}}<div ng-show="onlineflight.cost_per_child != '0.00'">CHD - {{formatNumber(onlineflight.cost_per_child)}}</div><div ng-show="onlineflight.cost_per_newborn != '0.00'">INF - {{formatNumber(onlineflight.cost_per_newborn)}}</div></td>
+                                            <td class="text-right" bgcolor='#5D7B9D' style="color: #ffffff">{{formatNumber(onlineflight.tax)}}<div ng-show="onlineflight.cost_per_child != '0.00'">{{formatNumber(onlineflight.tax)}}</div></td>
+                                            <td class="text-right" bgcolor='#5D7B9D' style="color: #ffffff">{{formatNumber(onlineflight.cost + onlineflight.tax - onlineflight.discount)}}<div ng-show="onlineflight.cost_per_child != '0.00'">{{formatNumber(onlineflight.cost_per_child + onlineflight.tax)}}</div><div ng-show="onlineflight.cost_per_newborn != '0.00'">{{formatNumber(onlineflight.cost_per_newborn)}}</div></td>
+                                            <td bgcolor='#5D7B9D' style="color: #ffffff">
+                                                <span class="ui-select label" ng-class="{'label-warning': onlineflight.class != 'Economica', 'label-defaul': onlineflight.class == 'Economica' }">
+                                                    <select ng-model="onlineflight.class" class="small-select" ng-change="changeClassFlights(onlineflight)">
+                                                        <option class="form-control" value="Economica">Economica</option>
+                                                        <option class="form-control" value="Executiva">Executiva</option>
+                                                    </select>
+                                                </span>
+                                            </td>
+                                            <td bgcolor='#5D7B9D'>
+                                            </td>
+                                            <td bgcolor='#5D7B9D'>
+                                            </td>
+                                            <td bgcolor='#5D7B9D'>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </li>
+                            <li>
+                                <span class="icon glyphicon glyphicon-user"></span>
+                                <label>Passageiros</label> - <strong>{{getPaxDescription()}}</strong>
+                                <table class="table table-bordered table-striped table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th><div class="th">
+                                                Nome
+                                            </div></th>
+                                            <th><div class="th">
+                                                Sobrenome
+                                            </div></th>
+                                            <th><div class="th">
+                                                Agnome
+                                            </div></th>
+                                            <th><div class="th">
+                                                Tipo Pax
+                                            </div></th>
+                                            <th><div class="th">
+                                                Identificação
+                                            </div></th>
+                                            <th><div class="th">
+                                                Data de Nascimento
+                                            </div></th>
+                                            <th><div class="th">
+                                                Gênero
+                                            </div></th>
+                                            <th><div class="th">
+                                                Dados do Pax
+                                            </div></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="font-weight: 900">
+                                        <tr data-ng-repeat="pax in resume_paxs">
+                                            <td ng-style="{color: checkPaxNames(pax.pax_name) == true ? 'orange' : '#767676' }">{{pax.pax_name}}</td>
+                                            <td ng-style="{color: checkPaxNames(pax.paxLastName) == true ? 'orange' : '#767676' }">{{pax.paxLastName}}</td>
+                                            <td ng-style="{color: checkPaxNames(pax.paxAgnome) == true ? 'orange' : '#767676' }">{{pax.paxAgnome}}</td>
+                                            <td>{{getPaxType(pax);}}</td>
+                                            <td>{{pax.identification}}</td>
+                                            <td>{{pax.birhtdate | date:'dd/MM/yyyy'}}</td>
+                                            <td>{{pax.gender}}</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </li> 
+                            <li>
+                                <span class="icon glyphicon glyphicon-credit-card"></span>
+                                <label>Cartão</label>
+                                    <div ng-show="billetCanbas" id="miscCanvas"><br><br></div>
+                                    <table class="table table-bordered table-striped table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th><div class="th">
+                                                CIA
+                                            </div></th>
+                                            <th><div class="th">
+                                                Võo
+                                            </div></th>
+                                            <th><div class="th">
+                                                Passageiro
+                                            </div></th>
+                                            <th><div class="th">
+                                                Tipo Pax
+                                            </div></th>
+                                            <th><div class="th">
+                                                CPF / Número
+
+                                                <div ng-if="selected.status == 'EMITIDO' || selected.status == 'VERIFICADO'">
+                                                    <button class="btn btn-info smallBtn" ng-click="checkAllSales()" type="button">Check - Todos</button>
+                                                    <button class="btn btn-info smallBtn" ng-click="checkAllSale2()" type="button">Check 2 - Todos</button>
+                                                </div>
+                                            </div></th>
+                                            <th><div class="th">
+                                                Senha
+                                            </div></th>
+                                            <th><div class="th">
+                                                Senha de Resgate
+                                            </div></th>
+                                            <th><div class="th">
+                                                Token
+                                            </div></th>
+                                            <th><div class="th">
+                                                Pontos Vôo
+                                            </div></th>
+                                            <th><div class="th">
+                                                Bagagem
+                                            </div></th>
+                                            <th><div class="th">
+                                                Alterar Cartão
+                                            </div></th>
+                                            <th><div class="th">
+                                                Cartão Taxa
+                                            </div></th>
+                                            <th><div class="th">
+                                                Alterar Dados
+                                            </div></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="onlineflight in onlineflights" style="font-weight: 900">
+                                        <td>{{onlineflight.airline}}<div ng-show="onlineflight.isBreak == 'Quebrado'"><br><font color='#F70909'>DESVINCULADO</font></div></td>
+                                        <td>{{onlineflight.flight}}</td>
+                                        <td>{{onlineflight.pax_name}} {{onlineflight.paxLastName}} {{onlineflight.paxAgnome}}</td>
+                                        <td>{{getPaxType(onlineflight);}}</td>
+                                        <td>
+                                            <div ng-show="onlineflight.provider != ''"><br><font color='#F70909'>{{onlineflight.provider}}</font></div>
+                                            <div><br>LOC: {{onlineflight.flightLocator}}</div>
+                                            <div ng-show="selected.status == 'EMITIDO' || selected.status == 'VERIFICADO' && onlineflight.ticket_code"><br>Eticket: {{onlineflight.ticket_code}}</div>
+                                            <div ng-show="selected.status == 'EMITIDO' || selected.status == 'VERIFICADO' && onlineflight.tax_card"><br>Cartão: {{onlineflight.tax_card}}</div>
+                                            <div ng-show="selected.status == 'EMITIDO' || selected.status == 'VERIFICADO' && onlineflight.user"><br>{{onlineflight.user}}</div>
+                                            <div ng-show="selected.status == 'EMITIDO' || selected.status == 'VERIFICADO' && onlineflight.partnerReservationCode != '' ">
+                                                <br>CODIGO RESERVA: {{onlineflight.partnerReservationCode}}
+                                            </div>
+                                            <div ng-show="selected.status == 'EMITIDO' || selected.status == 'VERIFICADO' && onlineflight.processing_time != '' "><br>Tempo: {{onlineflight.processing_time}}</div>
+                                            <div ng-show="selected.status == 'EMITIDO' || selected.status == 'VERIFICADO' && onlineflight.status != '' "><br>Status: {{onlineflight.status}}</div>
+
+                                            <div ng-show="(selected.status == 'EMITIDO' || selected.status == 'VERIFICADO') && onlineflight.airline == 'GOL' ">
+                                                <br><label class="switch">SMS GOL
+                                                <input type="checkbox" ng-model="onlineflight.sms" ng-checked="onlineflight.sms" ng-click="checkSMS(onlineflight)"><i></i></label>
+                                            </div>
+
+                                            <div ng-show="selected.status == 'EMITIDO' || selected.status == 'VERIFICADO'">
+                                                <label class="switch">Check
+                                                <input type="checkbox" ng-model="onlineflight.saleChecked" ng-checked="onlineflight.saleChecked" ng-click="checkSale(onlineflight)"><i></i></label>
+                                                <div ng-show="(selected.status == 'EMITIDO' || selected.status == 'VERIFICADO') && onlineflight.saleCheckedDate && (main.isMaster || main.sale)"><br>Checkado: {{findDate(onlineflight.saleCheckedDate) | date:'dd/MM/yyyy HH:mm:ss'}}</div>
+                                            </div>
+
+                                            <div ng-show="selected.status == 'EMITIDO' || selected.status == 'VERIFICADO'">
+                                                <label class="switch">Check 2
+                                                <input type="checkbox" ng-model="onlineflight.saleChecked2" ng-checked="onlineflight.saleChecked2" ng-click="checkSale2(onlineflight)"><i></i></label>
+                                                <div ng-show="(selected.status == 'EMITIDO' || selected.status == 'VERIFICADO') && onlineflight.saleCheckedDate2 && (main.isMaster || main.sale)"><br>Checkado: {{findDate(onlineflight.saleCheckedDate2) | date:'dd/MM/yyyy HH:mm:ss'}}</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div ng-hide="(selected.status == 'EMITIDO' || selected.status == 'VERIFICADO') && !(main.isMaster || main.sale || main.conference)">
+                                            {{onlineflight.recovery_password}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div ng-hide="(selected.status == 'EMITIDO' || selected.status == 'VERIFICADO') && !(main.isMaster || main.sale || main.conference)">
+                                            {{onlineflight.access_password}}
+                                            </div>
+                                        </td>
+                                        <td>{{onlineflight.token}}</td>
+                                        <td class="text-right">{{formatNumber(onlineflight.miles_used,0)}}<br>{{formatNumber(getFlightTotal(onlineflight))}}
+                                            <div ng-show="onlineflight.du_tax"><br>DU: {{formatNumber(onlineflight.du_tax)}}</div>
+                                            <div ng-show="selected.status == 'EMITIDO' || selected.status == 'VERIFICADO'">Taxas: {{formatNumber(taxByFlight(onlineflight))}}</div>
+                                            <div ng-show="onlineflight.money"><br>M+M {{formatNumber(onlineflight.money)}}</div>
+                                        </td>
+                                        <td>
+                                            <span class="ui-select" ng-class="{'label-warning': onlineflight.baggage != 0, 'label-defaul': onlineflight.baggage == 0 }">
+                                                <select ng-model="onlineflight.baggage" class="small-select" ng-disabled=" selected.status == 'EMITIDO' || selected.status == 'VERIFICADO' ">
+                                                    <option class="form-control" value="0">0</option>
+                                                    <option class="form-control" value="1">1</option>
+                                                    <option class="form-control" value="2">2</option>
+                                                    <option class="form-control" value="3">3</option>
+                                                </select>
+                                            </span>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tbody>
+                                </table>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <button type="button" ng-click="undo();" class="btn btn-warning">anterior</button>
+                </div>
+                <div class="col-sm-2" ng-show="selected.status == 'EM ESPERA' ">
+                    <button type="button" ng-click="saveStatusOrder();" class="btn btn-warning">Tonar PENDENTE</button>
+                </div>
+                <div class="col-sm-2" ng-show="isValidOrder() || (selected.status=='EMITIDO' || selected.status == 'VERIFICADO') ">
+                    <button type="button" class="btn btn-warning" ng-click="downloadAllBillets();">Baixar Bilhetes! beta!</button>
+                </div>
+                <div ng-hide="selected.status == 'EMITIDO' || selected.status == 'VERIFICADO'">
+                    <div class="col-sm-3 text-right">
+                    <div data-ng-controller="CloseOrder">
+                        <script type="text/ng-template" id="CloseOrder.html">
+                        <div class="modal-header">
+                            <h3>Confirmar Venda</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal ng-pristine ng-valid">
+                            <div class="form-group" ng-show="flight_selected.comments.length > 0">
+                                <div class="col-sm-12">
+                                <strong>{{flight_selected.comments}}</strong>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-show="findSpecialCardsLATAM() || findSpecialCardsGOL()"></div>
+                            <div class="form-group" ng-show="findSpecialCardsLATAM() || findSpecialCardsGOL()"></div>
+                            <div class="form-group" ng-show="findSpecialCardsLATAM() || findSpecialCardsGOL()"></div>
+                            <div class="form-group" ng-show="findSpecialCardsLATAM()">
+                                <div class="col-sm-12">
+                                    <strong>Uso de Cartão RED/BLACK detectado</strong>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-show="findSpecialCardsGOL()">
+                                <div class="col-sm-12">
+                                    <strong>Uso de Cartão DIAMANTE/CLUBE detectado</strong>
+                                </div>
+                                </div>
+                            <div class="form-group" ng-show="findSpecialCardsLATAM() || findSpecialCardsGOL()">
+                                <div class="col-sm-12">
+                                    <strong>Confira a pontuação para baixar os trechos</strong>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" ng-click="ok();">Confirmar</button>
+                            <button type="button" class="btn btn-warning" ng-click="cancel();">Cancelar</button>
+                        </div>
+                        </script>
+                        <button type="button" ng-show="isValidOrder();" ng-click="open();" class="btn btn-line-info">confirmar</button>
+                    </div>
+                    <!-- <button type="button" ng-show="isValidOrder();" ng-click="saveOrder();" class="btn btn-line-info">confirmar</button> -->
+                    </div>
+                    <!-- <button type="button" ng-show="isValidOrder();" ng-click="sendEmail();" class="btn btn-line-info">Confirmar e enviar Email</button> -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel panel-default table-dynamic" ng-show="tabindex == 6">
+        <div class="panel-heading"><strong>Liberação comercial</strong> - Milhas Filtradas: {{findMilesOrder();}}</div>
+
+        <div class="table-filters">
+            <div class="row">
+                <form>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text"
+                                    placeholder="Pesquisar..."
+                                    class="form-control"
+                                    data-ng-model="searchKeywords"
+                                    data-ng-keyup="search()">
+                        </div>
+                        <div class="col-sm-2" data-ng-controller="OnlineModalPermissionCtrl">
+                            <script type="text/ng-template" id="OnlineModalPermissionCtrl.html">
+                                <div class="modal-header">
+                                    <h3>Autorização de OP</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-horizontal ng-pristine ng-valid">
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">PIN</label>
+                                            <div class="col-sm-4">
+                                            <input type="password" class="form-control" ng-model="permissions.pinCode">
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-if="!permissions.type">
+                                            <div class="col-sm-4">
+                                            <button type="button" class="btn btn-primary" ng-click="check();">Confirmar</button>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-if="permissions.type == 'Comercial'">
+                                            <div class="col-sm-4">
+                                            <button type="button" class="btn btn-primary" ng-click="checkCommercial();">Confirmar Comercial</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-warning" ng-click="cancel();">Cancel</button>
+                                    <button type="button" class="btn btn-info" ng-click="email();">Enviar Email</button>
+                                    <button type="button" class="btn btn-info" ng-click="emailCommecial();" ng-show="response.partner_limit == 'true' ">Email p/ Comercial</button>
+                                </div>
+                            </script>
+                        </div>
+                        <div class="col-sm-5">
+                            <h4>Clique na OP que deseja fazer a liberação</h4>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th><div class="th">
+                        ID
+                        <span class="fa fa-angle-up"
+                                data-ng-click="order('id') "
+                                data-ng-class="{active: row == 'id'}"></span>
+                        <span class="fa fa-angle-down"
+                                data-ng-click="order('-id') "
+                                data-ng-class="{active: row == '-id'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Cliente
+                        <span class="fa fa-angle-up"
+                                data-ng-click="order('client_name') "
+                                data-ng-class="{active: row == 'client_name'}"></span>
+                        <span class="fa fa-angle-down"
+                                data-ng-click="order('-client_name') "
+                                data-ng-class="{active: row == '-client_name'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Status
+                        <span class="fa fa-angle-up"
+                                data-ng-click="order('status') "
+                                data-ng-class="{active: row == 'status'}"></span>
+                        <span class="fa fa-angle-down"
+                                data-ng-click="order('-status') "
+                                data-ng-class="{active: row == '-status'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Companhia
+                        <span class="fa fa-angle-up"
+                                data-ng-click="order('airline') "
+                                data-ng-class="{active: row == 'airline'}"></span>
+                        <span class="fa fa-angle-down"
+                                data-ng-click="order('-airline') "
+                                data-ng-class="{active: row == '-airline'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Criando em
+                        <span class="fa fa-angle-up"
+                                data-ng-click="order('created_at') "
+                                data-ng-class="{active: row == 'created_at'}"></span>
+                        <span class="fa fa-angle-down"
+                                data-ng-click="order('-created_at') "
+                                data-ng-class="{active: row == '-created_at'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Embarques
+                    </div></th>
+                    <th><div class="th">
+                        Total Milhas
+                        <span class="fa fa-angle-up"
+                                data-ng-click="order('miles_used') "
+                                data-ng-class="{active: row == 'miles_used'}"></span>
+                        <span class="fa fa-angle-down"
+                                data-ng-click="order('-miles_used') "
+                                data-ng-class="{active: row == '-miles_used'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Valor total
+                        <span class="fa fa-angle-up"
+                                data-ng-click="order('total_cost') "
+                                data-ng-class="{active: row == 'total_cost'}"></span>
+                        <span class="fa fa-angle-down"
+                                data-ng-click="order('-total_cost') "
+                                data-ng-class="{active: row == '-total_cost'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Taxas
+                    </div></th>
+                    <th><div class="th">
+                        Observações
+                        <span class="fa fa-angle-up"
+                                data-ng-click="order('comments') "
+                                data-ng-class="{active: row == 'comments'}"></span>
+                        <span class="fa fa-angle-down"
+                                data-ng-click="order('-comments') "
+                                data-ng-class="{active: row == '-comments'}"></span>
+                    </div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="onlineorder in currentPageOnlineOrder" bgcolor='{{findColor(onlineorder);}}' class="draggable">
+                    <td ng-click="setSelected(); $event.stopPropagation();">{{onlineorder.id}}</td>
+                    <td ng-click="setSelected(); $event.stopPropagation();">{{onlineorder.client_name}}<br>{{onlineorder.userSession}}</td>
+                    <td ng-click="setSelected(); $event.stopPropagation();"><div><span class="{{orderTagClient(onlineorder)}}">{{getStatusOrder(onlineorder)}}</div></span></td>
+                    <td ng-click="setSelected(); $event.stopPropagation();">{{onlineorder.airline}}</td>
+                    <td ng-click="setSelected(); $event.stopPropagation();">{{findDate(onlineorder.created_at) | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                    <td ng-click="setSelected(); $event.stopPropagation();">
+                        <div ng-repeat="boarding in onlineorder.boardings">
+                            {{findDate(boarding) | date:'dd/MM/yyyy HH:mm:ss'}}<br>
+                        </div>
+                    </td>
+                    <td ng-click="setSelected(); $event.stopPropagation();"><div class="text-right">{{formatNumber(onlineorder.miles_used,0)}}</div></td>
+                    <td ng-click="setSelected(); $event.stopPropagation();"><div class="text-right">{{formatNumber(onlineorder.total_cost)}}</td>
+                    <td ng-click="setSelected(); $event.stopPropagation();">
+                        <div ng-repeat="tax in onlineorder.tax">
+                            {{formatNumber(tax)}}<br>
+                        </div>
+                    </td>
+                    <td ng-click="setSelected(); $event.stopPropagation();">{{onlineorder.comments}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show 
+                        <select data-ng-model="numPerPage"
+                                data-ng-options="num for num in numPerPageOpt"
+                                data-ng-change="onNumPerPageChange()">
+                        </select> 
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 text-right pagination-container">
+                    <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="filteredOnlineOrders.length"
+                                max-size="4"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true"></pagination>
+                </div>
+                <div class="col-md-4 text-right page-num-info">
+                    <span>
+                        Showing {{filteredOnlineOrders.length}}/{{onlineorder.length}} entries
+                    </span>              
+                </div>
+            </div>
+        </footer>
+    </section>
+
+</div>

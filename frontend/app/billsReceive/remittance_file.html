@@ -1,0 +1,542 @@
+<div class="page page contention" data-ng-controller="RemittanceFileCtrl">
+
+    <section class="panel panel-default" ng-show="tabindex == 0">
+        <div class="panel-heading"><strong>Boletos</strong>
+            <div class="col-sm-2" data-ng-controller="TodayFinancialEmailsModalCtrl">
+                <script type="text/ng-template" id="TodayFinancialEmailsModalCtrl.html">
+                    <div class="modal-header">
+                        <h3>Emails de Hoje</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal ng-pristine ng-valid">
+                            <div class="form-group" ng-repeat="email in emails">
+                                <label for="" class="col-sm-4">{{findDate(email.issue_date) | date:'dd/MM/yyyy HH:mm:ss'}}</label>
+                                <label for="" class="col-sm-8">{{email.description}}</label>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-4">Total: {{total}}</label>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+                    </div>
+                </script>
+                <button class="btn btn-info smallBtn" ng-click="open()">Emails</button>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <progressbar class="progressbar-xs progress-striped" value="WizardStageProgress();" type="info"></progressbar>
+            </div>
+            <div>
+                <form class="form-horizontal ng-pristine ng-valid" name='wbillet_client'>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <a type="button" href="#/billsReceive/billet" class="btn btn-line-warning">Anterior</a>
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            <button type="button" ng-click="generateRemittanceBradescoSRM();" ng-hide="tabindex == 2" class="btn btn-danger" ng-disabled="!buttonEnable">Gerar arquivo BRADESCO SRM</button>
+                            <button type="button" ng-click="generateRemittanceBradescoMMS();" ng-hide="tabindex == 2" class="btn btn-danger" ng-disabled="!buttonEnable">Gerar arquivo BRADESCO MMS</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-6"></div>
+                        <div class="col-sm-6 text-right">
+                            <button type="button" ng-click="generateRemittanceBBrasilSRM();" ng-hide="tabindex == 2" class="btn btn-warning" ng-disabled="!buttonEnable">Gerar arquivo BBRASIL SRM</button>
+                            <button type="button" ng-click="generateRemittanceBBrasilMMS();" ng-hide="tabindex == 2" class="btn btn-warning" ng-disabled="!buttonEnable">Gerar arquivo BBRASIL MMS</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-6"></div>
+                        <div class="col-sm-6 text-right">
+                            <button type="button" ng-click="generateRemittanceSantanderSRM();" ng-hide="tabindex == 2" class="btn btn-danger" ng-disabled="!buttonEnable">Gerar arquivo SANTANDER SRM</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <div class="row">
+        <div class="col-sm-8">
+            <section class="panel panel-default" ng-show="tabindex == 0">
+                <div class="panel-heading">
+                    <strong>Clientes com boleto em aberto</strong>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-line-info smallBtn" ng-click="markAll()">Marcar todos (Cobranças)</button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-line-info smallBtn" ng-click="uMarkAll()">Desmarcar todos (Cobranças)</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-line-info smallBtn" ng-click="markAllClients()">Marcar todos (Clientes)</button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-line-info smallBtn" ng-click="uMarkAllClients()">Desmarcar todos (Clientes)</button>
+                        </div>
+                    </div>
+
+
+                    <table class="table table-bordered table-responsive" name="table_client">
+                        <thead>
+                            <tr>
+                                <th><div class="th">
+                                </div></th>
+                                <th>
+                                    <div class="th">
+                                        Nome
+                                        <span class="fa fa-angle-up" data-ng-click=" order('name') " data-ng-class="{active: row == 'name'}"></span>
+                                        <span class="fa fa-angle-down" data-ng-click=" order('-name') " data-ng-class="{active: row == '-name'}"></span>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="th">
+                                        Período
+                                        <span class="fa fa-angle-up" data-ng-click=" order('billingPeriod') " data-ng-class="{active: row == 'billingPeriod'}"></span>
+                                        <span class="fa fa-angle-down" data-ng-click=" order('-billingPeriod') " data-ng-class="{active: row == '-billingPeriod'}"></span>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="th">
+                                        Vencimento
+                                        <span class="fa fa-angle-up" data-ng-click=" order('dueDate') " data-ng-class="{active: row == 'dueDate'}"></span>
+                                        <span class="fa fa-angle-down" data-ng-click=" order('-dueDate') " data-ng-class="{active: row == '-dueDate'}"></span>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="th">
+                                        Valor
+                                        <span class="fa fa-angle-up" data-ng-click=" order('totalValue') " data-ng-class="{active: row == 'totalValue'}"></span>
+                                        <span class="fa fa-angle-down" data-ng-click=" order('-totalValue') " data-ng-class="{active: row == '-totalValue'}"></span>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-ng-repeat-start="client in clientsToReceive | filter: filterList" bgcolor="{{ ( client.name.indexOf('MMS - ') > -1 || client.origin == 'MMS') ? '#F38E8E' : '' }}" ng-click="setSelectedClient(client);">
+                                <td>
+                                    <input ng-model="client.checked" name="checkbillspay" type="checkbox" ng-click='addRow()' value="option1">
+                                </td>
+                                <td>{{client.name}}</td>
+                                <td>{{client.billingPeriod}}</td>
+                                <td>{{ findDate(client.due_date) | date:'dd/MM/yyyy' }}</td>
+                                <td>{{formatNumber(client.totalValue)}}</td>
+                            </tr>
+                            <tr data-ng-repeat-end>
+                                <td colspan="5" ng-if="selectedClient.id === client.id">
+                                    <table class="table table-bordered table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th><div class="th">
+                                                    <input ng-model="client.isAllSelected" type="checkbox" ng-click="toggleAll(client);">
+                                                </div></th>
+                                                <th><div class="th">
+                                                    Id
+                                                    <span class="fa fa-angle-up"
+                                                        data-ng-click=" order('id') "
+                                                        data-ng-class="{active: row == 'id'}"></span>
+                                                    <span class="fa fa-angle-down"
+                                                        data-ng-click=" order('-id') "
+                                                        data-ng-class="{active: row == '-id'}"></span>
+                                                </div></th>
+                                                <th><div class="th">
+                                                    Venda
+                                                    <span class="fa fa-angle-up"
+                                                        data-ng-click=" order('issuing_date') "
+                                                        data-ng-class="{active: row == 'issuing_date'}"></span>
+                                                    <span class="fa fa-angle-down"
+                                                        data-ng-click=" order('-issuing_date') "
+                                                        data-ng-class="{active: row == '-issuing_date'}"></span>
+                                                </div></th>
+                                                <th><div class="th">
+                                                    Status
+                                                    <span class="fa fa-angle-up"
+                                                        data-ng-click=" order('status') "
+                                                        data-ng-class="{active: row == 'status'}"></span>
+                                                    <span class="fa fa-angle-down"
+                                                        data-ng-click=" order('-status') "
+                                                        data-ng-class="{active: row == '-status'}"></span>
+                                                </div></th>
+                                                <th><div class="th">
+                                                    Tipo de Conta
+                                                    <span class="fa fa-angle-up"
+                                                        data-ng-click=" order('account_type') "
+                                                        data-ng-class="{active: row == 'account_type'}"></span>
+                                                    <span class="fa fa-angle-down"
+                                                        data-ng-click=" order('-account_type') "
+                                                        data-ng-class="{active: row == '-account_type'}"></span>
+                                                </div></th>
+                                                <th><div class="th">
+                                                    Passageiro
+                                                    <span class="fa fa-angle-up"
+                                                        data-ng-click=" order('pax_name') "
+                                                        data-ng-class="{active: row == 'pax_name'}"></span>
+                                                    <span class="fa fa-angle-down"
+                                                        data-ng-click=" order('-pax_name') "
+                                                        data-ng-class="{active: row == '-pax_name'}"></span>
+                                                </div></th>
+                                                <th><div class="th">
+                                                    Localizador
+                                                    <span class="fa fa-angle-up"
+                                                        data-ng-click=" order('flightLocator') "
+                                                        data-ng-class="{active: row == 'flightLocator'}"></span>
+                                                    <span class="fa fa-angle-down"
+                                                        data-ng-click=" order('-flightLocator') "
+                                                        data-ng-class="{active: row == '-flightLocator'}"></span>
+                                                </div></th>
+                                                <th><div class="th">
+                                                    Valor
+                                                    <span class="fa fa-angle-up"
+                                                        data-ng-click=" order('value') "
+                                                        data-ng-class="{active: row == 'value'}"></span>
+                                                    <span class="fa fa-angle-down"
+                                                        data-ng-click=" order('-value') "
+                                                        data-ng-class="{active: row == '-value'}"></span>
+                                                </div></th>
+                                                <th><div class="th">
+                                                    Ja Pago
+                                                    <span class="fa fa-angle-up"
+                                                        data-ng-click=" order('alreadBilled') "
+                                                        data-ng-class="{active: row == 'alreadBilled'}"></span>
+                                                    <span class="fa fa-angle-down"
+                                                        data-ng-click=" order('-alreadBilled') "
+                                                        data-ng-class="{active: row == '-alreadBilled'}"></span>
+                                                </div></th>
+                                                <th><div class="th">
+                                                    Vencimento
+                                                    <span class="fa fa-angle-up"
+                                                        data-ng-click=" order('due_date') "
+                                                        data-ng-class="{active: row == 'due_date'}"></span>
+                                                    <span class="fa fa-angle-down"
+                                                        data-ng-click=" order('-due_date') "
+                                                        data-ng-class="{active: row == '-due_date'}"></span>
+                                                </div></th>
+                                                <th ng-show="billetGenerated"><div class="th">
+                                                    Bordero
+                                                    <span class="fa fa-angle-up"
+                                                        data-ng-click=" order('billet') "
+                                                        data-ng-class="{active: row == 'billet'}"></span>
+                                                    <span class="fa fa-angle-down"
+                                                        data-ng-click=" order('-billet') "
+                                                        data-ng-class="{active: row == '-billet'}"></span>
+                                                </div></th>
+                                                <th><div class="th">
+                                                    Alterar
+                                                </div></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="bill in client.bills">
+                                                <td><input ng-model="bill.checked" type="checkbox" ng-click='addRow(bill)' ng-change="optionToggled(client)"></td>
+                                                <td>{{bill.id}}</td>
+                                                <td>{{bill.issuing_date | date:'dd/MM/yyyy'}}</td>
+                                                <td><span class="{{billReceiveTag(bill.status)}}">{{getStatusDesc(bill.status)}}</span></td>
+                                                <td><span class="{{getClass(bill)}}">{{bill.account_type}}</span></td>
+                                                <td>{{bill.pax_name}}</td>
+                                                <td>{{bill.flightLocator}}</td>
+                                                <td>
+                                                    <div class="text-right">{{formatNumber(bill.actual_value,2)}}</div>
+                                                </td>
+                                                <td>
+                                                    <div class="text-right">{{formatNumber(bill.alreadBilled,2)}}</div>
+                                                </td>
+                                                <td>{{bill.due_date | date:'dd/MM/yyyy'}}</td>
+                                                <td ng-show="billetGenerated">{{bill.billet}}</td>
+                                                <td>
+                                                    <div data-ng-controller="BillsreceiveChangeCtrl">
+                                                        <script type="text/ng-template" id="BillsreceiveChangeCtrl.html">
+                                                            <div class="modal-header">
+                                                                <h3>Alterar Valor</h3>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form class="form-horizontal ng-pristine ng-valid">
+                                                                    <div class="form-group">
+                                                                        <label for="" class="col-sm-4">Valor</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="number" class="form-control" ng-model="bill.actual_value" ng-readonly="!main.isMaster && checked">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+                                                                    <div class="form-group">
+                                                                        <label for="" class="col-sm-4">PIN</label>
+                                                                        <div class="col-sm-4">
+                                                                            <input type="password" class="form-control" ng-model="bill.pinCode">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <div class="col-sm-4">
+                                                                            <button type="button" class="btn btn-primary" ng-click="check();">Confirmar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-warning" ng-click="cancel();">Cancelar</button>
+                                                                <button type="button" class="btn btn-primary" ng-click="ok();">Salvar</button>
+                                                                <button type="button" class="btn btn-danger" ng-click="remove();">Excluir</button>
+                                                            </div>
+                                                        </script>
+                                                        <button type="button" class="btn btn-info smallBtn" ng-click="open()">Alterar Valor</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div>
+                        Valores filtrados: {{ formatNumber(getTotalChecked()) }} <br />
+                        Clientes Validos: {{ ( clientsToReceive | filter: filterList ).length }} <br />
+                        Clientes Totais: {{ clientsToReceive.length }}
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-sm-4">
+            <section class="panel panel-default" ng-show="tabindex == 0">
+                <div class="panel-heading"><strong>Antecipados</strong></div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-responsive" name="table_client">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <div class="th">
+                                        Nome
+                                        <span class="fa fa-angle-up" data-ng-click=" order('name') " data-ng-class="{active: row == 'name'}"></span>
+                                        <span class="fa fa-angle-down" data-ng-click=" order('-name') " data-ng-class="{active: row == '-name'}"></span>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-ng-repeat-start="client in clientsToReceive | filter: filterListPreview" bgcolor="{{ ( client.name.indexOf('MMS - ') > -1 || client.origin == 'MMS') ? '#F38E8E' : '' }}" ng-click="setSelectedClient(client);">
+                                <td>{{client.name}}</td>
+                            </tr>
+                            <tr data-ng-repeat-end>
+                                <td colspan="5" ng-if="selectedClient.id === client.id">
+                                    <table class="table table-bordered table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th><div class="th">
+                                                    <input ng-model="client.isAllSelected" type="checkbox" ng-click="toggleAll(client);">
+                                                </div></th>
+                                                <th><div class="th">
+                                                    Id
+                                                    <span class="fa fa-angle-up"
+                                                        data-ng-click=" order('id') "
+                                                        data-ng-class="{active: row == 'id'}"></span>
+                                                    <span class="fa fa-angle-down"
+                                                        data-ng-click=" order('-id') "
+                                                        data-ng-class="{active: row == '-id'}"></span>
+                                                </div></th>
+                                                <th><div class="th">
+                                                    Venda
+                                                    <span class="fa fa-angle-up"
+                                                        data-ng-click=" order('issuing_date') "
+                                                        data-ng-class="{active: row == 'issuing_date'}"></span>
+                                                    <span class="fa fa-angle-down"
+                                                        data-ng-click=" order('-issuing_date') "
+                                                        data-ng-class="{active: row == '-issuing_date'}"></span>
+                                                </div></th>
+                                                <th><div class="th">
+                                                    Status
+                                                    <span class="fa fa-angle-up"
+                                                        data-ng-click=" order('status') "
+                                                        data-ng-class="{active: row == 'status'}"></span>
+                                                    <span class="fa fa-angle-down"
+                                                        data-ng-click=" order('-status') "
+                                                        data-ng-class="{active: row == '-status'}"></span>
+                                                </div></th>
+                                                <th><div class="th">
+                                                    Tipo de Conta
+                                                    <span class="fa fa-angle-up"
+                                                        data-ng-click=" order('account_type') "
+                                                        data-ng-class="{active: row == 'account_type'}"></span>
+                                                    <span class="fa fa-angle-down"
+                                                        data-ng-click=" order('-account_type') "
+                                                        data-ng-class="{active: row == '-account_type'}"></span>
+                                                </div></th>
+                                                <th><div class="th">
+                                                    Passageiro
+                                                    <span class="fa fa-angle-up"
+                                                        data-ng-click=" order('pax_name') "
+                                                        data-ng-class="{active: row == 'pax_name'}"></span>
+                                                    <span class="fa fa-angle-down"
+                                                        data-ng-click=" order('-pax_name') "
+                                                        data-ng-class="{active: row == '-pax_name'}"></span>
+                                                </div></th>
+                                                <th><div class="th">
+                                                    Localizador
+                                                    <span class="fa fa-angle-up"
+                                                        data-ng-click=" order('flightLocator') "
+                                                        data-ng-class="{active: row == 'flightLocator'}"></span>
+                                                    <span class="fa fa-angle-down"
+                                                        data-ng-click=" order('-flightLocator') "
+                                                        data-ng-class="{active: row == '-flightLocator'}"></span>
+                                                </div></th>
+                                                <th><div class="th">
+                                                    Valor
+                                                    <span class="fa fa-angle-up"
+                                                        data-ng-click=" order('value') "
+                                                        data-ng-class="{active: row == 'value'}"></span>
+                                                    <span class="fa fa-angle-down"
+                                                        data-ng-click=" order('-value') "
+                                                        data-ng-class="{active: row == '-value'}"></span>
+                                                </div></th>
+                                                <th><div class="th">
+                                                    Ja Pago
+                                                    <span class="fa fa-angle-up"
+                                                        data-ng-click=" order('alreadBilled') "
+                                                        data-ng-class="{active: row == 'alreadBilled'}"></span>
+                                                    <span class="fa fa-angle-down"
+                                                        data-ng-click=" order('-alreadBilled') "
+                                                        data-ng-class="{active: row == '-alreadBilled'}"></span>
+                                                </div></th>
+                                                <th><div class="th">
+                                                    Vencimento
+                                                    <span class="fa fa-angle-up"
+                                                        data-ng-click=" order('due_date') "
+                                                        data-ng-class="{active: row == 'due_date'}"></span>
+                                                    <span class="fa fa-angle-down"
+                                                        data-ng-click=" order('-due_date') "
+                                                        data-ng-class="{active: row == '-due_date'}"></span>
+                                                </div></th>
+                                                <th ng-show="billetGenerated"><div class="th">
+                                                    Bordero
+                                                    <span class="fa fa-angle-up"
+                                                        data-ng-click=" order('billet') "
+                                                        data-ng-class="{active: row == 'billet'}"></span>
+                                                    <span class="fa fa-angle-down"
+                                                        data-ng-click=" order('-billet') "
+                                                        data-ng-class="{active: row == '-billet'}"></span>
+                                                </div></th>
+                                                <th><div class="th">
+                                                    Alterar
+                                                </div></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="bill in client.bills">
+                                                <td><input ng-model="bill.checked" type="checkbox" ng-click='addRow(bill)' ng-change="optionToggled(client)"></td>
+                                                <td>{{bill.id}}</td>
+                                                <td>{{bill.issuing_date | date:'dd/MM/yyyy'}}</td>
+                                                <td><span class="{{billReceiveTag(bill.status)}}">{{getStatusDesc(bill.status)}}</span></td>
+                                                <td><span class="{{getClass(bill)}}">{{bill.account_type}}</span></td>
+                                                <td>{{bill.pax_name}}</td>
+                                                <td>{{bill.flightLocator}}</td>
+                                                <td>
+                                                    <div class="text-right">{{formatNumber(bill.actual_value, 2)}}</div>
+                                                </td>
+                                                <td>
+                                                    <div class="text-right">{{formatNumber(bill.alreadBilled, 2)}}</div>
+                                                </td>
+                                                <td>{{bill.due_date | date:'dd/MM/yyyy'}}</td>
+                                                <td ng-show="billetGenerated">{{bill.billet}}</td>
+                                                <td>
+                                                    <div data-ng-controller="BillsreceiveChangeCtrl">
+                                                        <script type="text/ng-template" id="BillsreceiveChangeCtrl.html">
+                                                            <div class="modal-header">
+                                                                <h3>Alterar Valor</h3>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form class="form-horizontal ng-pristine ng-valid">
+                                                                    <div class="form-group">
+                                                                        <label for="" class="col-sm-4">Valor</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="number" class="form-control" ng-model="bill.actual_value" ng-readonly="!main.isMaster && checked">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+                                                                    <div class="form-group">
+                                                                        <label for="" class="col-sm-4">PIN</label>
+                                                                        <div class="col-sm-4">
+                                                                            <input type="password" class="form-control" ng-model="bill.pinCode">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <div class="col-sm-4">
+                                                                            <button type="button" class="btn btn-primary" ng-click="check();">Confirmar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-warning" ng-click="cancel();">Cancelar</button>
+                                                                <button type="button" class="btn btn-primary" ng-click="ok();">Salvar</button>
+                                                                <button type="button" class="btn btn-danger" ng-click="remove();">Excluir</button>
+                                                            </div>
+                                                        </script>
+                                                        <button type="button" class="btn btn-info smallBtn" ng-click="open()">Alterar Valor</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-sm-4">
+            <section class="panel panel-default" ng-show="tabindex == 0">
+                <div class="panel-heading"><strong>Clientes com boleto em aberto</strong></div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-responsive" name="table_client">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <div class="th">
+                                        Nome
+                                        <span class="fa fa-angle-up" data-ng-click=" order('name') " data-ng-class="{active: row == 'name'}"></span>
+                                        <span class="fa fa-angle-down" data-ng-click=" order('-name') " data-ng-class="{active: row == '-name'}"></span>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="th">
+                                        Período
+                                        <span class="fa fa-angle-up" data-ng-click=" order('billingPeriod') " data-ng-class="{active: row == 'billingPeriod'}"></span>
+                                        <span class="fa fa-angle-down" data-ng-click=" order('-billingPeriod') " data-ng-class="{active: row == '-billingPeriod'}"></span>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="th">
+                                        Primeiro Borderô
+                                        <span class="fa fa-angle-up" data-ng-click=" order('min_emission') " data-ng-class="{active: row == 'min_emission'}"></span>
+                                        <span class="fa fa-angle-down" data-ng-click=" order('-min_emission') " data-ng-class="{active: row == '-min_emission'}"></span>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="th">
+                                        Ultimo Borderô
+                                        <span class="fa fa-angle-up" data-ng-click=" order('max_emission') " data-ng-class="{active: row == 'max_emission'}"></span>
+                                        <span class="fa fa-angle-down" data-ng-click=" order('-max_emission') " data-ng-class="{active: row == '-max_emission'}"></span>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-ng-repeat="client in clientsDeadLine" bgcolor="{{ ( client.name.indexOf('MMS - ') > -1 || client.origin == 'MMS') ? '#F38E8E' : '' }}" ng-click="setClient();">
+                                <td>{{client.name}}</td>
+                                <td>{{client.billingPeriod}}</td>
+                                <td>{{fildDateNotBlack(client.min_emission) | date:'dd/MM/yyyy'}}</td>
+                                <td>{{fildDateNotBlack(client.max_emission) | date:'dd/MM/yyyy'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

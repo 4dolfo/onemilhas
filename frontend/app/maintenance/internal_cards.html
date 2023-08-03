@@ -1,0 +1,311 @@
+<div class="page page-table contention" data-ng-controller="InternalCardsCtrl">
+
+    <section class="panel panel-default table-dynamic" ng-show="tabindex == 0">
+        <div class="panel-heading"><strong></span> Cartões Internos </strong></div>
+
+        <div class="table-filters">
+            <div class="row">
+                <form>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="text"
+                                   placeholder="Pesquisar..."
+                                   class="form-control"
+                                   data-ng-model="searchKeywords"
+                                   data-ng-keyup="search()">
+                        </div>
+                        <div class="col-sm-2">
+                            <script type="text/ng-template" id="CreditCardSearchModal.html">
+                                <div class="modal-header">
+                                    <h3>Pesquisa Avaçada</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-horizontal ng-pristine ng-valid">
+                                        <div class="form-group">
+                                            <div class="col-sm-8">
+                                                <input type="checkbox" ng-model="filter.archived">Buscar Arquivados<br>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" ng-click="ok();">OK</button>
+                                    <button class="btn btn-warning" ng-click="cancel();">Cancel</button>
+                                </div>
+                            </script>
+                            <button class="btn btn-default" ng-click="openSearchModal()"><span class="glyphicon glyphicon-search"></span> Pesquisa Avançada</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive" name="table_provider">
+            <thead>
+                <tr>
+                    <th><div class="th">
+                        ID
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('id') "
+                              data-ng-class="{active: row == 'id'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-id') "
+                              data-ng-class="{active: row == '-id'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Nome Fornecedor
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('provider_name') "
+                              data-ng-class="{active: row == 'provider_name'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-provider_name') "
+                              data-ng-class="{active: row == '-provider_name'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Numero cartão
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('card_number') "
+                              data-ng-class="{active: row == 'card_number'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-card_number') "
+                              data-ng-class="{active: row == '-card_number'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Limite
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('limit') "
+                              data-ng-class="{active: row == 'limit'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-limit') "
+                              data-ng-class="{active: row == '-limit'}"></span>
+                    </div></th>
+                    <th ng-show="main.isMaster"><div class="th">
+                        Usado
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('used') "
+                              data-ng-class="{active: row == 'used'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-used') "
+                              data-ng-class="{active: row == '-used'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Tipo
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('card_type') "
+                              data-ng-class="{active: row == 'card_type'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-card_type') "
+                              data-ng-class="{active: row == '-card_type'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Validade
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('due_date') "
+                              data-ng-class="{active: row == 'due_date'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-due_date') "
+                              data-ng-class="{active: row == '-due_date'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        status
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('status') "
+                              data-ng-class="{active: row == 'status'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-status') "
+                              data-ng-class="{active: row == '-status'}"></span>
+                    </div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="card in filteredCards" ng-click="setSelected();">
+                    <td>{{card.id}}</td>
+                    <td>{{card.provider_name}}</td>
+                    <td>{{card.card_number}}</td>
+                    <td>{{formatNumber(card.limit)}}</td>
+                    <td ng-show="main.isMaster">{{formatNumber(card.used)}}</td>
+                    <td>{{card.card_type}}</td>
+                    <td>{{card.due_date | date:'dd/MM/yyyy'}}</td>
+                    <td><span class="{{providerTag(card.status)}}">{{card.status}}</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show 
+                        <select data-ng-model="numPerPage"
+                                data-ng-options="num for num in numPerPageOpt"
+                                data-ng-change="onNumPerPageChange()">
+                        </select> 
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 pagination-container">
+                    <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="filteredProviders.length"
+                                max-size="4"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true"></pagination>
+                </div>
+                <div class="col-md-4 text-right page-num-info">
+                    <span>
+                        Showing {{currentPageCards.length}}/{{filteredCards.length}} entries
+                    </span>              
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <button type="button" ng-click="newInternal();" class="btn btn-info">Novo</button>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <section class="panel panel-default" ng-show="tabindex == 1">
+        <div class="panel-heading"><strong>Cartôes</strong></div>
+        <div class="panel-body">
+            <div class="divider"></div>
+            <div class="ui-tab-container">
+                <tabset justified="true" class="ui-tab">
+                    <tab heading="Dados do Cartão">
+                        <form class="form-horizontal" name="form_internal">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4">Dados do titular do cartão</label>
+                            </div>
+                            <div class="form-group"></div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-1">Nome</label>
+                                <div class="col-sm-6">
+                                    <input type="text" ng-model="selected.provider_name" class="form-control" id="name" required>
+                                </div>
+                                <label for="" class="col-sm-1">CPF</label>
+                                <div class="col-sm-4">
+                                    <input type="text" ng-model="selected.provider_registration" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-1">Endereço</label>
+                                <div class="col-sm-7">
+                                    <input type="text" ng-model="selected.provider_adress" class="form-control" required>
+                                </div>
+
+                                <label for="" class="col-sm-1">Nascimento</label>
+                                <div class="col-sm-3">
+                                    <input type="date" placeholder="yyyy-MM-dd" ng-model="selected._birthdate" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-1">Endereço 2</label>
+                                <div class="col-sm-3">
+                                    <input type="text" ng-model="selected.providerAdress" class="form-control">
+                                </div>
+                                <label for="" class="col-sm-1">Telefone</label>
+                                <div class="col-sm-3">
+                                    <input type="phone" ng-model="selected.providerPhone" name="telefone" ui-mask="(99)9?9999-9999" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-1">Email</label>
+                                <div class="col-sm-3">
+                                    <input type="text" ng-model="selected.providerEmail" name="email" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group"></div>
+                            <div class="form-group"></div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Fornecedor Prioridade</label>
+                                <div class="col-sm-3">
+                                    <input type="text" ng-model-options='{ debounce: 1000 }' ng-change="searchProviders()" ng-model="selected.prodider_exclusive" class="form-control" typeahead="provider.name for provider in providers | filter:$viewValue | limitTo:8">
+                                </div>
+                            </div>
+                            <div class="form-group"></div>
+                            <div class="form-group"></div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Linha Aérea prioritaria</label>
+                                
+                                <div class="col-sm-2">
+                                    <input type="checkbox" ng-checked="isChecked()" ng-click="toggleAll()"><span ng-if="isChecked()">Des-</span>Selecionar Todos<br>
+                                </div>
+
+                                <div class="col-sm-2" ng-model="airlines" ng-repeat="item in airlines">
+                                    <input type="checkbox" ng-checked="exists(item.name)" ng-click="toggle(item.name)">{{item.name}}<br>
+                                </div>
+                            </div>
+                            <div class="form-group"></div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-4">Dados do cartão</label>
+                            </div>
+                            <div class="form-group"></div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-1">Cartão</label>
+                                <div class="col-sm-3">
+                                    <input type="text" ng-model="selected.card_number" class="form-control" required>
+                                </div>
+                                <label for="" class="col-sm-1">Senha</label>
+                                <div class="col-sm-3">
+                                    <input type="text" ng-model="selected.password" class="form-control" required>
+                                </div>
+                                <label for="" class="col-sm-1">Tipo Cartão</label>
+                                <div class="col-sm-3">
+                                    <input type="text" ng-model="selected.card_type" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-1">Status</label>
+                                <div class="col-sm-3">
+                                    <input type="text" ng-model="selected.status" typeahead="providerStatus for providerStatus in providerStatus | filter:$viewValue | limitTo:8" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-1">Limite</label>
+                                <div class="col-sm-3">
+                                    <input type="text" ng-model="selected.limit" id="limit" class="form-control" required>
+                                </div>
+                                <label for="" class="col-sm-1">Usado</label>
+                                <div class="col-sm-3">
+                                    <input type="text" ng-model="selected.used" id="used" class="form-control" required>
+                                </div>
+                                <label for="" class="col-sm-1">Vencimento</label>
+                                <div class="col-sm-3">
+                                    <input type="date" placeholder="yyyy-MM-dd" ng-model="selected._due_date" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <button class="btn btn-danger" ng-click="cancelEdit();">cancelar</button>
+                            </div>
+                            <div class="col-sm-6 text-right">
+                                <button type="submit" class="btn btn-success" ng-click="saveInternal();">Salvar</button>
+                            </div>
+                        </form>
+                    </tab>
+                    <tab heading="Histórico de uso">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="panel panel-profile">
+                                        <ul ng-repeat="log in CardLog" class="list-unstyled list-info">
+                                            <li>
+                                                <label>Data: {{findDate(log.issue_date) | date:'dd/MM/yyyy HH:mm:ss'}}</label>
+                                                <label>Usuario: {{log.userName}}</label>
+                                                {{log.description}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </section>
+
+    <!-- end Input -->
+</div>

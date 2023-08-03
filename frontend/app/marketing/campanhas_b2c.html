@@ -1,0 +1,127 @@
+<div class="page page-table contention" data-ng-controller="CampanhasB2CCtrl">
+
+    <section class="panel panel-default table-dynamic" ng-if="tabindex == 0">
+        <div class="panel-heading"><strong>Campanhas B2C</strong></div>
+
+        <div class="table-filters">
+            <div class="row">
+                <form>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="text" placeholder="Pesquisar..." class="form-control" data-ng-model="searchKeywords"
+                                data-ng-model-options='{ debounce: 1000 }' data-ng-change="loadCampanha()">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive" name="table_promo">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="th">
+                            ID
+                            <span class="fa fa-angle-up" data-ng-click=" order('id') " data-ng-class="{active: row == 'id'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" order('-id') " data-ng-class="{active: row == '-id'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Nome
+                            <span class="fa fa-angle-up" data-ng-click=" order('nome') " data-ng-class="{active: row == 'nome'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" order('-nome') " data-ng-class="{active: row == '-nome'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            url
+                            <span class="fa fa-angle-up" data-ng-click=" order('url') " data-ng-class="{active: row == 'url'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" order('-url') " data-ng-class="{active: row == '-url'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">representante</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="campanha in campanhas" ng-click="setSelected();">
+                    <td>{{campanha.id}}</td>
+                    <td>{{campanha.nome}}</td>
+                    <td>{{campanha.url}}</td>
+                    <td>{{campanha.dealer}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show
+                        <select data-ng-model="numPerPage" data-ng-options="num for num in numPerPageOpt"
+                            data-ng-change="loadCampanha()">
+                        </select>
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 pagination-container">
+                    <pagination class="pagination-sm" ng-model="currentPage" total-items="totalData" max-size="4"
+                        ng-change="loadCampanha()" items-per-page="numPerPage" rotate="false" previous-text="&lsaquo;"
+                        next-text="&rsaquo;" boundary-links="true"></pagination>
+                </div>
+                <div class="col-md-4 text-right page-num-info">
+                    <span>
+                        Showing {{dealers.length}}/{{totalData}} entries
+                    </span>
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <button type="button" ng-click="newDealer();" class="btn btn-info">Novo</button>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <section class="panel panel-default" ng-if="tabindex == 1">
+        <div class="panel-heading"><strong>Campanha</strong></div>
+        <div class="panel-body">
+            <form class="form-horizontal" name="form_user">
+                <div class="form-group">
+                    <label for="" class="col-sm-2">Nome</label>
+                    <div class="col-sm-4">
+                        <input type="text" ng-model="selected.nome" class="form-control">
+                    </div>
+
+                    <label for="" class="col-sm-2">Codigo</label>
+                    <div class="col-sm-4">
+                        <input type="text" ng-disabled="selected.id" ng-model="selected.codigo" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-2">Representante</label>
+                    <div class="col-sm-4">
+                        <input type="text" typeahead="dealer.name for dealer in dealers | filter:$viewValue | limitTo:8" ng-model="selected.dealer" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-2">Codigo</label>
+                    <div class="col-sm-4">
+                        <input type="text" disabled ng-model="selected.url" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-4">
+                        <button class="btn btn-warning" ng-click="cancelEdit();">cancelar</button>
+                    </div>
+                    <div class="col-sm-4 text-right">
+                        <button type="submit" class="btn btn-success" ng-click="saveCampanha()">salvar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+</div>

@@ -1,0 +1,696 @@
+<div id="miles_bench_page" class="page page-table contention" data-ng-controller="MilesBenchCtrl">
+
+    <section class="panel panel-default table-dynamic" ng-show="tabIndex == 0">
+        <div ng-hide="totalMilesRB > 0" class="panel-heading"><strong></span>Estoque de Milhas -- Total de Milhas: {{formatNumber(totalFiltered, 0)}}</strong></div>
+        <div ng-show="totalMilesRB > 0" class="panel-heading"><strong></span>Estoque de Milhas -- Milhas cards normais: {{formatNumber(totalFiltered - totalMilesRB, 0)}} -- Milhas cards RED e BLACK: {{formatNumber(totalMilesRB, 0)}} -- Total de Milhas: {{formatNumber(totalFiltered, 0)}}</strong></div>
+
+        <div class="table-filters">
+            <div class="row">
+                <form>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="text" placeholder="Pesquisar..." class="form-control" data-ng-model="searchKeywords"
+                                data-ng-model-options='{ debounce: 1000 }' data-ng-change="search()">
+                        </div>
+                    </div>
+                </form>
+                <div class="form-group">
+                    <div class="col-md-2 page-num-info" ng-show="main.isMaster || main.changeMiles">
+                        <button class="btn btn-w-md btn-gap-v btn-line-primary" ng-click="print();"><span class="glyphicon glyphicon-print"></span>
+                            Emitir</button>
+                    </div>
+                    <div class="col-sm-2">
+                        <script type="text/ng-template" id="MilesBenchModalCtrl.html">
+                            <div class="modal-header">
+                                <h3>Pesquisa Avaçada</h3>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-horizontal ng-pristine ng-valid">
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Fornecedor</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" ng-model-options="{ debounce: 500 }" ng-change="loadProvider()" ng-model="filter.providerName" typeahead="provider.name for provider in providers | filter:$viewValue | limitTo:8" placeholder="Pesquisar" >
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Companhia</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" ng-model="filter.airline" typeahead="airline.name for airline in airlines | filter:$viewValue | limitTo:8" placeholder="Pesquisar" >
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Email</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" ng-model="filter.email" >
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Pontuação =</label>
+                                        <div class="col-sm-8">
+                                            <input type="number" class="form-control" ng-model="filter.milesEqual" >
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Pontuação ></label>
+                                        <div class="col-sm-8">
+                                            <input type="number" class="form-control" ng-model="filter.miles" >
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Pontuação <</label>
+                                        <div class="col-sm-8">
+                                            <input type="number" class="form-control" ng-model="filter.milesSmaller" >
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Passageiros Utilizados < </label>
+                                        <div class="col-sm-8">
+                                            <input type="number" class="form-control" ng-model="filter.usedPaxMin" >
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Passageiros Utilizados > </label>
+                                        <div class="col-sm-8">
+                                            <input type="number" class="form-control" ng-model="filter.usedPaxMax" >
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Incluir zerados</label>
+                                        <div class="col-sm-8">
+                                            <input type="checkbox" ng-model="filter.includeZero">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Buscar bloqueados</label>
+                                        <div class="col-sm-8">
+                                            <input type="checkbox" ng-model="filter.blocked">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Buscar Perdas</label>
+                                        <div class="col-sm-8">
+                                            <input type="checkbox" ng-model="filter.losses">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Buscar apenas com observação</label>
+                                        <div class="col-sm-8">
+                                            <input type="checkbox" ng-model="filter.withNotes">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" ng-click="ok();">OK</button>
+                                <button type="button" class="btn btn-warning" ng-click="cancel();">Cancel</button>
+                            </div>
+                        </script>
+                        <div>
+                            <button class="btn btn-default" ng-click="open()"><span class="glyphicon glyphicon-search"></span>
+                                Pesquisa Avançada</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <table ng-class="{blockClass: !main.isMaster}" class="table table-bordered table-striped table-responsive" id="table_id">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="th">
+                            Fornecedor
+                            <span class="fa fa-angle-up" data-ng-click=" order('name') " data-ng-class="{active: row == 'name'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('name') " data-ng-class="{active: row == '-name'}"></span>
+                        </div>
+                    </th>
+                    <!-- <th><div class="th">
+                        Email
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('email') "
+                              data-ng-class="{active: row == 'email'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('email') "
+                              data-ng-class="{active: row == '-email'}"></span>
+                    </div></th> -->
+                    <th>
+                        <div class="th">
+                            Telefone
+                            <span class="fa fa-angle-up" data-ng-click=" order('phoneNumber') " data-ng-class="{active: row == 'phoneNumber'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('phoneNumber') " data-ng-class="{active: row == '-phoneNumber'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Companhia
+                            <span class="fa fa-angle-up" data-ng-click=" order('airline') " data-ng-class="{active: row == 'airline'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('airline') " data-ng-class="{active: row == '-airline'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Tipo Cartão
+                            <span class="fa fa-angle-up" data-ng-click=" order('card_type') " data-ng-class="{active: row == 'card_type'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('card_type') " data-ng-class="{active: row == '-card_type'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Token
+                            <span class="fa fa-angle-up" data-ng-click=" order('token') " data-ng-class="{active: row == 'token'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('token') " data-ng-class="{active: row == '-token'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Número Cartão
+                            <span class="fa fa-angle-up" data-ng-click=" order('card_number') " data-ng-class="{active: row == 'card_number'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('card_number') " data-ng-class="{active: row == '-card_number'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Saldo Milhas
+                            <span class="fa fa-angle-up" data-ng-click=" order('leftover') " data-ng-class="{active: row == 'leftover'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('leftover') " data-ng-class="{active: row == '-leftover'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Vencimento
+                            <span class="fa fa-angle-up" data-ng-click=" order('due_date') " data-ng-class="{active: row == 'due_date'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('due_date') " data-ng-class="{active: row == '-due_date'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Limite Contrato
+                            <span class="fa fa-angle-up" data-ng-click=" order('contract_due_date') " data-ng-class="{active: row == 'contract_due_date'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('contract_due_date') "
+                                data-ng-class="{active: row == '-contract_due_date'}"></span>
+                        </div>
+                    </th>
+                    <th ng-show="main.isMaster || main.wizardPurchase || main.purchase">
+                        <div class="th">
+                            Custo por Milhar
+                            <span class="fa fa-angle-up" data-ng-click=" order('cost_per_thousand') " data-ng-class="{active: row == 'cost_per_thousand'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('cost_per_thousand') "
+                                data-ng-class="{active: row == '-cost_per_thousand'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">Diamantes Livres
+                            <span class="fa fa-angle-up" data-ng-click="order('diamond_free') " data-ng-class="{active: row == 'diamond_free'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click="orderDown('diamond_free') " data-ng-class="{active: row == '-diamond_free'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">Máximo Diamantes
+                            <span class="fa fa-angle-up" data-ng-click="order('diamond_pax_max') " data-ng-class="{active: row == 'diamond_pax_max'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click="orderDown('diamond_pax_max') " data-ng-class="{active: row == '-diamond_pax_max'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Passageiros Utilizados
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Máximo Passageiros
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="miles in milebench" ng-click="setSelected();">
+                    <td>{{miles.name}}</td>
+                    <!-- <td>{{miles.email}}</td> -->
+                    <td>{{miles.phoneNumber}}</td>
+                    <td>{{miles.airline}}</td>
+                    <td>{{miles.card_type}}</td>
+                    <td>{{miles.token}}</td>
+                    <td ng-show="main.isMaster">{{miles.card_number}}</td>
+                    <td ng-show="!main.isMaster"><span class="{{orderMiles(miles)}}">{{miles.card_number}}</span></td>
+                    <td>
+                        <div class="text-right">{{formatNumber(miles.leftover,0)}}</div>
+                    </td>
+                    <td>{{ findDate(miles.due_date) | date:'dd/MM/yyyy'}}</td>
+                    <td>{{ findDate(miles.contract_due_date) | date:'dd/MM/yyyy'}}</td>
+                    <td ng-show="main.isMaster || main.wizardPurchase || main.purchase">
+                        <div class="text-right">{{formatNumber(miles.cost_per_thousand)}}</div>
+                    </td>
+                    <td>{{miles.diamond_free}}</td>
+                    <td>{{miles.diamondPaxMax}}</td>
+                    <td>{{miles.paxUsed}}</td>
+                    <td>{{miles.maxPax}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show
+                        <select data-ng-model="numPerPage" data-ng-options="num for num in numPerPageOpt"
+                            data-ng-change="onNumPerPageChange()">
+                        </select>
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Showing {{milebench.length}}/{{totalData}} entries
+                    </span>
+                </div>
+                <div class="col-md-4 text-right pagination-container">
+                    <pagination class="pagination-sm" ng-model="currentPage" total-items="totalData" max-size="4"
+                        ng-change="select(currentPage)" items-per-page="numPerPage" rotate="false" previous-text="&lsaquo;"
+                        next-text="&rsaquo;" boundary-links="true"></pagination>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <section class="panel panel-default table-dynamic" ng-hide="tabIndex == 0">
+        <div class="panel-heading">
+            <strong>
+                Histórico do Cartão - {{selected.card_number}} - {{selected.name}}
+            </strong>
+            <div class="text-center" ng-show="main.isMaster || main.id == 5165 || main.id == 8693 || main.id == 60731">
+                <button class="btn btn-line-primary smallBtn" ng-click="printHistory();"><span class="glyphicon glyphicon-print"></span>
+                    Emitir</button>
+                <button class="btn btn-line-primary smallBtn" ng-click="printHistoryToProvider();"><span class="glyphicon glyphicon-print"></span>
+                    Relatorio p/ Fornecedor</button>
+                <button class="btn btn-line-primary smallBtn" ng-click="reportPurchaseCsv();"><span class="glyphicon glyphicon-print"></span>
+                    Exportar Compras CSV</button>
+                <button class="btn btn-line-primary smallBtn" ng-click="reportSaleCsv();"><span class="glyphicon glyphicon-print"></span>
+                    Exportar Vendas CSV</button>
+            </div>
+        </div>
+        <div class="divider"></div>
+        <div class="ui-tab-container">
+            <tabset justified="true" class="ui-tab">
+                <tab heading="Dados do Cartão">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div>
+                                <b>Historico de Compras</b>
+                                <table class="table table-bordered table-striped table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <div class="th">ID</div>
+                                            </th>
+                                            <th>
+                                                <div class="th">Companhia</div>
+                                            </th>
+                                            <th>
+                                                <div class="th">Data da Compra</div>
+                                            </th>
+                                            <th>
+                                                <div class="th">Descrição</div>
+                                            </th>
+                                            <th>
+                                                <div class="th">Tipo Cartão</div>
+                                            </th>
+                                            <th ng-show="main.isMaster || main.wizardPurchase || main.purchase">
+                                                <div class="th">Custo por 1000</div>
+                                            </th>
+                                            <th>
+                                                <div class="th">Vencimento</div>
+                                            </th>
+                                            <th ng-show="main.isMaster || main.wizardPurchase || main.purchase">
+                                                <div class="th">Custo Total</div>
+                                            </th>
+                                            <th>
+                                                <div class="th">Milhas</div>
+                                            </th>
+                                            <th>
+                                                <div class="th">Adicionado no banco de milhas</div>
+                                            </th>
+                                            <th>
+                                                <div class="th">Restante</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr data-ng-repeat="history in purchaseHistory">
+                                            <th>{{history.id}}</th>
+                                            <th>{{history.airline}}</th>
+                                            <th>{{findDate(history.purchase_date) | date:'dd/MM/yyyy'}}<br>{{findDate(history.purchase_date)
+                                                | date:'HH:mm:ss'}}</th>
+                                            <th>{{history.description}}</th>
+                                            <th>{{history.card_type}}</th>
+                                            <th ng-show="main.isMaster || main.wizardPurchase || main.purchase" class="text-right">R$
+                                                {{formatNumber(history.cost_per_thousand)}}</th>
+                                            <th>{{findDate(history.miles_due_date) | date:'dd/MM/yyyy'}}<br>{{findDate(history.miles_due_date)
+                                                | date:'HH:mm:ss'}}</th>
+                                            <th ng-show="main.isMaster || main.wizardPurchase || main.purchase" class="text-right">
+                                                R$ {{history.total_cost}}</th>
+                                            <th class="text-right">{{formatNumber(history.purchase_miles, 0)}}</th>
+                                            <th class="text-right">{{formatNumber(history.realPurchased, 0)}}</th>
+                                            <th class="text-right"><input type="text" ng-readonly="!main.isMaster && !main.changeMiles"
+                                                    ng-model="history.leftover" id="leftOver" class="form-control"></th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <button class="btn btn-line-warning" ng-click="back();"><span class="glyphicon glyphicon-step-backward"></span>
+                                        Voltar</button>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <button class="btn btn-line-success" ng-click="saveChanges();">Salvar alterações</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <hr />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Definir prioridade no Cartão</label>
+                                <div class="col-md-4">
+                                    <label class="switch">
+                                        <input type="checkbox" ng-model="selected.isPriority" ng-checked="selected.isPriority"
+                                            ng-click="setPriority()"><i></i></label>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <script type="text/ng-template" id="MilesbenchCardModalCtrl.html">
+                                    <div class="modal-header">
+                                        <h3>Registro de cobrança</h3>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="form-horizontal ng-pristine ng-valid">
+                                            <div class="form-group">
+                                                <div class="col-sm-12">
+                                                    <textarea type="text" class="form-control" ng-model="card.description"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-6">
+                                                    <label class="switch">Bloquear
+                                                    <input type="checkbox" ng-model="card.blocked" ng-checked="card.blocked"><i></i></label>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label class="switch">Perda
+                                                    <input type="checkbox" ng-model="card.losses" ng-checked="card.losses"><i></i></label>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-warning" ng-click="cancel()">Cancelar</button>
+                                        <button class="btn btn-info" ng-click="ok()">Registrar</button>
+                                    </div>
+                                </script>
+                                    <button class="btn btn-info smallBtn" ng-click="openCardModalCtrl();">Bloquear
+                                        Cartão</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <hr />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-2" ng-if="paxPerCards.length > 0" ng-click="openPassengersList()">
+                                    Passageiros utilizados: <b>{{ paxPerCards.length }}</b>
+                                </div>
+                                <div class="col-md-2" ng-if="paxPerCards.length == 0"></div>
+
+                                <label for="" class="col-sm-3">Quantidade de passageiros para emissão</label>
+                                <div class="col-md-2">
+                                    <input class="form-control" type="number" ng-model="selected.maxPerPax">
+                                </div>
+
+                                <label for="" class="col-sm-3">Minimo de pontuação para emissão</label>
+                                <div class="col-md-2">
+                                    <input class="form-control" type="number" ng-model="selected.minimumMiles">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <hr />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-2" ng-if="paxPerCards.length > 0" ng-click="openPassengersList()">
+                                    Passagens diamante utilizadas: <b>{{ selected.diamondPaxUsed }}</b>
+                                </div>
+                                <div class="col-md-2" ng-if="paxPerCards.length == 0"></div>
+
+                                <label for="" class="col-sm-3">Quantidade de passageiros diamante para emissão</label>
+                                <div class="col-md-2">
+                                    <input class="form-control" type="number" ng-model="selected.diamondPaxMax">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <hr />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-3">Definir prioridade por Data</label>
+                                <div class="col-md-3">
+                                    <input class="form-control" type="date" ng-model="selected.datePriority">
+                                </div>
+                                <label for="" class="col-sm-3">Definir prioridade por Utilização</label>
+                                <div class="col-md-3">
+                                    <input class="form-control" type="text" id="milesPriority" ng-model="selected.milesPriority">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <hr />
+                                </div>
+                            </div>
+                            <div class="form-group"  style="margin-top:20px;">
+                                <div ng-if="selected.airline == 'LATAM'">
+                                    <label for="label-focus" class="col-sm-3">Tipo Emissao</label>
+                                    <span class="ui-select col-md-3">
+                                        <select ng-model="selected.onlyInter">
+                                            <option class="form-control" value="null">Nenhum</option>
+                                            <option class="form-control" value="todas">Todas</option>
+                                            <option class="form-control" value="true">Internacional</option>
+                                            <option class="form-control" value="false">Nacional</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <hr />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Observação no cartão</label>
+                                <div class="col-md-10">
+                                    <textarea type="text" class="form-control" ng-model="selected.notes" />
+                                    </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <hr />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <b>Reembolsos</b>
+                            </div>
+                            <table class="table table-bordered table-striped table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th><div class="th">Data da Venda</div></th>
+                                        <th><div class="th">Status</div></th>
+                                        <th><div class="th">Passageiro</div></th>
+                                        <th><div class="th">Voo</div></th>
+                                        <th><div class="th">Localizador</div></th>
+                                        <th><div class="th">Data Embarque</div></th>
+                                        <th><div class="th">Data Desembarque</div></th>
+                                        <th><div class="th">De</div></th>
+                                        <th><div class="th">Para</div></th>
+                                        <th><div class="th">Milhas Usadas</div></th>
+                                        <th><div class="th">Reembolso</div></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-ng-repeat="history in saleRefunds">
+                                        <th>{{findDate(history.issue_date) | date:'dd/MM/yyyy'}}<br>{{findDate(history.issue_date) | date:'HH:mm:ss'}}</th>
+                                        <th>{{history.status}}</th>
+                                        <th>{{history.pax_name}}</th>
+                                        <th>{{history.flight}}</th>
+                                        <th>{{history.flight_locator}}</th>
+                                        <th>{{findDate(history.boardingDate) | date:'dd/MM/yyyy'}}<br>{{findDate(history.boardingDate) | date:'HH:mm:ss'}}</th>
+                                        <th>{{findDate(history.landingDate) | date:'dd/MM/yyyy'}}<br>{{findDate(history.landingDate) | date:'HH:mm:ss'}}</th>
+                                        <th>{{history.from}}</th>
+                                        <th>{{history.to}}</th>
+                                        <th class="text-right">{{formatNumber(history.miles_used, 0)}}</th>
+                                        <th>{{findDate(history.refundDate) | date:'dd/MM/yyyy'}}<br>{{findDate(history.refundDate) | date:'HH:mm:ss'}}</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <hr />
+                            </div>
+                        </div>
+                        <div>
+                            <b>Historico de Vendas</b>
+                            <section class="panel panel-default table-dynamic">
+                                <div class="table-filters"></div>
+                                <table class="table table-bordered table-striped table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th><div class="th">Data da Venda
+                                            </div></th>
+                                            <th><div class="th">Status
+                                            </div></th>
+                                            <th><div class="th">Passageiro
+                                            </div></th>
+                                            <th><div class="th">Voo
+                                            </div></th>
+                                            <th><div class="th">Localizador
+                                            </div></th>
+                                            <th><div class="th">Data Embarque
+                                            </div></th>
+                                            <!-- <th><div class="th">Data Desembarque
+                                            </div></th> -->
+                                            <th><div class="th">De
+                                            </div></th>
+                                            <th><div class="th">Para
+                                            </div></th>
+                                            <th><div class="th">Ids Compras
+                                            </div></th>
+                                            <th><div class="th">Milhas Usadas (Compra)
+                                            </div></th>
+                                            <th><div class="th">Custo Milhar
+                                            </div></th>
+                                            <th><div class="th">Total Milhas/Custo
+                                            </div></th>
+                                            <th><div class="th">Reembolso
+                                            </div></th>
+                                            <th><div class="th">Rertono Pontos
+                                            </div></th>
+                                            <th><div class="th">Código do Ticket
+                                            </div></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr data-ng-repeat="history in saleHistory">
+                                            <th>{{findDate(history.issue_date) | date:'dd/MM/yyyy'}}<br>{{findDate(history.issue_date) | date:'HH:mm:ss'}}</th>
+                                            <th>{{history.status}}</th>
+                                            <th>{{history.pax_name}}</th>
+                                            <th>{{history.flight}}</th>
+                                            <th>{{history.flight_locator}}</th>
+                                            <th>{{findDate(history.boardingDate) | date:'dd/MM/yyyy'}}<br>{{findDate(history.boardingDate) | date:'HH:mm:ss'}}</th>
+                                            <!-- <th>{{findDate(history.landingDate) | date:'dd/MM/yyyy'}}<br>{{findDate(history.landingDate) | date:'HH:mm:ss'}}</th> -->
+                                            <th>{{history.from_cod}}</th>
+                                            <th>{{history.to_cod}}</th>
+
+                                            <th><p data-ng-repeat="sp in history.sale_purchases">
+                                                {{sp.purchase_id}}<span ng-hide="sp.is_corrigido">*</span>
+                                            </p></th>
+
+                                            <th><p data-ng-repeat="sp in history.sale_purchases">
+                                                {{formatNumber(sp.miles_used, 0)}}
+                                            </p></th>
+
+                                            <th><p data-ng-repeat="sp in history.sale_purchases">
+                                                R${{formatNumber(sp.cost_per_thousand, 2)}}
+                                            </p></th>
+
+                                            <th class="text-right">
+                                                <p>{{formatNumber(history.miles_used, 0)}} /</p>
+                                                <p>R${{formatNumber(history.total_coast_calculated, 2)}}</p>
+                                            </th>
+                                            <th>{{findDate(history.refundDate) | date:'dd/MM/yyyy'}}<br>{{findDate(history.refundDate) | date:'HH:mm:ss'}}</th>
+                                            <th>{{findDate(history.returnDate) | date:'dd/MM/yyyy'}}<br>{{findDate(history.returnDate) | date:'HH:mm:ss'}}</th>
+                                            <th>{{history.ticket_code}}</th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <footer class="table-footer">
+                                    <div class="row">
+                                        <div class="col-md-4 page-num-info">
+                                            <span>
+                                                Show 
+                                                <select data-ng-model="numPerPageSale"
+                                                        data-ng-options="n for n in numPerPageOptSale"
+                                                        data-ng-change="onNumPerPageChangeSale(numPerPageSale)">
+                                                </select> 
+                                                entries per page
+                                            </span>
+                                        </div>
+                                        <div class="col-md-4 page-num-info">
+                                            <span>
+                                                Showing {{saleHistory.length}}/{{totalDataSale}} entries
+                                            </span>              
+                                        </div>
+                                        <div class="col-md-4 text-right pagination-container">
+                                            <pagination class="pagination-sm"
+                                                ng-model="currentPageSale"
+                                                total-items="totalDataSale"
+                                                max-size="4"
+                                                ng-change="selectPageSale(currentPageSale)"
+                                                items-per-page="numPerPageSale"
+                                                rotate="false"
+                                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                                boundary-links="true"></pagination>
+                                        </div>
+                                    </div>
+                                </footer>
+                            </section>
+                        </div>
+                    </div>
+                    <label for="" class="col-sm-1">Restante no banco de Milhas</label>
+                    <div class="col-sm-2">
+                        <input type="text" ng-readonly="!main.isMaster && !main.changeMiles" ng-model="selected.leftover" id="left_over" class="form-control">
+                    </div>
+                  </div>
+                </tab>
+                <tab heading="Trigger BD">
+                  <div class="panel-body">
+                    <div class="row">
+                      <div><b>Historico de Banco de dados</b>
+                        <table class="table table-bordered table-striped table-responsive">
+                          <thead>
+                            <tr>
+                              <th><div class="th">Data
+                              </div></th>
+                              <th><div class="th">Companhia
+                              </div></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr data-ng-repeat="history in dataBaseHistoric">
+                              <th>{{findDate(history.issue_date) | date:'dd/MM/yyyy'}}<br>{{findDate(history.issue_date) | date:'HH:mm:ss'}}</th>
+                              <th>{{history.description}}</th>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </tab>
+            </tabset>
+        </div>
+        <footer class="table-footer">
+            <div class="row">
+            </div>
+        </footer>
+    </section>
+</div>

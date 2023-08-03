@@ -1,0 +1,755 @@
+<div class="page page-table contention" data-ng-controller="PermissionsCtrl">
+
+    <section class="panel panel-default table-dynamic" ng-show="tabindex == 0">
+        <div class="panel-heading"><strong> Permissões de Usuarios</strong></div>
+
+        <div class="panel-body">
+            <div class="divider"></div>
+            <div class="ui-tab-container">
+                <tabset justified="true" class="ui-tab">
+                    <tab heading="Permissoes Usuarios">
+
+                        <div class="table-filters">
+                            <div class="row">
+                                <form>
+                                    <div class="form-group">
+                                        <div class="col-sm-6">
+                                            <input type="text"
+                                                   placeholder="Pesquisar..."
+                                                   class="form-control"
+                                                   data-ng-model="searchKeywords"
+                                                   data-ng-keyup="search()">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <table class="table table-bordered table-striped table-responsive" name="table_provider">
+                            <thead>
+                                <tr>
+                                    <th><div class="th">
+                                        ID
+                                        <span class="fa fa-angle-up"
+                                              data-ng-click=" order('id') "
+                                              data-ng-class="{active: row == 'id'}"></span>
+                                        <span class="fa fa-angle-down"
+                                              data-ng-click=" order('-id') "
+                                              data-ng-class="{active: row == '-id'}"></span>
+                                    </div></th>
+                                    <th><div class="th">
+                                        ID Usuário
+                                        <span class="fa fa-angle-up"
+                                              data-ng-click=" order('userId') "
+                                              data-ng-class="{active: row == 'userId'}"></span>
+                                        <span class="fa fa-angle-down"
+                                              data-ng-click=" order('-userId') "
+                                              data-ng-class="{active: row == '-userId'}"></span>
+                                    </div></th>
+                                    <th><div class="th">
+                                        Nome Usuário
+                                        <span class="fa fa-angle-up"
+                                              data-ng-click=" order('userId') "
+                                              data-ng-class="{active: row == 'userId'}"></span>
+                                        <span class="fa fa-angle-down"
+                                              data-ng-click=" order('-userId') "
+                                              data-ng-class="{active: row == '-userId'}"></span>
+                                    </div></th>
+                                    <th><div class="th">
+                                        Compras
+                                        <span class="fa fa-angle-up"
+                                              data-ng-click=" order('purchase') "
+                                              data-ng-class="{active: row == 'purchase'}"></span>
+                                        <span class="fa fa-angle-down"
+                                              data-ng-click=" order('-purchase') "
+                                              data-ng-class="{active: row == '-purchase'}"></span>
+                                    </div></th>
+                                    <th><div class="th">
+                                        Nova Compra
+                                        <span class="fa fa-angle-up"
+                                              data-ng-click=" order('wizardPurchase') "
+                                              data-ng-class="{active: row == 'wizardPurchase'}"></span>
+                                        <span class="fa fa-angle-down"
+                                              data-ng-click=" order('-wizardPurchase') "
+                                              data-ng-class="{active: row == '-wizardPurchase'}"></span>
+                                    </div></th>
+                                    <th><div class="th">
+                                        Vendas
+                                        <span class="fa fa-angle-up"
+                                              data-ng-click=" order('sales') "
+                                              data-ng-class="{active: row == 'sales'}"></span>
+                                        <span class="fa fa-angle-down"
+                                              data-ng-click=" order('-sales') "
+                                              data-ng-class="{active: row == '-sales'}"></span>
+                                    </div></th>
+                                    <th><div class="th">
+                                        Nova Venda
+                                        <span class="fa fa-angle-up"
+                                              data-ng-click=" order('wizardSale') "
+                                              data-ng-class="{active: row == 'wizardSale'}"></span>
+                                        <span class="fa fa-angle-down"
+                                              data-ng-click=" order('-wizardSale') "
+                                              data-ng-class="{active: row == '-wizardSale'}"></span>
+                                    </div></th>
+                                    <th><div class="th">
+                                        Estoque de Milhas
+                                        <span class="fa fa-angle-up"
+                                              data-ng-click=" order('milesBench') "
+                                              data-ng-class="{active: row == 'milesBench'}"></span>
+                                        <span class="fa fa-angle-down"
+                                              data-ng-click=" order('-milesBench') "
+                                              data-ng-class="{active: row == '-milesBench'}"></span>
+                                    </div></th>
+                                    <th><div class="th">
+                                        Financeiro
+                                        <span class="fa fa-angle-up"
+                                              data-ng-click=" order('financial') "
+                                              data-ng-class="{active: row == 'financial'}"></span>
+                                        <span class="fa fa-angle-down"
+                                              data-ng-click=" order('-financial') "
+                                              data-ng-class="{active: row == '-financial'}"></span>
+                                    </div></th>
+                                    <th><div class="th">
+                                        Cartões de Crédito
+                                        <span class="fa fa-angle-up"
+                                              data-ng-click=" order('creditCard') "
+                                              data-ng-class="{active: row == 'creditCard'}"></span>
+                                        <span class="fa fa-angle-down"
+                                              data-ng-click=" order('-creditCard') "
+                                              data-ng-class="{active: row == '-creditCard'}"></span>
+                                    </div></th>
+                                    <th><div class="th">
+                                        Usuários
+                                        <span class="fa fa-angle-up"
+                                              data-ng-click=" order('users') "
+                                              data-ng-class="{active: row == 'users'}"></span>
+                                        <span class="fa fa-angle-down"
+                                              data-ng-click=" order('-users') "
+                                              data-ng-class="{active: row == '-users'}"></span>
+                                    </div></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-ng-repeat="permission in filteredPermissions" ng-click="setSelected();">
+                                    <td>{{permission.id}}</td>
+                                    <td>{{permission.userId}}</td>
+                                    <td>{{permission.userName}}</td>
+                                    <td>{{permission.purchase}}</td>
+                                    <td>{{permission.wizardPurchase}}</td>
+                                    <td>{{permission.sales}}</td>
+                                    <td>{{permission.wizardSale}}</td>
+                                    <td>{{permission.milesBench}}</td>
+                                    <td>{{permission.financial}}</td>
+                                    <td>{{permission.creditCard}}</td>
+                                    <td>{{permission.users}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <footer class="table-footer">
+                            <div class="row">
+                                <div class="col-md-4 page-num-info">
+                                    <span>
+                                        Show 
+                                        <select data-ng-model="numPerPage"
+                                                data-ng-options="num for num in numPerPageOpt"
+                                                data-ng-change="onNumPerPageChange()">
+                                        </select> 
+                                        entries per page
+                                    </span>
+                                </div>
+                                <div class="col-md-4 pagination-container">
+                                    <pagination class="pagination-sm"
+                                                ng-model="currentPage"
+                                                total-items="filteredProviders.length"
+                                                max-size="4"
+                                                ng-change="select(currentPage)"
+                                                items-per-page="numPerPage"
+                                                rotate="false"
+                                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                                boundary-links="true"></pagination>
+                                </div>
+                                <div class="col-md-4 text-right page-num-info">
+                                    <span>
+                                        Showing {{currentPagePermissions.length}}/{{filteredPermissions.length}} entries
+                                    </span>              
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-sm-12">
+                                        <button type="button" ng-click="newPermission();" class="btn btn-info">Novo</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </footer>
+                    </tab>
+                    <tab heading="Revendedores">
+                        <div class="table-filters">
+                            <div class="row">
+                                <form>
+                                    <div class="form-group">
+                                        <div class="col-sm-6">
+                                            <input type="text"
+                                                   placeholder="Pesquisar..."
+                                                   class="form-control"
+                                                   data-ng-model="searchDealer"
+                                                   data-ng-keyup="searchDealers()">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <table class="table table-bordered table-striped table-responsive" name="table_provider">
+                            <thead>
+                                <tr>
+                                    <th><div class="th">ID
+                                    </div></th>
+                                    <th><div class="th">Nome
+                                    </div></th>
+                                    <th><div class="th">CPF/CNPJ
+                                    </div></th>
+                                    <th><div class="th">Cidade/Estado
+                                    </div></th>
+                                    <th><div class="th">Email
+                                    </div></th>
+                                    <th><div class="th">Telefone
+                                    </div></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-ng-repeat="dealers in filteredDealers" ng-click="setSelectedDealers();">
+                                    <td>{{dealers.id}}</td>
+                                    <td>{{dealers.name}}</td>
+                                    <td>{{dealers.registrationCode}}</td>
+                                    <td>{{dealers.cityfullname}}</td>
+                                    <td>{{dealers.email}}</td>
+                                    <td>{{dealers.phoneNumber}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <footer class="table-footer">
+                            <div class="row">
+                                <div class="col-md-4 page-num-info">
+                                    <span>
+                                        Show 
+                                        <select data-ng-model="numPerPage"
+                                                data-ng-options="num for num in numPerPageOpt"
+                                                data-ng-change="onNumPerPageChangeDealers()">
+                                        </select> 
+                                        entries per page
+                                    </span>
+                                </div>
+                                <div class="col-md-4 pagination-container">
+                                    <pagination class="pagination-sm"
+                                                ng-model="currentPageDealers"
+                                                total-items="filteredDealers.length"
+                                                max-size="4"
+                                                ng-change="selectDealers(currentPageDealers)"
+                                                items-per-page="numPerPage"
+                                                rotate="false"
+                                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                                boundary-links="true"></pagination>
+                                </div>
+                                <div class="col-md-4 text-right page-num-info">
+                                    <span>
+                                        Showing {{currentPageDealers.length}}/{{filteredDealers.length}} entries
+                                    </span>              
+                                </div>
+                            </div>
+                        </footer>
+                    </tab>
+                    <tab heading="Emails" ng-if="main.isMaster">
+
+                        <div class="table-filters">
+                            <div class="row">
+                                <form>
+                                    <div class="form-group">
+                                        <div class="col-sm-6">
+                                            <input type="text"
+                                                   placeholder="Pesquisar..."
+                                                   class="form-control"
+                                                   data-ng-model="searchKeywords"
+                                                   data-ng-keyup="search()">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <table class="table table-bordered table-striped table-responsive" name="table_provider">
+                            <thead>
+                                <tr>
+                                    <th><div class="th">
+                                        ID
+                                        <span class="fa fa-angle-up"
+                                              data-ng-click=" order('id') "
+                                              data-ng-class="{active: row == 'id'}"></span>
+                                        <span class="fa fa-angle-down"
+                                              data-ng-click=" order('-id') "
+                                              data-ng-class="{active: row == '-id'}"></span>
+                                    </div></th>
+                                    <th><div class="th">
+                                        Email
+                                        <span class="fa fa-angle-up"
+                                              data-ng-click=" order('email') "
+                                              data-ng-class="{active: row == 'email'}"></span>
+                                        <span class="fa fa-angle-down"
+                                              data-ng-click=" order('-email') "
+                                              data-ng-class="{active: row == '-email'}"></span>
+                                    </div></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-ng-repeat="emails in currentPageEmails" ng-click="setSelectedEmail();">
+                                    <td>{{emails.id}}</td>
+                                    <td>{{emails.email}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <footer class="table-footer">
+                            <div class="row">
+                                <div class="col-md-4 page-num-info">
+                                    <span>
+                                        Show 
+                                        <select data-ng-model="numPerPage"
+                                                data-ng-options="num for num in numPerPageOpt"
+                                                data-ng-change="onNumPerPageChange()">
+                                        </select> 
+                                        entries per page
+                                    </span>
+                                </div>
+                                <div class="col-md-4 pagination-container">
+                                    <pagination class="pagination-sm"
+                                                ng-model="currentPageEmails"
+                                                total-items="filteredEmails.length"
+                                                max-size="4"
+                                                ng-change="selectEmail(currentPage)"
+                                                items-per-page="numPerPage"
+                                                rotate="false"
+                                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                                boundary-links="true"></pagination>
+                                </div>
+                                <div class="col-md-4 text-right page-num-info">
+                                    <span>
+                                        Showing {{currentPagePermissions.length}}/{{filteredEmails.length}} entries
+                                    </span>              
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-sm-12">
+                                        <button type="button" ng-click="newConfigEmail();" class="btn btn-info">Novo</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </footer>
+                    </tab>
+                    <tab heading="Tags" ng-if="main.isMaster">
+
+                        <div class="table-filters">
+                            <div class="row">
+                                <form>
+                                    <div class="form-group">
+                                        <div class="col-sm-6">
+                                            <input type="text"
+                                                   placeholder="Pesquisar..."
+                                                   class="form-control"
+                                                   data-ng-model="searchKeywordsTags"
+                                                   data-ng-keyup="searchTags()">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <table class="table table-bordered table-striped table-responsive" name="table_provider">
+                            <thead>
+                                <tr>
+                                    <th><div class="th">ID</div></th>
+                                    <th><div class="th">Nome</div></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-ng-repeat="tag in filteredTags" ng-click="setSelectedTag();">
+                                    <td>{{tag.id}}</td>
+                                    <td>{{tag.name}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <footer class="table-footer">
+                            <div class="row">
+                                <div class="panel-body">
+                                    <div class="col-sm-12">
+                                        <button type="button" ng-click="newTag();" class="btn btn-info">Novo</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </footer>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </section>
+
+    <!-- Input -->
+    <section class="panel panel-default" ng-show="tabindex == 1">
+        <div class="panel-heading"><strong>Permissões</strong></div>
+        <div class="panel-body">
+            <form class="form-horizontal" name="form_newPermission">
+                <div class="form-group">
+                    <label for="" class="col-sm-2">Nome Usuário</label>
+                    <div class="col-sm-10">
+                        <input type="text" ng-model="selected.userName" class="form-control" typeahead="user.name for user in Users | filter:$viewValue | limitTo:8" class="form-control" placeholder="Pesquisar" required>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <button class="btn btn-danger" ng-click="cancelEdit();">cancelar</button>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <button class="btn btn-success" ng-click="nextWizard();">confirmar</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="panel panel-default" ng-show="tabindex == 2">
+        <div class="panel-heading"><strong>Permissões</strong></div>
+        <div class="panel-body">
+            <form class="form-horizontal" name="form_permission">
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Nome</label>
+                    <div class="col-sm-5">
+                        <input type="text" ng-model="selected.userName" class="form-control" disabled>
+                    </div>
+                    <div class="col-sm-3">
+                        <button type="button" class="btn btn-success" ng-click="controlClients();" ng-show="main.isMaster">Selecionar Clientes</button>
+                    </div>
+                </div>
+                <div class="form-group"><br>
+                    <label for="" class="col-sm-12">One Milhas</label>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Acesso total</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.purchase" ng-checked="selected.purchase"><i></i></label>
+                    </div>
+                    <label for="" class="col-sm-1">Nova Compra</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.wizardPurchase" ng-checked="selected.wizardPurchase"><i></i></label>
+                    </div>
+                    <label for="" class="col-sm-1">Fornecedores</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.purchaseProvider" ng-checked="selected.purchaseProvider"><i></i></label>
+                    </div>
+                    <label for="" class="col-sm-1">Pagamento Compra</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.purchasePaymentPruchase" ng-checked="selected.purchasePaymentPruchase"><i></i></label>
+                    </div>
+                    <label for="" class="col-sm-1">Finalizar Compra</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.purchaseEndPruchase" ng-checked="selected.purchaseEndPruchase"><i></i></label>
+                    </div>
+                    <label for="" class="col-sm-1">Compras Realizadas</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.purchasePruchases" ng-checked="selected.purchasePruchases"><i></i></label>
+                    </div>
+                    <label for="" class="col-sm-1">Cartões Bloqueados</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.purchaseCardsPendency" ng-checked="selected.purchaseCardsPendency"><i></i></label>
+                    </div>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Vendas</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.sales" ng-checked="selected.sales"><i></i></label>
+                    </div>
+                    <label for="" class="col-sm-1">Nova Venda</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.wizardSale" ng-checked="selected.wizardSale"><i></i></label>
+                    </div>
+
+                    <label for="" class="col-sm-1">Alteração em Venda</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.changeSale" ng-checked="selected.changeSale"><i></i></label>
+                    </div>
+
+                    <label for="" class="col-sm-1">Reverter Reembolso</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.saleRevertRefund" ng-checked="selected.saleRevertRefund"><i></i></label>
+                    </div>                        
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Evento de Vendas e Pedidos</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.wizardSaleEvent" ng-checked="selected.wizardSaleEvent"><i></i></label>
+                    </div>                
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Transações</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.pagseguro" ng-checked="selected.pagseguro"><i></i></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Estoque de Milhas</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.milesBench" ng-checked="selected.milesBench"><i></i></label>
+                    </div>
+                    <label for="" class="col-sm-1">Alteração em Milhas</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.changeMiles" ng-checked="selected.changeMiles"><i></i></label>
+                    </div>
+                    <label for="" class="col-sm-1">Financeiro</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.financial" ng-checked="selected.financial"><i></i></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Cartões de Crédito</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.creditCard" ng-checked="selected.creditCard"><i></i></label>
+                    </div>
+                    <label for="" class="col-sm-1">Usuários</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.users" ng-checked="selected.users"><i></i></label>
+                    </div>
+                    <label for="" class="col-sm-1">Comercial</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.commercial" ng-checked="selected.commercial"><i></i></label>
+                    </div>
+                    <label for="" class="col-sm-1">Permissoes</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.permission" ng-checked="selected.permission"><i></i></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Estagio Reembolso</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.internRefund" ng-checked="selected.internRefund"><i></i></label>
+                    </div>
+                    <label for="" class="col-sm-1">Estagio Comercial</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.internCommercial" ng-checked="selected.internCommercial"><i></i></label>
+                    </div>
+
+                    <label for="" class="col-sm-1">Recursos Humanos</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.humanResources" ng-checked="selected.humanResources"><i></i></label>
+                    </div>
+
+                    <label for="" class="col-sm-1">Conferencia</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.conference" ng-checked="selected.conference"><i></i></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Edição de planos comerciais</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.salePlansEdit" ng-checked="selected.salePlansEdit"><i></i></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Carga horária 12/36</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.isDozeTrintaESeis" ng-checked="selected.isDozeTrintaESeis"><i></i></label>
+                    </div>
+
+                    <label for="" class="col-sm-1">Horário de entrada para 12/36</label>
+                    <div class="col-sm-2">
+                        <input type="time" ng-model="horarioDozeTrintaESeis" ng-disabled="!selected.isDozeTrintaESeis" class="form-control">
+                    </div>
+
+                    <label for="" class="col-sm-1">Férias</label>
+                    <div class="col-sm-2">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.onVacation" ng-checked="selected.onVacation"><i></i></label>
+                    </div>
+
+                    <label for="" class="col-sm-1">Retorna em</label>
+                    <div class="col-sm-2">
+                        <label class="date">
+                        <input type="date" ng-model="selected.vacationEnd" ng-disabled="!selected.onVacation" class="form-control">
+                    </div>
+                </div>
+                <br><br>                
+                <div class="form-group">
+                    <table class="table table-bordered table-striped table-responsive">
+                        <thead>
+                            <tr>
+                                <th><div class="th">Domingo
+                                </div></th>
+                                <th><div class="th">Segunda
+                                </div></th>
+                                <th><div class="th">Terça
+                                </div></th>
+                                <th><div class="th">Quarta
+                                </div></th>
+                                <th><div class="th">Quinta
+                                </div></th>
+                                <th><div class="th">Sexta
+                                </div></th>
+                                <th><div class="th">Sabado
+                                </div></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th><input type="time" ng-model="selected.sundayIn"    ng-disabled="selected.isDozeTrintaESeis" class="form-control"><input type="time" ng-model="selected.sundayOut"    ng-disabled="selected.isDozeTrintaESeis" class="form-control"></th>
+                                <th><input type="time" ng-model="selected.mondayIn"    ng-disabled="selected.isDozeTrintaESeis" class="form-control"><input type="time" ng-model="selected.mondayOut"    ng-disabled="selected.isDozeTrintaESeis" class="form-control"></th>
+                                <th><input type="time" ng-model="selected.tuesdayIn"   ng-disabled="selected.isDozeTrintaESeis" class="form-control"><input type="time" ng-model="selected.tuesdayOut"   ng-disabled="selected.isDozeTrintaESeis" class="form-control"></th>
+                                <th><input type="time" ng-model="selected.wednesdayIn" ng-disabled="selected.isDozeTrintaESeis" class="form-control"><input type="time" ng-model="selected.wednesdayOut" ng-disabled="selected.isDozeTrintaESeis" class="form-control"></th>
+                                <th><input type="time" ng-model="selected.thursdayIn"  ng-disabled="selected.isDozeTrintaESeis" class="form-control"><input type="time" ng-model="selected.thursdayOut"  ng-disabled="selected.isDozeTrintaESeis" class="form-control"></th>
+                                <th><input type="time" ng-model="selected.fridayIn"    ng-disabled="selected.isDozeTrintaESeis" class="form-control"><input type="time" ng-model="selected.fridayOut"    ng-disabled="selected.isDozeTrintaESeis" class="form-control"></th>
+                                <th><input type="time" ng-model="selected.saturdayIn"  ng-disabled="selected.isDozeTrintaESeis" class="form-control"><input type="time" ng-model="selected.saturdayOut"  ng-disabled="selected.isDozeTrintaESeis" class="form-control"></th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-sm-6">
+                    <button type="button" class="btn btn-danger" ng-click="cancelEdit();">cancelar</button>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <button type="button" class="btn btn-success" ng-click="savePermission();">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="panel panel-default" ng-show="tabindex == 3">
+        <div class="panel-heading"><strong>Clientes / Fornecedor</strong></div>
+        <div class="panel-body">
+            <form class="form-horizontal" name="form_permission">
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Nome</label>
+                    <div class="col-sm-5">
+                        <input type="text" ng-model="selected.name" class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="form-group">
+                </div>
+                <div ng-repeat="clientDealer in clientsDealer">
+                    <div class="form-group">
+                        <label for="" class="col-sm-1">Cliente</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" ng-model="clientDealer.name" typeahead="client.name for client in clients | filter:$viewValue | limitTo:8">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <button class="btn btn-danger" ng-click="cancelEdit();">cancelar</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="panel panel-default" ng-show="tabindex == 5">
+        <div class="panel-heading"><strong>Tag</strong></div>
+        <div class="panel-body">
+            <form class="form-horizontal" name="form_permission">
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Nome</label>
+                    <div class="col-sm-5">
+                        <input type="text" ng-model="selectedTag.name" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Descrição</label>
+                    <div class="col-sm-5">
+                        <input type="text" ng-model="selectedTag.description" class="form-control">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <button class="btn btn-danger" ng-click="tabindex = 0;">cancelar</button>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <button type="submit" class="btn btn-success" ng-click="saveTag();">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="panel panel-default" ng-show="tabindex == 10">
+        <div class="panel-heading"><strong>Email</strong></div>
+        <div class="panel-body">
+            <form class="form-horizontal" name="form_permission">
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Email</label>
+                    <div class="col-sm-5">
+                        <input type="text" ng-model="selectedEmail.email" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Senha</label>
+                    <div class="col-sm-5">
+                        <input type="text" ng-model="selectedEmail.password" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                </div>
+
+                <div class="col-sm-6">
+                    <button class="btn btn-danger" ng-click="cancelEditEmail();">cancelar</button>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <button type="submit" class="btn btn-success" ng-click="saveConfigEmail();">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="panel panel-default" ng-show="showClientsControl">
+        <div class="panel-heading"><strong>Clientes</strong></div>
+        <div class="panel-body">
+            <form class="form-horizontal" name="form_permission">
+                <div ng-repeat="clientDealer in clientsDealer">
+                    <div class="form-group">
+                        <label for="" class="col-sm-1">Cliente</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" ng-model="clientDealer.name" typeahead="client.name for client in clients | filter:$viewValue | limitTo:8">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-2">
+                        <button type="button" ng-click="removeClient()" class="btn btn-line-primary">-</button>
+                        <button type="button" ng-click="addClient()" class="btn btn-line-primary">+</button>
+                    </div>
+                    <div class="col-sm-10">
+                        <!--<button type="button" ng-click="linkCustomers()" class="btn btn-info">Vincular Clientes</button>-->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <!-- end Input -->
+</div>

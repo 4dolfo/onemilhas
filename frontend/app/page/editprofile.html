@@ -1,0 +1,221 @@
+<div class="page page-table" data-ng-controller="EditProfileCtrl">
+
+    <section class="panel panel-default table-dynamic" ng-show="isTable">
+        <div class="panel-heading"><strong></span> Usuário </strong></div>
+
+        <div class="table-filters">
+            <div class="row">
+                <form>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="text"
+                                   placeholder="Pesquisar..."
+                                   class="form-control"
+                                   data-ng-model="searchKeywords"
+                                   data-ng-keyup="search()">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive" name="table_user">
+            <thead>
+                <tr>
+                    <th><div class="th">
+                        ID
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('id') "
+                              data-ng-class="{active: row == 'id'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-id') "
+                              data-ng-class="{active: row == '-id'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Nome
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('name') "
+                              data-ng-class="{active: row == 'name'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-name') "
+                              data-ng-class="{active: row == '-name'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Email
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('email') "
+                              data-ng-class="{active: row == 'email'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-email') "
+                              data-ng-class="{active: row == '-email'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Telefone
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('phoneNumber') "
+                              data-ng-class="{active: row == 'phoneNumber'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-phoneNumber') "
+                              data-ng-class="{active: row == '-phoneNumber'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        CPF/CNPJ
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('registrationCode') "
+                              data-ng-class="{active: row == 'registrationCode'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-registrationCode') "
+                              data-ng-class="{active: row == '-registrationCode'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Cidade
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('city') "
+                              data-ng-class="{active: row == 'city'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-city') "
+                              data-ng-class="{active: row == '-city'}"></span>
+                    </div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="user in currentPageUsers" ng-click="setSelected();">
+                    <td>{{user.id}}</td>
+                    <td>{{user.name}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.phoneNumber}}</td>
+                    <td>{{user.registrationCode}}</td>
+                    <td>{{user.cityfullname}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show 
+                        <select data-ng-model="numPerPage"
+                                data-ng-options="num for num in numPerPageOpt"
+                                data-ng-change="onNumPerPageChange()">
+                        </select> 
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 pagination-container">
+                    <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="filteredUsers.length"
+                                max-size="4"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true"></pagination>
+                </div>
+                <div class="col-md-4 text-right page-num-info">
+                    <span>
+                        Showing {{filteredUsers.length}}/{{users.length}} entries
+                    </span>              
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <button type="button" ng-click="newUser();" class="btn btn-info">Novo</button>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <!-- Input -->
+    <section class="panel panel-default" ng-hide="isTable" nv-file-drop="" uploader="uploader" filters="queueLimit, customFilter">
+        <div class="panel-heading"><strong>Usuário</strong></div>
+        <div class="panel-body">
+            <form class="form-horizontal" name="form_user">
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Nome</label>
+                    <div class="col-sm-5">
+                        <input type="text" ng-model="selected.name" class="form-control" id="name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="label-focus" class="col-sm-1">CPF/CNPJ</label>
+                    <div class="col-sm-5">
+                        <input type="text" ng-model="selected.registrationCode" class="form-control" id="registrationCode" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Endereço</label>
+                    <div class="col-sm-10">
+                        <input type="text" ng-model="selected.adress" class="form-control" id="adress">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Estado</label>
+                    <div class="col-sm-2">
+                        <input id='userstate' type="text" ng-model="selected.state" typeahead="state.state for state in states | filter:$viewValue | limitTo:8" class="form-control" placeholder="Pesquisar">
+                    </div>
+
+                    <label for="" class="col-sm-1">Municipio</label>
+                    <div class="col-sm-6">
+                        <input type="text" ng-model="selected.city" typeahead="city.name for city in cities | filter:$viewValue | limitTo:8" class="form-control" placeholder="Pesquisar">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Email</label>
+                    <div class="col-sm-4">
+                        <input type="text" ng-model="selected.email" class="form-control ng-valid-email" disabled>
+                    </div>
+                    <label for="" class="col-sm-1">Password</label>
+                    <div class="col-sm-3">
+                        <input type="password" ng-model="selected.password" class="form-control" ng-keyup="verify()" required>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="checkbox" ng-model="checkscpecialChat" ng-disabled="true">Caracter Especial<br>
+                        <input type="checkbox" ng-model="checkString" ng-disabled="true">Letras<br>
+                        <input type="checkbox" ng-model="checkNumber" ng-disabled="true">Numeros<br>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Telefone Celular</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" id="phonenumber" ng-model="selected.phoneNumber" required>
+                    </div>
+
+                    <label for="" class="col-sm-1">Telefone Comercial</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" id="phoneNumber2" ng-model="selected.phoneNumber2">
+                    </div>
+
+                    <label for="" class="col-sm-1">Telefone Residencial</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" id="phoneNumber3" ng-model="selected.phoneNumber3">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-5">
+                        <div class="well my-drop-zone" nv-file-over="" uploader="uploader">
+                            Arraste e solte
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in uploader.queue">
+                                    <td>
+                                        <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }"></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <a type="submit" class="btn btn-success" ng-click="saveUser()" href="#/page/profile">confirmar</a>
+                <a class="btn btn-danger" href="#/page/profile">cancelar</a>
+            </form>
+        </div>
+    </section>
+    <!-- end Input -->
+</div>

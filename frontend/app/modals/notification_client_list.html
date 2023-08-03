@@ -1,0 +1,13 @@
+<div class="modal-header">
+    <h3>{{header}}</h3>
+</div>
+<div class="modal-body">
+    <div class="form-group" ng-repeat="client in data track by client.id">
+        <div class="col-sm-12">
+            {{client.name}}
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" ng-click="cancel();">Cancel</button>
+</div>

@@ -1,0 +1,233 @@
+<div class="page page-table" data-ng-controller="PlansAirlineCtrl">
+
+    <section class="panel panel-default table-dynamic" ng-show="tabindex == 0">
+        <div class="panel-heading"><strong></span> Planos </strong></div>
+
+        <div class="table-filters">
+            <div class="row">
+                <form>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="text"
+                                   placeholder="Pesquisar..."
+                                   class="form-control"
+                                   data-ng-model="searchKeywords"
+                                   data-ng-keyup="search()">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive" name="table_user">
+            <thead>
+                <tr>
+                    <th><div class="th">
+                        Nome
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('description') "
+                              data-ng-class="{active: row == 'description'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-description') "
+                              data-ng-class="{active: row == '-description'}"></span>
+                    </div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="plan in currentPagePlans" ng-click="setSelected();">
+                    <td>{{plan.description}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show 
+                        <select data-ng-model="numPerPage"
+                                data-ng-options="num for num in numPerPageOpt"
+                                data-ng-change="onNumPerPageChange()">
+                        </select> 
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 pagination-container">
+                    <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="filteredUsers.length"
+                                max-size="4"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true"></pagination>
+                </div>
+                <div class="col-md-4 text-right page-num-info">
+                    <span>
+                        Showing {{filteredUsers.length}}/{{users.length}} entries
+                    </span>              
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <button type="button" ng-click="newPlan();" class="btn btn-info">Novo</button>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <!-- Input -->
+    <section class="panel panel-default" ng-show="tabindex == 1">
+        <div class="panel-heading"><strong>{{selected.name}}</strong></div>
+        <div class="panel-body">
+            <form class="form-horizontal" name="form_user">
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Nome</label>
+                    <div class="col-sm-5">
+                        <input type="text" ng-model="selected.description" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-warning" ng-click="cancelEdit();">Voltar</button>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <button type="button" class="btn btn-success" ng-click="savePlan()">Salvar</button>
+                    </div>
+                </div>
+            </form><br><br>
+            <div class="form-group">
+            </div>
+            <div class="form-group">
+            </div>
+            <div class="form-group">
+            </div>
+            <form class="form-horizontal" ng-show="selected.id">
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Companhia</label>
+                    <div class="col-sm-3">
+                        <span class="ui-select">
+                            <select ng-model="new.airline">
+                                <option class="form-control" ng-repeat="airline in airlines" value="{{airline.name}}">{{airline.name}}</option>
+                            </select>
+                        </span>
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="button" class="btn btn-success" ng-click="addAirline(new.airline)">Adicionar companhia</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                </div>
+                <div class="form-group">
+                </div><br><br>
+                <div ng-repeat="control in controlAirline">
+                    <div class="form-group">
+                        <label for="" class="col-sm-1">{{control.airline}}</label>
+                    </div>
+                    <div ng-repeat="operation in control.plansData">
+                        <div class="form-group" >
+                            <label for="" class="col-sm-1">Tipo</label>
+                            <div class="col-sm-3">
+                                <input type="text" ng-model="operation.type" typeahead="operat for operat in operations | filter:$viewValue | limitTo:8" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group" >
+                            <label for="" class="col-sm-1">Nacional Comum(Cobrar)</label>
+                            <div class="col-sm-2">
+                                <input type="number" ng-model="operation.nationalBeforeBoarding" class="form-control">
+                            </div>
+
+                            <label for="" class="col-sm-1">Nacional Comum(Custo)</label>
+                            <div class="col-sm-2">
+                                <input type="number" ng-model="operation.nationalBeforeBoardingCost" class="form-control">
+                            </div>
+
+                            <label for="" class="col-sm-1">Nacional No-show(Cobrar)</label>
+                            <div class="col-sm-2">
+                                <input type="number" ng-model="operation.nationalAfterBoarding" class="form-control">
+                            </div>
+
+                            <label for="" class="col-sm-1">Nacional No-show(Custo)</label>
+                            <div class="col-sm-2">
+                                <input type="number" ng-model="operation.nationalAfterBoardingCost" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group" >
+                            <label for="" class="col-sm-1">Internacional Comum(Cobrar)</label>
+                            <div class="col-sm-2">
+                                <input type="number" ng-model="operation.internationalBeforeBoarding" class="form-control">
+                            </div>
+
+                            <label for="" class="col-sm-1">Internacional Comum(Custo)</label>
+                            <div class="col-sm-2">
+                                <input type="number" ng-model="operation.internationalBeforeBoardingCost" class="form-control">
+                            </div>
+
+                            <label for="" class="col-sm-1">Internacional No-show(Cobrar)</label>
+                            <div class="col-sm-2">
+                                <input type="number" ng-model="operation.internationalAfterBoarding" class="form-control">
+                            </div>
+
+                            <label for="" class="col-sm-1">Internacional No-show(Custo)</label>
+                            <div class="col-sm-2">
+                                <input type="number" ng-model="operation.internationalAfterBoardingCost" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group" >
+                            <label for="" class="col-sm-1">America Norte Comum(Cobrar)</label>
+                            <div class="col-sm-2">
+                                <input type="number" ng-model="operation.northAmericaBeforeBoarding" class="form-control">
+                            </div>
+
+                            <label for="" class="col-sm-1">America Norte Comum(Custo)</label>
+                            <div class="col-sm-2">
+                                <input type="number" ng-model="operation.northAmericaBeforeBoardingCost" class="form-control">
+                            </div>
+
+                            <label for="" class="col-sm-1">America Norte No-show(Cobrar)</label>
+                            <div class="col-sm-2">
+                                <input type="number" ng-model="operation.northAmericaAfterBoarding" class="form-control">
+                            </div>
+
+                            <label for="" class="col-sm-1">America Norte No-show(Custo)</label>
+                            <div class="col-sm-2">
+                                <input type="number" ng-model="operation.northAmericaAfterBoardingCost" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group" >
+                            <label for="" class="col-sm-1">America Sul Comum(Cobrar)</label>
+                            <div class="col-sm-2">
+                                <input type="number" ng-model="operation.southAmericaBeforeBoarding" class="form-control">
+                            </div>
+
+                            <label for="" class="col-sm-1">America Sul Comum(Custo)</label>
+                            <div class="col-sm-2">
+                                <input type="number" ng-model="operation.southAmericaBeforeBoardingCost" class="form-control">
+                            </div>
+
+                            <label for="" class="col-sm-1">America Sul No-show(Cobrar)</label>
+                            <div class="col-sm-2">
+                                <input type="number" ng-model="operation.southAmericaAfterBoarding" class="form-control">
+                            </div>
+
+                            <label for="" class="col-sm-1">America Sul No-show(Custo)</label>
+                            <div class="col-sm-2">
+                                <input type="number" ng-model="operation.southAmericaAfterBoardingCost" class="form-control">
+                            </div>
+                            <br><br>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                    </div>
+                    <div class="form-group">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <!-- end Input -->
+</div>

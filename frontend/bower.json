@@ -1,0 +1,23 @@
+{
+  "name": "mms-frontend",
+  "homepage": "https://github.com/ti-srm/idealMilhas",
+  "authors": [
+    "ArthurVilaca <vilaca.arthur@yahoo.com.br>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-file-upload": "^2.5.0",
+    "angular-ui-calendar": "^1.0.2",
+    "angular-ui-mask": "^1.8.7"
+  }
+}

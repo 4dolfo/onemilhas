@@ -1,0 +1,232 @@
+{
+    "_id" : "5a8ae5b2c38d080760547d3f",
+    "numeroOP" : "180219099627",
+    "status" : "pendente",
+    "usuario" : {
+        "id" : "565ee31cc41a1b7e64eedd82",
+        "nome" : "Tiago Melilo",
+        "login" : "tiagomelilo",
+        "origem" : "milhas",
+        "idUsuarioB2C" : ""
+    },
+    "conta" : {
+        "id" : "565ee31cc41a1b7e64eedd83",
+        "nome" : "Tiago Tur",
+        "emails" : [
+            "tiago.melilo@oktoplus.com.br",
+            "emissao@oktoplus.com.br"
+        ]
+    },
+    "cotacao" : {
+        "resumoTotal" : {
+            "pontos" : 10500,
+            "pontosAdulto" : 10500,
+            "precoCiaAerea" : 711.9,
+            "precoCiaAereaAdulto" : 711.9,
+            "precoAgencia" : 300.4845,
+            "precoAgenciaAdulto" : 300.4845,
+            "precoTotal" : 441.53450000000004,
+            "economia" : 411.41549999999995,
+            "pagamento" : "A vista",
+            "taxaServico" : 0,
+            "taxaEmbarque" : 61.05,
+            "taxaEmbarqueAdulto" : 61.05,
+            "taxaEmbarqueCrianca" : 61.05,
+            "totalTaxaBagagem" : 80,
+            "taxaPagarMe" : 21.26,
+            "jurosPagarMe" : 0,
+            "observacao" : "Qualquer observação que o cliente possa ter"
+        },
+        "resumoIda" : {
+            "pontos" : 5500,
+            "pontosAdulto" : 5500,
+            "precoCiaAerea" : 395.9,
+            "precoCiaAereaAdulto" : 395.9,
+            "precoAgencia" : 162.11950000000002,
+            "precoAgenciaAdulto" : 162.11950000000002,
+            "taxaEmbarque" : 29.78,
+            "taxaEmbarqueAdulto" : 29.78,
+            "taxaEmbarqueCrianca" : 29.78,
+            "economia" : 233.78049999999996,
+            "trechos" : [
+            ],
+            "totalTaxaBagagem" : 40
+        },
+        "resumoVolta" : {
+            "pontos" : 5000,
+            "pontosAdulto" : 5000,
+            "precoCiaAerea" : 316,
+            "precoCiaAereaAdulto" : 316,
+            "precoAgencia" : 138.365,
+            "precoAgenciaAdulto" : 138.365,
+            "taxaEmbarque" : 31.27,
+            "taxaEmbarqueAdulto" : 31.27,
+            "taxaEmbarqueCrianca" : 31.27,
+            "economia" : 177.635,
+            "trechos" : [
+                {
+                    "origemCidade" : "Rio de Janeiro",
+                    "origemIata" : "(SDU)",
+                    "destinoCidade" : "São Paulo",
+                    "destinoIata" : "(CGH)",
+                    "partidaDia" : "05/03/2018",
+                    "partidaHora" : "18:15",
+                    "chegadaDia" : "05/03/2018",
+                    "chegadaHora" : "19:20"
+                },
+                {
+                    "origemCidade" : "São Paulo",
+                    "origemIata" : "(CGH)",
+                    "destinoCidade" : "Florianópolis",
+                    "destinoIata" : "(FLN)",
+                    "partidaDia" : "05/03/2018",
+                    "partidaHora" : "21:20",
+                    "chegadaDia" : "05/03/2018",
+                    "chegadaHora" : "22:29"
+                }
+            ],
+            "totalTaxaBagagem" : 40
+        },
+        "vooIda" : {
+            "nrVoo" : "JJ3829",
+            "origem" : "Florianópolis (FLN)",
+            "destino" : "Rio de Janeiro (GIG)",
+            "partida" : "26/02/2018 23:05",
+            "chegada" : "27/02/2018 00:30",
+            "ciaAerea" : "Multiplus",
+            "trechos" : [
+            ],
+            "qtdEscalas" : 0,
+            "taxaEmbarque" : 29.78,
+            "id" : 69593,
+            "ciaAereaParceira" : "LATAM AIRLINES BRASIL",
+            "ciaAereaLogo" : "latam_airlines_brasil",
+            "partidaHHmm" : "23:05",
+            "chegadaHHmm" : "00:30",
+            "duracao" : "1h25m",
+            "pontosP" : "5.500",
+            "valorAgencia" : 162.11950000000002,
+            "cpp" : 316.73,
+            "pontos" : 5500,
+            "valorAgenciaRS" : "R$162,12",
+            "menorValor" : 162.11950000000002,
+            "valorCiaAerea" : 395.9,
+            "ajusteInteligenteCrianca" : 5.5426,
+            "diferencaValor" : 233.78049999999996,
+            "valorCiaAereaRS" : "R$395,90",
+            "diferencaPercentual" : 59.05039151300833,
+            "diferencaPercentualString" : "59",
+            "paradas" : 0,
+            "paradasStr" : "Direto"
+        },
+        "vooVolta" : {
+            "nrVoo" : "JJ3949",
+            "origem" : "Rio de Janeiro (SDU)",
+            "destino" : "Florianópolis (FLN)",
+            "partida" : "05/03/2018 18:15",
+            "chegada" : "05/03/2018 22:29",
+            "ciaAerea" : "Multiplus",
+            "trechos" : [
+                {
+                    "nrVoo" : "JJ3949",
+                    "origem" : "SDU",
+                    "destino" : "CGH",
+                    "partida" : "2018-03-05T18:15:00-03:00",
+                    "chegada" : "2018-03-05T19:20:00-03:00",
+                    "ciaAerea" : "LATAM AIRLINES BRASIL"
+                },
+                {
+                    "nrVoo" : "JJ3105",
+                    "origem" : "CGH",
+                    "destino" : "FLN",
+                    "partida" : "2018-03-05T21:20:00-03:00",
+                    "chegada" : "2018-03-05T22:29:00-03:00",
+                    "ciaAerea" : "LATAM AIRLINES BRASIL"
+                }
+            ],
+            "qtdEscalas" : 1,
+            "taxaEmbarque" : 31.27,
+            "id" : 49307,
+            "ciaAereaParceira" : "LATAM AIRLINES BRASIL",
+            "ciaAereaLogo" : "latam_airlines_brasil",
+            "partidaHHmm" : "18:15",
+            "chegadaHHmm" : "22:29",
+            "duracao" : "4h14m",
+            "pontosP" : "5.000",
+            "valorAgencia" : 138.365,
+            "cpp" : 316.73,
+            "pontos" : 5000,
+            "valorAgenciaRS" : "R$138,37",
+            "menorValor" : 138.365,
+            "valorCiaAerea" : 316,
+            "ajusteInteligenteCrianca" : 0,
+            "diferencaValor" : 177.635,
+            "valorCiaAereaRS" : "R$316,00",
+            "diferencaPercentual" : 56.21360759493671,
+            "diferencaPercentualString" : "56",
+            "paradas" : 1,
+            "paradasStr" : "1 parada"
+        },
+        "tipoTrecho" : "ida_volta",
+        "passageiros" : [
+            {
+                "primeiroNome" : "Tiago Melilo Adriano",
+                "sexo" : "Masculino",
+                "cpf" : "07486479966",
+                "dtNascimento" : "17/04/1989",
+                "qtdeBagagensIda" : 1,
+                "qtdeBagagensVolta" : 1,
+                "tipo" : "ADL"
+            }
+        ],
+        "dadosComprador" : {
+            "tpPagamento" : "CREDITO",
+            "nome" : "Tiago Melilo",
+            "email" : "tiago.melilo@gmail.com",
+            "telefone" : "48996498545"
+        },
+        "meioPagamento" : "pagar-apos",
+        "numeroOP" : "180219099627"
+    },
+    "filtros" : {
+        "moeda" : "PONTOS_DINHEIRO",
+        "origem" : "FLN",
+        "destino" : "RIO",
+        "ida" : "2018-02-26",
+        "volta" : "2018-03-05",
+        "adultos" : 1,
+        "criancas" : 0,
+        "bebes" : 0,
+        "cabine" : "ECONOMICA"
+    },
+    "historicoStatusEmissao" : {
+        "pendente" : {
+            "data" : "2018-02-19T14:56:50.878+0000"
+        },
+        "emProcessamento" : {
+        },
+        "emitida" : {
+        },
+        "cancelada" : {
+        },
+        "reembolso" : {
+        }
+    },
+    "pagseguro" : {
+        "codigo" : 6,
+        "status" : "Devolvida",
+        "dataAtualizacao" : "2018-02-14T23:41:58.962+0000"
+    },
+    "pagarme" : {
+        "id" : 30792684,
+        "status" : "Pago",
+        "dataAtualizacao" : "2018-01-09T19:38:48.915+0000",
+        "urlBoleto" : null
+    },
+    "urlTicketEmissao" : [
+    ],
+    "moeda" : "brl",
+    "motivoStatusCancelada" : "Cancelada pois a tarifa mudou…",
+    "createdAt" : "2018-02-19T14:56:50.882+0000",
+    "updatedAt" : "2018-02-19T14:56:50.882+0000"
+}

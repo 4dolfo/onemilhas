@@ -1,0 +1,368 @@
+<div class="page page-table contention" data-ng-controller="BookEntryCtrl">
+
+    <section class="panel panel-default table-dynamic" ng-show="tabindex == 0">
+        <div class="panel-heading"><strong></span> Lançamentos </strong></div>
+
+        <div class="page page-dashboard">
+            <!-- stats -->
+            <div class="row" >
+                <div class="col-lg-4 col-xsm-12" ng-show="main.isMaster">
+                    <div class="panel mini-box">
+                        <span class="box-icon bg-primary-light">
+                            <i class="fas fa-money-bill-alt"></i>
+                        </span>
+                        <div class="box-info">
+                            <p class="size-h2">{{formatNumber(sumFilteredEntrys(),2)}}</p>
+                            <p class="text-muted"><span>Total Filtrado</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-xsm-12" ng-show="main.isMaster">
+                    <div class="panel mini-box">
+                        <span class="box-icon bg-primary-light">
+                            <i class="fas fa-money-bill-alt"></i>
+                        </span>
+                        <div class="box-info">
+                            <p class="size-h2">{{formatNumber(currentMonth,2)}}</p>
+                            <p class="text-muted"><span>Balanço mês atual</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end stats -->
+        </div>
+
+        <div class="table-filters">
+            <div class="row">
+                <form>
+                    <div class="form-group">
+                        <div class="col-sm-4">
+                            <input type="text"
+                                   placeholder="Pesquisar..."
+                                   class="form-control"
+                                   data-ng-model="searchKeywords"
+                                   data-ng-keyup="search()">
+                        </div>
+                        <div class="col-sm-2" data-ng-controller="BookEntryModalCtrl">
+                            <script type="text/ng-template" id="BookEntryModalCtrl.html">
+                                <div class="modal-header">
+                                    <h3>Pesquisa Avaçada</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-horizontal ng-pristine ng-valid">
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-12">Data</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">De</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group ui-datepicker">
+                                                    <input type="date" ng-model="filter.dateFrom" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Até</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group ui-datepicker">
+                                                    <input type="date" ng-model="filter.dateTo" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" ng-click="ok()">OK</button>
+                                    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+                                </div>
+                            </script>
+                            <button class="btn btn-default" ng-click="open()"><span class="glyphicon glyphicon-search"></span>  Pesquisa Avançada</button>
+                        </div>
+                        <div class="col-md-2">
+                            <a href="#/cashFlow/cost_center" class="btn btn-info">  Centro de Custo</a>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-success" ng-click="toTimeLine()">Linha do Tempo</button>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-success" ng-click="toGrid()">Planilha</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive" name="table_bookEntry">
+            <thead>
+                <tr>
+                    <th><div class="th">
+                        ID
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('id') "
+                              data-ng-class="{active: row == 'id'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-id') "
+                              data-ng-class="{active: row == '-id'}"></span>
+                    </div></th>                 
+                    <th><div class="th">
+                        Centro de Custo
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('costCenterId') "
+                              data-ng-class="{active: row == 'costCenterId'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-costCenterId') "
+                              data-ng-class="{active: row == '-costCenterId'}"></span>
+                    </div></th>              
+                    <th><div class="th">
+                        Data
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('date') "
+                              data-ng-class="{active: row == 'date'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-date') "
+                              data-ng-class="{active: row == '-date'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Value
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('value') "
+                              data-ng-class="{active: row == 'value'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-value') "
+                              data-ng-class="{active: row == '-value'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Descrição
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('description') "
+                              data-ng-class="{active: row == 'description'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-description') "
+                              data-ng-class="{active: row == '-description'}"></span>
+                    </div></th>
+                    <th><div class="th">Opções</div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="bookEntry in currentPageBookEntry" class="{{getTypeColorClass(bookEntry.cost_center_type)}}">
+                    <td>{{bookEntry.id}}</td>
+                    <td>{{bookEntry.cost_center_name}}</td>
+                    <td>{{bookEntry.date}}</td>
+                    <td>{{formatNumber(bookEntry.value)}}</td>
+                    <td>{{bookEntry.description}}</td>
+                    <td><i class="fa fa-pencil-square-o draggable" ng-click="setSelected();"></i></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show 
+                        <select data-ng-model="numPerPage"
+                                data-ng-options="num for num in numPerPageOpt"
+                                data-ng-change="onNumPerPageChange()">
+                        </select> 
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Showing {{filteredBookEntries.length}}/{{bookEntries.length}} entries
+                    </span>              
+                </div>
+                <div class="col-md-4 text-right pagination-container">
+                    <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="filteredBookEntries.length"
+                                max-size="4"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true"></pagination>
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <button type="button" ng-click="newBookEntry();" class="btn btn-info">Novo</button>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <section class="panel panel-default" ng-show="tabindex == 1">
+        <div class="panel-heading"><strong>Lançamento</strong></div>
+        <div class="panel-body">
+            <form class="form-horizontal" name="form_book_entry">
+
+                <div class="form-group">
+                    <label for="mail_subject" class="col-sm-2">Data</label>
+                    <div class="col-sm-2">
+                        <input type="date" id="mail_subject" ng-model="bookEntry.date" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="col-sm-2">Lançamento</label>
+                    <div class="col-sm-5">
+                        <span class="ui-select">
+                                <select name="costCenterSelect" ng-model="bookEntry.cost_center_id">
+                             <option class="form-control" ng-repeat="valueDescription in valueDescriptions" value="{{valueDescription.id}}">{{valueDescription.name}} ({{valueDescription.type}})</option>
+                                </select>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="mail_subject" class="col-sm-2">Valor</label>
+                    <div class="col-sm-2">
+                        <input type="text" id="amount" ng-model="bookEntry.value" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="mail_subject" class="col-sm-2">Descrição</label>
+                    <div class="col-sm-5">
+                        <input type="text" id="mail_subject" ng-model="bookEntry.description" class="form-control">
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-success" ng-click="saveBookEntry()">confirmar</button>
+                <button class="btn btn-danger" ng-click="cancelEdit();">cancelar</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="panel panel-default" ng-show="tabindex == 2">
+        <div class="panel-heading"><strong>Lançamento</strong></div>
+        <div class="panel-body">
+
+			<section class="ui-timeline" ng-repeat="month in timeLine.months">
+				<article class="tl-item">
+					<div class="tl-body">
+						<div class="tl-entry">
+							<div class="tl-caption">
+								<a class="btn btn-primary btn-block">{{month.month}}</a>
+							</div>
+						</div>
+					</div>
+				</article>
+
+				<article class="tl-item alt">
+					<div class="tl-body">
+						<div class="tl-entry">
+							<div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-danger"><i class="fa fa-arrow-right"></i></div>
+							<div class="tl-content">
+								<h4 class="tl-tile text-danger">{{formatNumber(month.SUMCosts)}}</h4>
+								<h4 class="tl-tile text-danger">Maiores Custos</h4>
+								<p ng-repeat="cost in month.HigherCosts">{{cost.name}}</p>
+							</div>
+						</div>
+					</div>
+				</article>
+
+				<article class="tl-item">
+					<div class="tl-body">
+						<div class="tl-entry">
+							<div class="tl-icon btn-icon-round btn-icon btn-icon-thin btn-primary"><i class="fa fa-arrow-left"></i></div>
+							<div class="tl-content">
+								<h4 class="tl-tile text-info">{{formatNumber(month.SUMIncome)}}</h4>
+							</div>
+						</div>
+					</div>
+				</article>
+
+			</section>
+			<button class="btn btn-danger" ng-click="cancelEdit();">cancelar</button>
+        </div>
+    </section>
+
+    <section class="panel panel-default" ng-show="tabindex == 3">
+        <div class="panel-heading">
+            <strong>Planilha - Escolher Mês</strong>
+        </div>
+        <div class="panel-body">
+            <form class="form-horizontal" name="form_book_entry_grid">
+
+                <div class="form-group">
+                    <div class="col-sm-4">
+                        <input type="month" ng-model="filterGrid.dateFrom" class="form-control" ng-change="toGrid()">
+                    </div>
+
+                    <div class="col-sm-2" data-ng-controller="EditBookEntryValueModalCtrl">
+                        <script type="text/ng-template" id="EditBookEntryValueModal.html">
+                            <div class="modal-header">
+                                <h3>Lançamento - Fluxo de Caixa</h3>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-horizontal ng-pristine ng-valid">
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Valor</label>
+                                        <div class="col-sm-8">
+                                            <input type="number" class="form-control" ng-model="selected.value">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Data</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" ng-model="selected.date" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Centro de Custo</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" ng-model="selected.type" disabled>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-warning" ng-click="cancel();">Cancel</button>
+                                <button type="button" class="btn btn-info" ng-click="save();">Salvar</button>
+                            </div>
+                        </script>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-success" ng-click="toCharts()">Grafico Anual</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+        	       <div id="grid1" ui-grid="gridOptions" ui-grid-edit ui-grid-pinning class="myGrid"></div>
+                </div>
+            </form>
+        </div>
+        <footer class="table-footer">
+            <button class="btn btn-danger" ng-click="cancelEdit();">Voltar</button>
+        </footer>
+    </section>
+
+    <section class="panel panel-default" ng-show="tabindex == 4">
+        <div class="panel-heading"><strong>Lançamento</strong></div>
+        <div class="panel-body">
+            <button class="btn btn-danger" ng-click="cancelEdit();">Voltar</button>
+
+            <div class="col-md-12">
+                <section class="panel panel-default">
+                    <div class="panel-heading"><strong><span>Pesquisas</span></strong></div>
+                    <div class="panel-body">
+                        <div morris-book-entry-analysis
+                             data-data="bookEntryAnalysis"
+                             data-type="bar"
+                             data-xkey="month"
+                             data-ykeys='["total", "incoming", "costs"]'
+                             data-labels='["Total", "Receita", "Despesas"]'
+                             data-bar-colors='["#565252","#4CAD29","#DD2E2E"]'
+                             style="height: 400px;"
+                             ></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+    </section>
+
+</div>

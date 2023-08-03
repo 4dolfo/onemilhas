@@ -1,0 +1,31 @@
+<div class="modal-header">
+    <h3>Notificações do pedido</h3>
+</div>
+<div class="modal-body">
+    <div class="row" ng-repeat="note in notifications">
+        <div class="col-md-3 small-th">
+            {{ findDate(note.issueDate) | date:'dd/MM/yyyy HH:mm:ss'}}
+        </div>
+        <div class="col-md-3 small-th">
+            {{note.user}}
+        </div>
+        <div class="col-md-2 small-th">
+            {{note.status}}
+        </div>
+        <div class="col-md-4 small-th">
+            {{note.descrition}}
+        </div>
+    </div>
+    <div class="row" ng-if="selected.status == 'EMITIDO' || selected.status == 'VERIFICADO'">
+        <div class="col-md-4 small-th">
+            <button class="btn btn-danger smallBtn opts-notification-order" ng-click="reSendBillets()">Reenviar bilhetes</button>
+        </div>
+        <div class="col-md-4 small-th">
+            <button class="btn btn-danger smallBtn opts-notification-order" ng-click="reSendOrder()">Reenviar OP</button>
+        </div>
+        <div class="col-md-4 small-th"></div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" ng-click="cancel();">Cancel</button>
+</div>

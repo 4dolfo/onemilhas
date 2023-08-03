@@ -1,0 +1,379 @@
+<div class="page page-table contention" data-ng-controller="UserCtrl">
+
+    <section class="panel panel-default table-dynamic" ng-show="isTable">
+        <div class="panel-heading"><strong></span> Usuário </strong></div>
+        <div class="row" style="padding: 15px;">
+            <div class="col-sm-1">
+                <label for="loginsHistoricCrop1">Quant. registros:</label>
+            </div>
+            <div class="col-sm-1">
+                <input type="number" class="form-control" id="loginsHistoricCrop1" placeholder="Quant. Registros" ng-model="loginsHistoricCrop">
+            </div>
+
+            <div class="col-sm-1">
+                <label for="days">Dias:</label>
+            </div>
+
+            <div class="col-sm-1">
+                <input type="number" class="form-control" id="days" placeholder="Dias" ng-model="days">
+            </div>
+
+            <div class="col-sm-2">
+                <button class="btn btn-info" style="width: 100%;" ng-click="loadLoginHistoric(-1, true, 0)">Relatório de Logins</button>
+            </div>
+
+            <div class="col-sm-2">
+                <button class="btn btn-info" style="width: 100%;" ng-click="loadLoginHistoric(-1, false, 1)">Imprimir Relatório</button>
+            </div>
+
+            <div class="col-sm-2">
+                <button class="btn btn-info" style="width: 100%;" ng-click="loadLoginHistoric(-1, false, 2)">Imprimir Relatório (Todos)</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="table-filters">
+                <form>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="text"
+                                   placeholder="Pesquisar..."
+                                   class="form-control"
+                                   data-ng-model="searchKeywords"
+                                   data-ng-keyup="search()">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-1"></div>
+
+                    <div class="form-check">
+                        <div class="col-sm-3">
+                            <input  class="form-check-input"
+                                    style="margin-top: 10px;" 
+                                    type="checkbox" 
+                                    value="" 
+                                    id="ocultar_bloqueados"
+                                    data-ng-model="ocultar_bloqueados"
+                                    data-ng-click="filtra_bloqueados()">
+                            <label class="form-check-label" for="ocultar_bloqueados">
+                                Ocultar bloqueados
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- Modal -->
+            <div>
+                <script type="text/ng-template" id="login.html">
+                    <div class="modal-header">
+                        <h3 ng-show="isOnlyUser">Histórico de logins do usuário</h3>
+                        <h3 ng-show="!isOnlyUser && days == 0">Histórico de logins de hoje</h3>
+                        <h3 ng-show="!isOnlyUser && days != 0">Histórico de logins dos últimos {{days}} dias</h3>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered table-striped table-responsive" name="table_user">
+                            <thead>
+                                <tr>
+                                    <th><div class="th">
+                                        Nome
+                                    </div></th>
+                                    <th><div class="th">
+                                        IP
+                                    </div></th>
+                                    <th><div class="th">
+                                        Data e Horário
+                                    </div></th>
+                                    <th><div class="th">
+                                        Descrição
+                                    </div></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-ng-repeat="log in loginsHistoric">
+                                    <td>{{log.userName}}</td>
+                                    <td>{{log.ip}}</td>
+                                    <td>{{log.issue_date}}</td>
+                                    <td>{{log.description}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" ng-click="cancel()">Fechar</button>
+                    </div>
+                </script>
+            </div>
+        </div>
+        <div style="margin-top: 15px;"></div>
+
+        <table class="table table-bordered table-striped table-responsive" name="table_user">
+            <thead>
+                <tr>
+                    <th><div class="th">
+                        ID
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('id') "
+                              data-ng-class="{active: row == 'id'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-id') "
+                              data-ng-class="{active: row == '-id'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Nome
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('name') "
+                              data-ng-class="{active: row == 'name'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-name') "
+                              data-ng-class="{active: row == '-name'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Email
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('email') "
+                              data-ng-class="{active: row == 'email'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-email') "
+                              data-ng-class="{active: row == '-email'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Telefone
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('phoneNumber') "
+                              data-ng-class="{active: row == 'phoneNumber'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-phoneNumber') "
+                              data-ng-class="{active: row == '-phoneNumber'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        CPF/CNPJ
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('registrationCode') "
+                              data-ng-class="{active: row == 'registrationCode'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-registrationCode') "
+                              data-ng-class="{active: row == '-registrationCode'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Cidade
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('city') "
+                              data-ng-class="{active: row == 'city'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-city') "
+                              data-ng-class="{active: row == '-city'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Bloqueado
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('bloqued') "
+                              data-ng-class="{active: row == 'bloqued'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-bloqued') "
+                              data-ng-class="{active: row == '-bloqued'}"></span>
+                    </div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="user in currentPageUsers" ng-click="setSelected();">
+                    <td>{{user.id}}</td>
+                    <td>{{user.name}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.phoneNumber}}</td>
+                    <td>{{user.registrationCode}}</td>
+                    <td>{{user.cityfullname}}</td>
+                    <td>{{user.status}}
+                        <label class="switch" ng-click="$event.stopPropagation();">
+                        <input ng-click="$event.stopPropagation(); blockuser(user);" type="checkbox" ng-checked="user.bloqued"><i></i></label>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show 
+                        <select data-ng-model="numPerPage"
+                                data-ng-options="num for num in numPerPageOpt"
+                                data-ng-change="onNumPerPageChange()">
+                        </select> 
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 pagination-container">
+                    <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="filteredUsers.length"
+                                max-size="4"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true"></pagination>
+                </div>
+                <div class="col-md-4 text-right page-num-info">
+                    <span>
+                        Showing {{filteredUsers.length}}/{{users.length}} entries
+                    </span>              
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <button type="button" ng-click="newUser();" class="btn btn-info">Novo</button>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <!-- Input -->
+    <section class="panel panel-default" ng-hide="isTable">
+        <div class="panel-heading"><strong>Usuário</strong></div>
+        <div class="panel-body">
+            <form class="form-horizontal" name="form_user">
+                <div class="form-group">
+                    <label for="" class="col-sm-2">Nome</label>
+                    <div class="col-sm-6">
+                        <input type="text" ng-model="selected.name" class="form-control" id="name" required>
+                    </div>
+                    <div class="col-sm-1">
+                        <label class="switch">Bloquear
+                        <input type="checkbox" ng-model="selected.bloqued" ng-checked="selected.bloqued"><i></i></label>
+                    </div>
+                    <div class="col-sm-1">
+                        <label class="switch">FI
+                        <input type="checkbox" ng-model="selected.firstIssue" ng-checked="selected.firstIssue"><i></i></label>
+                    </div>
+                    <div class="col-sm-1">
+                        <label class="switch">ET
+                        <input type="checkbox" ng-model="selected.emissionTrack" ng-checked="selected.emissionTrack"><i></i></label>
+                    </div>
+                    <div class="col-sm-1">
+                        <label class="switch">LT
+                        <input type="checkbox" ng-model="selected.limitTrack" ng-checked="selected.limitTrack"><i></i></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="label-focus" class="col-sm-2">CPF/CNPJ</label>
+                    <div class="col-sm-6">
+                        <input type="text" ng-model="selected.registrationCode" class="form-control" id="registrationCode" required>
+                    </div>
+                    <div class="col-sm-1">
+                        <label class="switch">Usuário Master
+                        <input type="checkbox" ng-model="selected.is_master" ng-checked="selected.is_master"><i></i></label>
+                    </div>
+                    <div class="col-sm-1">
+                        <label class="switch">FBT
+                        <input type="checkbox" ng-model="selected.futureBoardingsTrack" ng-checked="selected.futureBoardingsTrack"><i></i></label>
+                    </div>
+                    <div class="col-sm-1">
+                        <label class="switch">DCT
+                        <input type="checkbox" ng-model="selected.difficultContactTrack" ng-checked="selected.difficultContactTrack"><i></i></label>
+                    </div>
+                    <div class="col-sm-1">
+                        <label class="switch">SPRT
+                        <input type="checkbox" ng-model="selected.statusPendingReleaseTrack" ng-checked="selected.statusPendingReleaseTrack"><i></i></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-2">Codigo Unico de Verificação</label>
+                    <div class="col-sm-6">
+                        <input type="password" class="form-control" ng-model="selected.masterCode">
+                    </div>
+                    <div class="col-sm-1">
+                        <label class="switch">Revendedor
+                        <input type="checkbox" ng-model="selected.dealer" ng-checked="selected.dealer"><i></i></label>
+                    </div>
+                    <div class="col-sm-1">
+                        <label class="switch">SCAT
+                        <input type="checkbox" ng-model="selected.statusCreditAnalysisTrack" ng-checked="selected.statusCreditAnalysisTrack"><i></i></label>
+                    </div>
+                    <div class="col-sm-1">
+                        <label class="switch">CB
+                        <input type="checkbox" ng-model="selected.cardsBloqueds" ng-checked="selected.cardsBloqueds"><i></i></label>
+                    </div>
+                    <div class="col-sm-1">
+                        <label class="switch">CT
+                        <input type="checkbox" ng-model="selected.clientsTrack" ng-checked="selected.clientsTrack"><i></i></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-2">Endereço</label>
+                    <div class="col-sm-10">
+                        <input type="text" ng-model="selected.adress" class="form-control" id="adress">
+                    </div>
+                </div>
+                <div class="form-group" data-ng-controller="UserCtrl">
+                    <label for="" class="col-sm-2">Estado</label>
+                    <div class="col-sm-2">
+                        <input id="userstate" type="text" ng-model="selected.state" typeahead="state.state for state in states | filter:$viewValue | limitTo:8" class="form-control" placeholder="Pesquisar">
+                    </div>
+
+                    <label for="" class="col-sm-2">Municipio</label>
+                    <div class="col-sm-6">
+                        <input type="text" ng-model="selected.city" typeahead="city.name for city in cities | filter:$viewValue | limitTo:8" class="form-control" placeholder="Pesquisar">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-2">Email</label>
+                    <div class="col-sm-5">
+                        <input type="text" ng-model="selected.email" class="form-control ng-valid-email" required>
+                    </div>
+                    <label for="" class="col-sm-2">Password</label>
+                    <div class="col-sm-3">
+                        <input type="password" ng-model="selected.password" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-2">Telefone Celular</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" id="phonenumber" ng-model="selected.phoneNumber" required>
+                    </div>
+
+                    <label for="" class="col-sm-2">Telefone Comercial</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" id="phoneNumber2" ng-model="selected.phoneNumber2">
+                    </div>
+
+                    <label for="" class="col-sm-2">Telefone Residencial</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" id="phoneNumber3" ng-model="selected.phoneNumber3">
+                    </div>
+                </div>
+                <div class="form-group">
+                </div>
+                <div class="row">
+                    <div class="col-sm-1">
+                        <button type="submit" class="btn btn-success" style="width: 100%;" ng-click="saveUser()">confirmar</button>
+                    </div>
+                    <div class="col-sm-1">
+                        <button class="btn btn-danger" style="width: 100%;" ng-click="cancelEdit();">cancelar</button>
+                    </div>
+
+                    <div class="col-sm-2">
+
+                    </div>
+
+                    <div class="col-sm-1">
+                        <label for="loginsHistoricCrop2">Quant. registros:</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <input type="number" class="form-control" id="loginsHistoricCrop2" placeholder="Quant. Registros" ng-model="loginsHistoricCrop">
+                    </div>
+
+                    <div class="col-sm-2">
+                        <button class="btn btn-info" style="width: 100%;" ng-click="loadLoginHistoric(selected.id, true, 0);">logs</button>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <button class="btn btn-info" style="width: 100%;" ng-click="loadLoginHistoric(selected.id, false, 1)">Imprimir Relatório</button>
+                    </div>
+        
+                    <div class="col-sm-2">
+                        <button class="btn btn-info" style="width: 100%;" ng-click="loadLoginHistoric(selected.id, false, 2)">Imprimir Relatório (Todos)</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <!-- end Input -->
+</div>

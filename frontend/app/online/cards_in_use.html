@@ -1,0 +1,193 @@
+<div class="page page-table contention" data-ng-controller="CardsInUseCtrl">
+
+    <section class="panel panel-default table-dynamic">
+        <div class="panel-heading"><strong></span>Cartões em uso</strong></div>
+
+        <div class="table-filters">
+            <div class="row">
+                <form>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="text"
+                                   placeholder="Pesquisar..."
+                                   class="form-control"
+                                   data-ng-model="searchKeywords"
+                                   data-ng-keyup="search()">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive" name="table_costCenter">
+            <thead>
+                <tr>
+                    <th><div class="th">
+                        Fornecedor
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('provider') "
+                              data-ng-class="{active: row == 'provider'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-provider') "
+                              data-ng-class="{active: row == '-provider'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Cartao
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('card_number') "
+                              data-ng-class="{active: row == 'card_number'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-card_number') "
+                              data-ng-class="{active: row == '-card_number'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        CIA
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('airline') "
+                              data-ng-class="{active: row == 'airline'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-airline') "
+                              data-ng-class="{active: row == '-airline'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Uso
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('userSession') "
+                              data-ng-class="{active: row == 'userSession'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-userSession') "
+                              data-ng-class="{active: row == '-userSession'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Liberar
+                    </div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="card in Cards">
+                    <td>{{card.provider}}</td>
+                    <td>{{card.card_number}}</td>
+                    <td>{{card.airline}}</td>
+                    <td>{{card.userSession}}</td>
+                    <td>
+                        <button type="button" class="btn btn-info smallBtn" ng-click="removeCardUse(card);">Liberar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show 
+                        <select data-ng-model="numPerPage"
+                                data-ng-options="num for num in numPerPageOpt"
+                                data-ng-change="onNumPerPageChange()">
+                        </select> 
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Showing {{filteredValueDescriptions.length}}/{{valueDescriptions.length}} entries
+                    </span>              
+                </div>
+                <div class="col-md-4 text-right pagination-container">
+                    <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="filteredValueDescriptions.length"
+                                max-size="4"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true"></pagination>
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <button type="button" ng-click="newValueDescription();" class="btn btn-info">Novo</button>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <div class="row">
+        <div class="col-md-6" ng-repeat="(key, usage) in AZULSRMUsage">
+            <section class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>SRM {{key}} - Milhas > 21 : {{formatNumber(usage.miles_21_days, 0)}} </strong>
+                    <button type="button" class="btn btn-primary smallBtn" ng-click="printReport();">Relatorio</button>
+                    <button type="button" class="btn btn-primary smallBtn" ng-click="printReportLastMonth();">Ultimo mês - Relatorio</button>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <table class="table table-bordered table-striped table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>Dias</th>
+                                    <th>Porcentagem</th>
+                                    <th>A liberar</th>
+                                    <th>Usado</th>
+                                    <th>Negativo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in usage.options">
+                                    <td>{{data.days}}</td>
+                                    <td>{{data.percentage}}</td>
+                                    <td>{{ formatNumber( data.toFree, 0 )}}</td>
+                                    <td>{{ formatNumber( data.used, 0 )}}</td>
+                                    <td>
+                                        <input type="text" ng-model="data.to_negative" ng-change="saveChangeMiles(data)" ng-model-options="{ debounce: 500 }" class="form-control">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <hr />
+                    </div>
+                </div>
+            </section> 
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6" ng-repeat="(key, usage) in AZULMMSUsage">
+            <section class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>MMS {{key}} - Milhas > 21 : {{formatNumber(usage.miles_21_days, 0)}} </strong>
+                    <button type="button" class="btn btn-primary smallBtn" ng-click="printReport();">Relatorio</button>
+                    <button type="button" class="btn btn-primary smallBtn" ng-click="printReportLastMonth();">Ultimo mês - Relatorio</button>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <table class="table table-bordered table-striped table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>Dias</th>
+                                    <th>Porcentagem</th>
+                                    <th>A liberar</th>
+                                    <th>Usado</th>
+                                    <th>Negativo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in usage.options">
+                                    <td>{{data.days}}</td>
+                                    <td>{{data.percentage}}</td>
+                                    <td>{{ formatNumber( data.toFree, 0 )}}</td>
+                                    <td>{{ formatNumber( data.used, 0 )}}</td>
+                                    <td>
+                                        <input type="text" ng-model="data.to_negative" ng-change="saveChangeMiles(data)" ng-model-options="{ debounce: 500 }" class="form-control">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <hr />
+                    </div>
+                </div>
+            </section> 
+        </div>
+    </div>
+</div>

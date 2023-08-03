@@ -1,0 +1,1 @@
+ALTER TABLE `businesspartner` ADD `split_payment_data` LONGTEXT NULL ;

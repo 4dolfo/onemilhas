@@ -1,0 +1,88 @@
+<div class="page page-dashboard" data-ng-controller="BalanceBilletsCtrl">
+
+    <div class="row">
+        <div class="col-lg-12 col-xsm-12">
+            <section class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                          <label for="" class="col-sm-4">Período (dias)</label>
+                          <div class="col-sm-8">
+                              <input type="number" class="form-control" placeholder="Últimos 30 Dias" data-ng-keyup="search()" ng-model="filter.days">
+                          </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <section class="panel panel-default">
+                <div class="panel-heading"><strong><span>Fluxo Pagamento</span></strong></div>
+                <div class="panel-body">
+                    <div morris-billets-payment
+                         data-data="billetsPayment"
+                         data-type="line"
+                         data-xkey="date"
+                         data-ykeys='["late", "notLate"]'
+                         data-labels='["Atrasados", "Não atrasados"]'
+                         data-bar-colors='["#0000ff","#ff9933","#ff0000"]'
+                         style="height: 300px;"
+                         ></div>
+                </div>
+            </section> 
+        </div>
+
+        <div class="col-md-6">
+            <section class="panel panel-default">
+                <div class="panel-heading"><strong><span>Inadimplência (Mensal)</span></strong></div>
+                <div class="panel-body">
+                    <div morris-billets-default-monthly
+                         data-data="BilletsDefaultMonthly"
+                         data-type="line"
+                         data-xkey="date"
+                         data-ykeys='["opened", "clients", "billets"]'
+                         data-labels='["Atrasados", "Clientes", "Quantidade"]'
+                         data-bar-colors='["#0000ff","#ff9933","#ff0000"]'
+                         style="height: 300px;"
+                         ></div>
+                </div>
+            </section> 
+        </div>
+
+        <div class="col-md-6">
+            <section class="panel panel-default">
+                <div class="panel-heading"><strong><span>Inadimplência (Diário)</span></strong></div>
+                <div class="panel-body">
+                    <div morris-billets-default-daily
+                         data-data="BilletsDefaultDaily"
+                         data-type="line"
+                         data-xkey="date"
+                         data-ykeys='["opened", "clients", "billets"]'
+                         data-labels='["Atrasados", "Clientes", "Quantidade"]'
+                         data-bar-colors='["#0000ff","#ff9933","#ff0000"]'
+                         style="height: 300px;"
+                         ></div>
+                </div>
+            </section> 
+        </div>
+
+        <div class="col-md-4">
+            <section class="panel panel-default">
+                <div class="panel-heading"><strong><span>Boletos Em dia/Atrasados (Data Pagamento)</span></strong></div>
+                <div class="panel-body">
+                    <div data-flot-chart-billets-late
+                         data-data="billetsLate"
+                         data-options="options"
+                         style="width: 100%; height: 300px;"
+                         ></div>
+                </div>
+            </section> 
+        </div>
+
+    </div>
+
+</div>

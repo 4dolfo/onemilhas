@@ -1,0 +1,1 @@
+ALTER TABLE `purchase` ADD `id_cotacao` INT NULL ;

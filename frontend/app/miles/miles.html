@@ -1,0 +1,154 @@
+<div class="page page-table" data-ng-controller="MileCtrl">
+
+    <section class="panel panel-default table-dynamic" ng-show="isTable">
+        <div class="panel-heading"><strong></span> Estoque de Milhas </strong></div>
+
+        <div class="table-filters">
+            <div class="row">
+                <form>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="text"
+                                   placeholder="Pesquisar..."
+                                   class="form-control"
+                                   data-ng-model="searchKeywords"
+                                   data-ng-keyup="search()">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive">
+            <thead>
+                <tr>
+                    <th><div class="th">
+                        Nome
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('name') "
+                              data-ng-class="{active: row == 'name'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-name') "
+                              data-ng-class="{active: row == '-name'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Email
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('email') "
+                              data-ng-class="{active: row == 'email'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-email') "
+                              data-ng-class="{active: row == '-email'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Telefone
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('phoneNumber') "
+                              data-ng-class="{active: row == 'phoneNumber'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-phoneNumber') "
+                              data-ng-class="{active: row == '-phoneNumber'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Cartão
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('card_number') "
+                              data-ng-class="{active: row == 'card_number'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-card_number') "
+                              data-ng-class="{active: row == '-card_number'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Companhia
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('airline') "
+                              data-ng-class="{active: row == 'airline'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-airline') "
+                              data-ng-class="{active: row == '-airline'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Milhas
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('leftover') "
+                              data-ng-class="{active: row == 'leftover'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-leftover') "
+                              data-ng-class="{active: row == '-leftover'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Valor
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('cost_per_thousand') "
+                              data-ng-class="{active: row == 'cost_per_thousand'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-cost_per_thousand') "
+                              data-ng-class="{active: row == '-cost_per_thousand'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Vencimento
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('due_date') "
+                              data-ng-class="{active: row == 'due_date'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-due_date') "
+                              data-ng-class="{active: row == '-due_date'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Contrato
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('contract_due_date') "
+                              data-ng-class="{active: row == 'contract_due_date'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-contract_due_date') "
+                              data-ng-class="{active: row == '-contract_due_date'}"></span>
+                    </div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="mile in currentPageMiles" ng-click="setSelected();">
+                    <td>{{mile.name}}</td>
+                    <td>{{mile.email}}</td>
+                    <td>{{mile.phoneNumber}}</td>
+                    <td>{{mile.card_number}}</td>
+                    <td>{{mile.airline}}</td>
+                    <td>{{mile.leftover}}</td>
+                    <td>{{mile.cost_per_thousand}}</td>
+                    <td>{{mile.due_date}}</td>
+                    <td>{{mile.contract_due_date}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show 
+                        <select data-ng-model="numPerPage"
+                                data-ng-options="num for num in numPerPageOpt"
+                                data-ng-change="onNumPerPageChange()">
+                        </select> 
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Showing {{filteredMiles.length}}/{{miles.length}} entries
+                    </span>              
+                </div>
+                <div class="col-md-4 text-right pagination-container">
+                    <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="filteredMiles.length"
+                                max-size="4"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true"></pagination>
+                </div>
+            </div>
+        </footer>
+    </section>
+</div>

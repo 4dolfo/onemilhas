@@ -1,0 +1,160 @@
+<div class="page page-profile" data-ng-controller="ProfileCtrl">
+
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="panel panel-profile">
+                <div class="panel-heading bg-primary clearfix">
+                    <a href="#/page/editprofile" class="pull-left profile">
+                        <img alt="" src={{main.image}} class="img-circle img80_80">
+                    </a>
+                    <h3>{{main.name}}</h3>
+                    <a href="#/page/editprofile" class="btn btn-info">Editar Perfil</a>
+                </div>
+                <ul class="list-unstyled list-info">
+                    <li>
+                        <span class="icon glyphicon glyphicon-user"></span>
+                        <label>Usuário</label>
+                        {{main.name}}
+                    </li>
+                    <li>
+                        <span class="icon glyphicon glyphicon-envelope"></span>
+                        <label>Email</label>
+                        {{main.email}}
+                    </li>
+                    <li>
+                        <span class="icon glyphicon glyphicon-home"></span>
+                        <label>Endereço</label>
+                        {{main.adress}}
+                    </li>
+                    <li>
+                        <span class="icon glyphicon glyphicon-earphone"></span>
+                        <label>Telefone</label>
+                        {{main.phoneNumber}}
+                    </li>
+                    <li>
+                        <span class="icon glyphicon glyphicon-flag"></span>
+                        <label>Cidade</label>
+                        {{main.city}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-6" ng-show="(main.isMaster || main.financial || main.commercial) && !main.dealer">
+
+            <div ui-calendar="uiConfig.calendar" ng-model="eventSources"></div>
+
+            <div class="col-sm-2" data-ng-controller="CalendarEventModalCtrl">
+                <script type="text/ng-template" id="CalendarEventModal.html">
+                    <div class="modal-header">
+                        <h3>Informar motivos para alterações</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal ng-pristine ng-valid">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4">Titulo</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="event.title">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-4">Tipo</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" ng-options="option.label for option in eventOptions" ng-model="event.type"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-4">Todo o Dia</label>
+                                <div class="col-sm-8">
+                                    <label class="switch">
+                                    <input type="checkbox" ng-model="event.allDay" ng-checked="event.allDay"><i></i></label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-4">Descrĩção</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="event.description">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-4">Data</label>
+                                <div class="col-sm-8">
+                                    <input type="datetime-local" class="form-control" ng-model="event.start">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-4">Fim</label>
+                                <div class="col-sm-8">
+                                    <input type="datetime-local" class="form-control" ng-model="event.end">
+                                </div>
+                            </div>
+                            <div class="form-group" ng-show="event.partner != '' ">
+                                <label for="" class="col-sm-4">Criado por:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="event.partner" disabled>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-warning" ng-click="cancel();">Cancel</button>
+                        <button type="button" class="btn btn-info" ng-click="save();">Salvar</button>
+                    </div>
+                </script>
+            </div>
+
+        </div>
+
+        <div class="col-md-6" ng-show="main.sales > 0">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel mini-box">
+                        <span class="box-icon bg-success">
+                            <i class="fa fa-fire"></i>
+                        </span>
+                        <div class="box-info">
+                            <p class="size-h2">{{main.sales}}</p>
+                            <p class="text-muted">Vendas Realizadas</p>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6" ng-show="main.purchases > 0">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel mini-box">
+                        <span class="box-icon bg-warning">
+                            <i class="fa fa-cart-arrow-down"></i>
+                        </span>
+                        <div class="box-info">
+                            <p class="size-h2">{{main.purchases}}</p>
+                            <p class="text-muted">Compras Realizadas</p>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6" ng-show="main.sales > 0">
+            <section class="panel panel-default">
+                <div class="panel-heading"><strong><span>Fluxo Emissões</span></strong></div>
+                <div class="panel-body">
+                    <div morris-user-sales
+                         data-data="profileSales"
+                         data-type="line"
+                         data-xkey="month"
+                         data-ykeys='["UserSales"]'
+                         data-labels='["Emissões"]'
+                         data-bar-colors='["#176799","#42A4BB","#78D6C7"]'
+                         style="height: 200px;"
+                         ></div>
+                </div>
+            </section> 
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,125 @@
+<div id="sale_page" class="page page-table contention" ng-controller="DealersOrdersCtrl">
+
+    <section class="panel panel-default table-dynamic" ng-show="tabindex == 0">
+        <div class="panel-heading">
+            <strong>Pedidos</strong>
+        </div>
+
+        <div class="table-filters">
+            <div class="row">
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-primary" ng-click="export();">Exportar</button>
+                </div>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive">
+            <thead>
+                <tr>
+                    <th><div class="th">
+                        id
+                    </div></th>
+                    <th><div class="th">
+                        cliente
+                    </div></th>
+                    <th><div class="th">
+                        status
+                    </div></th>
+                    <th><div class="th">
+                        Milhas
+                    </div></th>
+                    <th><div class="th">
+                        Valor
+                    </div></th>
+                    <th><div class="th">
+                        Data
+                    </div></th>
+                    <th><div class="th">
+                        Origem
+                    </div></th>
+                    <th><div class="th">
+                        Content
+                    </div></th>
+                    <th><div class="th">
+                        medium
+                    </div></th>
+                    <th><div class="th">
+                        Trecho
+                    </div></th>
+                    <th><div class="th">
+                        Companhia
+                    </div></th>
+                    <th><div class="th">
+                        Embarque
+                    </div></th>
+                    <th><div class="th">
+                        Observação
+                    </div></th>
+                    <th><div class="th">
+                        Representante
+                    </div></th>
+                    <th><div class="th">
+                        Cupom
+                    </div></th>
+                    <th><div class="th">
+                        Evento
+                    </div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="order in orders">
+                    <td>{{order.id}}</td>
+                    <td>{{order.client}}</td>
+                    <td>{{order.status}}</td>
+                    <td>{{ formatNumber(order.miles, 0) }}</td>
+                    <td>{{ formatNumber(order.amount) }}</td>
+                    <td>{{ findDate(order.issue_date) | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+                    <td>{{order.origin}}</td>
+                    <td>{{order.content}}</td>
+                    <td>{{order.medium}}</td>
+                    <td>{{order.path}}</td>
+                    <td>{{order.airlines}}</td>
+                    <td>{{ findDate(order.firstBoardingDate) | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+                    <td>{{order.comments}}</td>
+                    <td>{{order.dealer}}</td>
+                    <td>{{order.cupom}}</td>
+                    <td>
+                        <div ng-bind-html="order.event"></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show 
+                        <select data-ng-model="numPerPage"
+                                data-ng-options="num for num in numPerPageOpt"
+                                data-ng-change="loadDealersOrders()">
+                        </select> 
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 pagination-container">
+                    <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="totalData"
+                                max-size="4"
+                                ng-change="loadDealersOrders()"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true"></pagination>
+                </div>
+                <div class="col-md-4 text-right page-num-info">
+                    <span>
+                        Showing {{orders.length}}/{{totalData}} entries
+                    </span>
+                </div>
+            </div>
+        </footer>
+    </section>
+    <!-- end Input -->
+</div>

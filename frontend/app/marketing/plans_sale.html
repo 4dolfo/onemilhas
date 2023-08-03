@@ -1,0 +1,524 @@
+<div class="page page-table" data-ng-controller="PlansSaleCtrl">
+
+    <section class="panel panel-default table-dynamic" ng-show="tabindex == 0">
+        <div class="panel-heading"><strong> Planos </strong></div>
+
+        <div class="table-filters">
+            <div class="row">
+                <form>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="text"
+                                   placeholder="Pesquisar..."
+                                   class="form-control"
+                                   data-ng-model="searchKeywords"
+                                   data-ng-keyup="search()">
+                        </div>
+                        <div class="form-check">
+                            <input  class="form-check-input"
+                                    style="margin-top: 10px;" 
+                                    type="checkbox" 
+                                    value="" 
+                                    id="ocultar_bloqueados"
+                                    data-ng-model="ocultar_bloqueados"
+                                    data-ng-click="search()">
+                            <label class="form-check-label" for="ocultar_bloqueados">
+                                Ocultar bloqueados
+                            </label>
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive" name="table_user">
+            <thead>
+                <tr>
+                    <th><div class="th" style="width: 150px !important;">
+                        Display bloqueado?
+                    </div></th>
+                    <th><div class="th">
+                        Nome
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('name') "
+                              data-ng-class="{active: row == 'name'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-name') "
+                              data-ng-class="{active: row == '-name'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Descrição
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('description') "
+                              data-ng-class="{active: row == 'description'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-description') "
+                              data-ng-class="{active: row == '-description'}"></span>
+                    </div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="plan in currentPagePlans" ng-click="setSelected();" class="draggable">
+                    <td>
+                        <label class="switch" ng-click="$event.stopPropagation();">
+                        <input  ng-click="$event.stopPropagation(); togglePlan(plan);" 
+                                type="checkbox"
+                                ng-checked="plan.sistemaDisp"><i></i></label>
+                         <div style="margin-left: 5px;">{{plan.sistemaDispStr}}</div>
+                    </td>
+                    
+                    <td>{{plan.name}}</td>
+                    <td>{{plan.description}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show 
+                        <select data-ng-model="numPerPage"
+                                data-ng-options="num for num in numPerPageOpt"
+                                data-ng-change="onNumPerPageChange()">
+                        </select> 
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 pagination-container">
+                    <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="filteredUsers.length"
+                                max-size="4"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true"></pagination>
+                </div>
+                <div class="col-md-4 text-right page-num-info">
+                    <span>
+                        Showing {{filteredUsers.length}}/{{users.length}} entries
+                    </span>              
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <button type="button" ng-click="newPlan();" class="btn btn-info">Novo</button>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <!-- Input -->
+    <section class="panel panel-default" ng-show="tabindex == 1">
+        <div class="panel-heading"><strong>EDITAR PERFIL AGÊNCIA</strong></div>
+        <div class="panel-body">
+            <div class="ui-tab-container">
+                <tabset justified="true" class="ui-tab">
+                    <tab heading="Dados do Perfil">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="" class="col-sm-1">Nome</label>
+                                <div class="col-sm-5">
+                                    <input type="text" ng-model="selected.name" class="form-control"required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-1">Descrição</label>
+                                <div class="col-sm-11">
+                                    <input type="text" ng-model="selected.description" class="form-control" required>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="form-group">
+                                <label for="" class="col-sm-1">Usuário Confiança</label>
+                                <div class="col-sm-11">
+                                    <select ng-model="profilePlan.user">
+                                        <option class="form-control" ng-repeat="user in users" value="{{user.name}}">{{user.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="form-group">
+                                <label for="" class="col-sm-1">Referencia</label>
+                                <div class="col-sm-11">
+                                    <input type="text" ng-model="profilePlan.referencia" class="form-control" required>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="form-group">
+                                <label for="" class="col-sm-12">Formas de Cobrança</label>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12" ng-repeat="chargingMethod in profilePlan.chargingMethods">
+                                    <div class="col-sm-2">
+                                        <input ng-model="chargingMethod.status" type="checkbox" value="{{chargingMethod.status}}" > {{chargingMethod.method}}
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input ng-model="chargingMethod.interestFreeInstallment" type="number">Juros Parcelamento
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input ng-model="chargingMethod.interestFree" type="number">Parcelas sem juros
+                                    </div>
+                                    <div class="col-sm-2">
+                                        Tipo Acrescimo
+                                        <select class="form-control" ng-model="chargingMethod.extraType">
+                                            <option class="form-control" value="D">D</option>
+                                            <option class="form-control" value="P">P</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input ng-model="chargingMethod.extraValue" type="number">Acrescimo
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="form-group">
+                                <label for="" class="col-sm-12">Formas de Emissão</label>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-2" ng-repeat="emissionMethod in profilePlan.emissionMethods">
+                                    <input ng-model="emissionMethod.status" type="checkbox" value="{{emissionMethod.status}}" > {{emissionMethod.method}}
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="form-group">
+                                <label for="" class="col-sm-12">Configurações</label>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <input ng-model="profilePlan.documentos" type="checkbox" value="{{profilePlan.documentos}}" > Exibir Documentos
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="form-group">
+                                <label for="" class="col-sm-12">Visibilidade</label>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <input ng-model="profilePlan.showMiles" type="checkbox" value="{{profilePlan.showMiles}}" > Exibir Milhas
+                                </div>
+                                <div class="col-sm-2">
+                                    <input ng-model="profilePlan.showConventional" type="checkbox" value="{{profilePlan.showConventional}}" > Exibir Pagante
+                                </div>
+                            </div>
+                        </form>
+                    </tab>
+                    <tab heading="Slides">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <section class="panel panel-default">
+                                        <div class="panel-heading"><strong>SLIDES</strong></div>
+                                        <div class="panel-body" nv-file-drop="" uploader="uploader" filters="queueLimit, customFilter">
+                                            <div class="form-group" ng-repeat="slide in profilePlan.slides">
+                                                <div class="col-sm-9">
+                                                    URL
+                                                    <input type="text" ng-model="slide.url" class="form-control">
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    Editar
+                                                    <button class="btn btn-danger" ng-click="removeSlide(slide.id)">X</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <input type="file" nv-file-select uploader="uploader" multiple/><br/>
+                                                <div class="well my-drop-zone" nv-file-over="" uploader="uploader">
+                                                    Arraste e solte
+                                                </div>
+                                                <div class="col-md-9" style="margin-bottom: 40px">
+                                                    <h3>Fila de Upload</h3>
+                                                    <p>Quantidade de arquivos: {{ uploader.queue.length }}</p>
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="50%">Name</th>
+                                                                <th ng-show="uploader.isHTML5">Size</th>
+                                                                <th ng-show="uploader.isHTML5">Progress</th>
+                                                                <th>Status</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="item in uploader.queue">
+                                                                <td><strong>{{ item.file.name }}</strong></td>
+                                                                <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                                <td ng-show="uploader.isHTML5">
+                                                                    <div class="progress" style="margin-bottom: 0;">
+                                                                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                                    <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                                    <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                    
+                                                    <div>
+                                                        <div>
+                                                            Progresso Fila:
+                                                            <div class="progress">
+                                                                <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+                                                            </div>
+                                                        </div>
+                                                        <button type="button" class="btn btn-success btn-s" ng-click="uploader.uploadAll();" ng-disabled="!uploader.getNotUploadedItems().length">
+                                                            <span class="glyphicon glyphicon-upload"></span> Upload all
+                                                        </button>
+                                                        <button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
+                                                            <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+                                                        </button>
+                                                        <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                                                            <span class="glyphicon glyphicon-trash"></span> Remove all
+                                                        </button>
+                                                    </div>
+                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </form>
+                    </tab>
+                    <tab heading="Clientes">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <section class="panel panel-default">
+                                        <div class="panel-heading"><strong>Clientes</strong></div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label for="" class="col-sm-2">Mover para plano</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" ng-model="newPlan" class="form-control" typeahead="plan.name for plan in salePlans | filter:$viewValue | limitTo:8" placeholder="Pesquisar">
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <button type="button" ng-click="moveCLients();" class="btn btn-line">Mover</button>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-4">
+                                                    <button type="button" ng-click="addAllClients();" class="btn btn-danger">Adicinar Todos os Clientes</button>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <button type="button" ng-click="removeAllClients();" class="btn btn-danger">Remover Todos os Clientes</button>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <button type="button" ng-click="openModalSelection();" class="btn btn-info">Abrir seleção de clientes</button>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" ng-repeat="client in profilePlan.clients">
+                                                <label for="" class="col-sm-2">Nome</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" disabled ng-model="client.name" class="form-control">
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <button type="button" ng-click="removeClient(client.id);" class="btn btn-warning">Remover Cliente</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </form>
+                    </tab>
+                    <tab heading="{{keyAirline}}" ng-repeat="(keyAirline, airline) in controlAirline">
+                        <form class="form-horizontal" ng-repeat="(keyType, type) in airline | toArray | orderBy: -keyType ">
+                            <div class="form-group">
+                                <label for="" class="col-sm-12">{{keyType == 0 ? 'Nacional' : keyType == 1 ? 'Internacional' : 'Executivo'  }} - {{keyAirline}} - {{keyType}}</label>
+                            </div>
+
+                            <!-- <div class="form-group">
+                                <div class="col-md-12">
+                                    <section class="panel panel-default">
+                                        <div class="panel-heading"><strong>CONFIGURAÇÕES GERAIS</strong></div>
+                                        <div class="panel-body">
+                                            Desativar busca <input ng-model="!type.status" type="checkbox">
+                                        </div>
+                                    </section>
+                                </div>
+                            </div> -->
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <section class="panel panel-default">
+                                        <div class="panel-heading"><strong>CONFIGURAÇÃO DE BAGAGEM</strong></div>
+                                        <div class="panel-body">
+                                            <div class="form-group" ng-repeat="baggage in type.baggages">
+                                                <div class="col-sm-3">
+                                                    Quantidade de Bagagens
+                                                    <input type="number" ng-model="baggage.amount" class="form-control" disabled>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    Valor
+                                                    <input type="number" ng-model="baggage.value" class="form-control">
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    Editar
+                                                    <button class="btn btn-danger" ng-if="type.baggages.length > 1" ng-click="type.baggages.pop()">-</button>
+                                                    <button class="btn btn-info" ng-click="type.baggages.push({amount: type.baggages[type.baggages.length - 1].amount + 1 })">+</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <section class="panel panel-default">
+                                        <div class="panel-heading"><strong>MARKUP GERAL</strong></div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <div class="col-sm-3">
+                                                    Custo Emissão
+                                                    <input type="number" ng-model="type.cost" class="form-control">
+                                                </div>
+                                                <!-- <div class="col-sm-3">
+                                                    Markup
+                                                    <input type="number" ng-model="type.markup" class="form-control">
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    Taxa Bebê
+                                                    <input type="number" ng-model="type.taxBaby" class="form-control">
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    Taxa de Embarque
+                                                    <input type="number" ng-model="type.boardingTax" class="form-control">
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <section class="panel panel-default">
+                                        <div class="panel-heading"><strong>MARKUP FINAL</strong></div>
+                                        <div class="panel-body">
+                                            <div class="form-group" ng-repeat="final in type.markup_final">
+                                                <div class="col-sm-3">
+                                                    Porcentagem
+                                                    <input type="text" ng-model="final.value" class="form-control" ui-number-mask="0">
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    Editar
+                                                    <button class="btn btn-danger" ng-if="type.markup_final.length > 1" ng-click="type.markup_final.pop()">-</button>
+                                                    <button class="btn btn-info" ng-click="type.markup_final.push({ value: 0 })">+</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+
+                            <!-- <div class="form-group">
+                                <div class="col-md-12">
+                                    <section class="panel panel-default">
+                                        <div class="panel-heading"><strong>MARKUP POR DATA DE EMBARQUE</strong></div>
+                                        <div class="panel-body">
+                                            <div class="form-group" ng-repeat="daysMarkup in type.daysMarkup">
+                                                <div class="col-sm-3">
+                                                    Dia Início
+                                                    <input type="number" ng-model="daysMarkup.minimumDays" class="form-control">
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    Dia Fim
+                                                    <input type="number" ng-model="daysMarkup.maximumDays" class="form-control">
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    Percentual
+                                                    <input type="number" ng-model="daysMarkup.value" class="form-control">
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    Editar
+                                                    <button class="btn btn-danger" ng-if="type.daysMarkup.length > 1" ng-click="type.daysMarkup.pop()">-</button>
+                                                    <button class="btn btn-info" ng-click="type.daysMarkup.push({})">+</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div> -->
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <section class="panel panel-default">
+                                        <div class="panel-heading"><strong>CONFIGURAÇÃO DE PREÇO DE MILHA</strong></div>
+                                        <div class="panel-body">
+                                            <div class="form-group" ng-repeat="control in type.configs">
+                                                <div class="col-sm-2">
+                                                    Qtd.Milhas Ini
+                                                    <input type="text" ng-model="control.minimumPoints" class="form-control" ui-number-mask="0">
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    Qtd. Milhas Fim
+                                                    <input type="text" ng-model="control.maximumPoints" class="form-control" ui-number-mask="0">
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    Valor da Milha
+                                                    <input type="checkbox" ng-model="control.useFixedValue" ng-checked="control.useFixedValue">
+                                                        <i>Usar valor fixo</i>
+                                                    </label>
+                                                    <input type="text" ng-if="!control.useFixedValue" ng-model="control.value" class="form-control" ui-money-mask="6">
+                                                    <input type="text" ng-if="control.useFixedValue" ng-model="control.fixesAmount" class="form-control" ui-money-mask="2">
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    Dia Início
+                                                    <input type="number" ng-model="control.daysStart" class="form-control">
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    Dia Fim
+                                                    <input type="number" ng-model="control.daysEnd" class="form-control">
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    Porcentagem
+                                                    <input type="number" ng-model="control.percentage" class="form-control">
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    Markup - Desconto
+                                                    <input type="text" ng-model="control.discountMarkup" class="form-control" ui-money-mask="2">
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    Tipo Markup
+                                                    <select class="form-control" ng-model="control.discountType">
+                                                        <option class="form-control" value="D">D</option>
+                                                        <option class="form-control" value="P">P</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-12">
+                                                    Editar
+                                                    <button class="btn btn-danger" ng-if="type.configs.length > 1" ng-click="type.configs.pop()">-</button>
+                                                    <button class="btn btn-info" ng-click="type.configs.push({ minimumPoints: type.configs[type.configs.length - 1].maximumPoints + 1 })">+</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                            <hr class="high-border" />
+                        </form>
+                    </tab>
+                </tabset>
+                <hr />
+                <div class="form-group">
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-warning" ng-click="cancelEdit();">Voltar</button>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <button type="button" class="btn btn-success" ng-click="savePlan()">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- end Input -->
+</div>

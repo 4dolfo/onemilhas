@@ -1,0 +1,88 @@
+{
+    "Usuario": { // Suas credenciais para acesso à API de emissão
+    "Chave": "SUA_CHAVE", // String contendo sua chave
+    "Senha": "SUA_SENHA" // String contendo sua senha
+    },
+    "CartaoPagamento": { // Dados do cartão de crédito que será usado para o pagamento de taxas de embarque
+        "CPFTitular": "00000000000", // CPF do títular no formato string. A presença de pontos e traço não interfere no processo de emissão
+        "CVV": "000", // String de 3 ou 4 caracteres contendo o código de segurança do cartão
+        "Validade": "00/0000", // String contendo a validade do cartão no formato MM/YYYY
+        "Numero": "0000000000000000", // String contendo o número do cartão de crédito
+        "NomeTitular": "NOME DO T. CARTÃO", // Nome do titular do cartão da mesma forma que está escrito no cartão
+        "Bandeira": "MasterCard" // String informando a bandeira do cartão. Possíveis opções: "VISA", "MASTERCARD", "AMEX", "DINERS", "HIPERCARD" e "ELO". O campo NÃO é case sensitive
+    },
+    "Voo": [​{ // Array de objetos com os dados do(s) voo(s) a ser emitido
+        "NumeroConexoes": 1, // Número de conexões do voo
+        "NumeroVoo": "G3-0000", // Número do voo que será emitido
+        "Duracao": "03:00", // Duração do voo
+        "Embarque": "01/06/2017 00:00", // Data e hora de embarque no formato DD/MM/YYYY HH:MM
+        "Destino": "CNF", // Código IATA do destino
+        "Sentido": "ida", ​// Deve ser enviado o sentido do voo. Possíveis valores: ida ou volta. O campo não é case sensitive
+        "Conexoes": [ // Array contendo informações das conexões do voo a ser emitido
+            {
+                "NumeroVoo": "G3-0000", // Número do voo da conexão
+                "Duracao": "02:00", // Duração do voo da conexão no formato HH:MM
+                "Embarque": "00:00", // Embarque da conexão no formato HH:MM
+                "Destino": "BSB", // IATA do destino da conexão
+                "Origem": "MAO", // IATA da origem da conexão
+                "Desembarque": "02:00" // Desembarque da conexão no formato HH:MM
+            },
+            {
+                "NumeroVoo": "G3-0001",
+                "Duracao": "01:00",
+                "Embarque": "02:00",
+                "Destino": "CNF",
+                "Origem": "BSB",
+                "Desembarque": "03:00"
+            }
+        ], // Informações de conexões
+        "Origem": "MAO", // Código IATA da origem
+        "Milhas": { // Dados da quantidade de milhas POR PASSAGEIRO​ separado por faixa etária
+            "Bebe": 0,
+            "Adulto": 10000,
+            "Crianca": 0
+        },
+        "Desembarque": "01/06/2017 03:00", // Data e hora de desembarque no formato DD/MM/YYYY HH:MM
+        "Companhia": "GOL" // Companhia em que o voo será emitido. O campo NÃO é case sensitive
+    }]​,
+    "CartaoMilhas": { // Dados do cartão fidelidade que será usado para emitir a passagem
+        "Telefone": null, // Telefone usado para envio de SMS na emissão LATAM. O uso de parênteses, traços e espaços não interferem no funcionamento. Para outras companhias, deve ser enviado null
+        "Numero": "12341234", // String contendo o número fidelidade
+        "CPF": "00000000000", // String contendo o CPF do titular do cartão fidelidade. A presença de pontos e traço não interfere no processo de emissão
+        "Senha": "SENHA", // String contendo a senha de acesso. Será usada para fazer login e finalizar a compra (apenas Smiles)
+        "Email": "email@titularcartao.com.br" // E-mail do titular do cartão fidelidade
+    },
+    "Passageiros": [ // Array contendo todos os passageiros da mesma emissão
+        {
+            "Agnome": null, // String contendo o agnome do passageiro. Possíveis opções: “Junior”, “Neto”, “Sobrinho” ou null caso o passageiro não tenha
+            "Nascimento": "01/01/1990", // String informando a data de nascimento do passageiro no formato DD/MM/YYYY
+            "FaixaEtaria": "Adulto", // Faixa etária do passageiro em formato string. Possíveis opções: “Adulto”, “Crianca” ou “Bebe”
+            "Nome": "NOME", // Primeiro nome do passageiro
+            "Sexo": "M", // Sexo do passageiro. Possíveis opções: M para masculino e F para feminino. O campo NÃO é case sensitive
+            "Sobrenome": "SOBRENOME", // Sobrenome do passageiro
+            "Telefone": "(31) 99999-9999", // Telefone que será usado para o passageiro durante a emissão
+            "Email": "passageiro@in8.com.br" // E-mail que será usado para o passageiro durante a emissão
+        }
+    ]
+}
+URL: http://api.buscamilhas.com/emissao/iniciar
+
+
+
+A API irá te retornar um json seguindo o seguinte formato:
+{
+    "Status": { // Objeto que contém as informações atualizadas da emissão
+        "Alerta": [ // Array contendo todos os alertas importantes enviados pela API
+            "Voo não encontrado ou o valor de milhas e diferente" // *Exemplo de alerta
+        ],
+        "Atual": "Erro no Processo de Emissão", // Status atual da emissão. Possíveis opções:
+                "Cancelamento Solicitada", "Emissão na Fila", "Iniciando Emissão", "Buscando Voos",
+                "Selecionando Voo", "Efetuando Login", "Informando Passageiros", "Efetuando Pagamento",
+                "Finalizada", "Erro no Processo de Emissão", "Cancelada Manualmente", "Cancelada"
+        "Erro": true, // Campo que informa se aconteceu algum erro na emissão. Caso esse campo seja true, a emissão já terá sido parada
+        "Sucesso": false // Campo que informa se a emissão está acontecendo / foi finalizada com sucesso. Caso esse campo seja false, a emissão já terá sido parada
+    },
+    "Identificador": "f5a62fde9f8598f5c0f4afa74d2585e37ead65e2", // Identificador único da emissão. O campo será usando para executar consultas e cancelamento do processo de emissão
+    "Localizador": "", // Quando a passagem estiver emitida, o localizador será informado nesse campo
+    "Html": "", // Quando a passagem estiver emitida, a API irá retornar o HTML da página que contém o localizador
+}

@@ -1,0 +1,188 @@
+<div class="page page-table contention" data-ng-controller="AirportCtrl">
+
+    <section class="panel panel-default table-dynamic" ng-show="isTable">
+        <div class="panel-heading"><strong></span> Aeroporto </strong></div>
+
+        <div class="table-filters">
+            <div class="row">
+                <form>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="text"
+                                   placeholder="Pesquisar..."
+                                   class="form-control"
+                                   data-ng-model="searchKeywords"
+                                   data-ng-keyup="search()">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive" name="table_user">
+            <thead>
+                <tr>
+                    <th><div class="th">
+                        ID
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('id') "
+                              data-ng-class="{active: row == 'id'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-id') "
+                              data-ng-class="{active: row == '-id'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Nome
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('name') "
+                              data-ng-class="{active: row == 'name'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-name') "
+                              data-ng-class="{active: row == '-name'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Código
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('code') "
+                              data-ng-class="{active: row == 'code'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-code') "
+                              data-ng-class="{active: row == '-code'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Internacional
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('international') "
+                              data-ng-class="{active: row == 'international'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-international') "
+                              data-ng-class="{active: row == '-international'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Cidade
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('cityfullname') "
+                              data-ng-class="{active: row == 'cityfullname'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-cityfullname') "
+                              data-ng-class="{active: row == '-cityfullname'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Localização
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('location') "
+                              data-ng-class="{active: row == 'location'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" order('-location') "
+                              data-ng-class="{active: row == '-location'}"></span>
+                    </div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="airport in currentPageAirports" ng-click="setSelected();">
+                    <td>{{airport.id}}</td>
+                    <td>{{airport.name}}</td>
+                    <td>{{airport.code}}</td>
+                    <td>
+                        <label class="switch" ng-click="$event.stopPropagation();">
+                        <input ng-click="$event.stopPropagation(); saveInternational(airport);" type="checkbox" ng-model="airport.international" ng-checked="airport.international"><i></i></label>
+                    </td>
+                    <td>{{airport.cityfullname}}</td>
+                    <td>{{airport.location}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show 
+                        <select data-ng-model="numPerPage"
+                                data-ng-options="num for num in numPerPageOpt"
+                                data-ng-change="onNumPerPageChange()">
+                        </select> 
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 pagination-container">
+                    <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="filteredAirports.length"
+                                max-size="4"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true"></pagination>
+                </div>
+                <div class="col-md-4 text-right page-num-info">
+                    <span>
+                        Showing {{filteredAirports.length}}/{{airports.length}} entries
+                    </span>              
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <button type="button" ng-click="newAirport();" class="btn btn-info">Novo</button>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <!-- Input -->
+    <section class="panel panel-default" ng-hide="isTable">
+        <div class="panel-heading"><strong>Aeroporto</strong></div>
+        <div class="panel-body">
+            <form class="form-horizontal" name="form_user">
+                <div class="form-group">
+                    <label for="" class="col-sm-2">Nome</label>
+                    <div class="col-sm-10">
+                        <input type="text" ng-model="selected.name" class="form-control" id="name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="label-focus" class="col-sm-2">Código</label>
+                    <div class="col-sm-6">
+                        <input type="text" ng-model="selected.code" class="form-control" id="code" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="label-focus" class="col-sm-2">Internacional</label>
+                    <label class="switch">
+                        <input type="checkbox" ng-model="selected.international" ng-checked="selected.international"><i></i></label>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Estado</label>
+                    <div class="col-sm-2">
+                        <input type="text" id='state' ng-model="selected.citystate" typeahead="state.state for state in states | filter:$viewValue | limitTo:8" class="form-control" placeholder="Pesquisar">
+                    </div>
+
+                    <label for="" class="col-sm-1">Cidade</label>
+                    <div class="col-sm-2">
+                        <input type="text" ng-model="selected.cityname" typeahead="city.name for city in cities | filter:$viewValue | limitTo:8" class="form-control" placeholder="Pesquisar">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="label-focus" class="col-sm-2">Local</label>
+                    <div class="col-sm-3">
+                        <span class="ui-select">
+                            <select ng-model="selected.location">
+                                <option class="form-control" ng-repeat="location in locations" value="{{location}}">{{location}}</option>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                </div>
+                <button type="submit" class="btn btn-success" ng-click="saveAirport()">confirmar</button>
+                <button class="btn btn-danger" ng-click="cancelEdit();">cancelar</button>
+            </form>
+        </div>
+    </section>
+    <!-- end Input -->
+</div>

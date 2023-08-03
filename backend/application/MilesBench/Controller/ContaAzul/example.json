@@ -1,0 +1,39 @@
+{
+    "number": 12,
+    "emission": "2018-06-19T11:28:13.606Z",
+    "status": "string",
+    "customer_id": "string",
+    "products": [
+      {
+        "description": "Game Atari ET",
+        "quantity": 800,
+        "product_id": "string",
+        "value": 0
+      }
+    ],
+    "services": [
+      {
+        "description": "Game Atari ET",
+        "quantity": 800,
+        "service_id": "string",
+        "value": 0
+      }
+    ],
+    "discount": {
+      "measure_unit": "PERCENT",
+      "rate": 5
+    },
+    "payment": {
+      "type": "CASH",
+      "installments": [
+        {
+          "number": 0,
+          "value": 0,
+          "due_date": "2018-06-19T11:28:13.606Z",
+          "status": "string"
+        }
+      ]
+    },
+    "notes": "Sale made by noon",
+    "shipping_cost": 10
+}

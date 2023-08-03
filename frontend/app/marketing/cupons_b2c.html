@@ -1,0 +1,153 @@
+<div class="page page-table contention" data-ng-controller="CuponsB2CCtrl">
+
+    <section class="panel panel-default table-dynamic" ng-if="tabindex == 0">
+        <div class="panel-heading"><strong>Cupons B2C</strong></div>
+
+        <div class="table-filters">
+            <div class="row">
+                <form>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="text" placeholder="Pesquisar..." class="form-control" data-ng-model="searchKeywords"
+                                data-ng-model-options='{ debounce: 1000 }' data-ng-change="loadCupons()">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive" name="table_promo">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="th">
+                            ID
+                            <span class="fa fa-angle-up" data-ng-click=" order('id') " data-ng-class="{active: row == 'id'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" order('-id') " data-ng-class="{active: row == '-id'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Nome
+                            <span class="fa fa-angle-up" data-ng-click=" order('nome') " data-ng-class="{active: row == 'nome'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" order('-nome') " data-ng-class="{active: row == '-nome'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Status
+                            <span class="fa fa-angle-up" data-ng-click=" order('status') " data-ng-class="{active: row == 'status'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" order('-status') " data-ng-class="{active: row == '-status'}"></span>
+                        </div>
+                    </th>
+                    <th>Representante</th>
+                    <th>Opçoes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="cupon in cupons">
+                    <td ng-click="setSelected();">{{cupon.id}}</td>
+                    <td ng-click="setSelected();">{{cupon.nome}}</td>
+                    <td ng-click="setSelected();">{{cupon.status}}</td>
+                    <td ng-click="setSelected();">{{cupon.dealer}}</td>
+                    <td>
+                        <button ng-if="cupon.status == 'Aprovado'" type="button" class="btn btn-line-info smallBtn" ng-click="cancelarCupom(cupon)">Inativar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show
+                        <select data-ng-model="numPerPage" data-ng-options="num for num in numPerPageOpt"
+                            data-ng-change="loadCupons()">
+                        </select>
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 pagination-container">
+                    <pagination class="pagination-sm" ng-model="currentPage" total-items="totalData" max-size="4"
+                        ng-change="loadCupons()" items-per-page="numPerPage" rotate="false" previous-text="&lsaquo;"
+                        next-text="&rsaquo;" boundary-links="true"></pagination>
+                </div>
+                <div class="col-md-4 text-right page-num-info">
+                    <span>
+                        Showing {{dealers.length}}/{{totalData}} entries
+                    </span>
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <button type="button" ng-if="main.dealer" ng-click="newDealer();" class="btn btn-info">Novo</button>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <section class="panel panel-default" ng-if="tabindex == 1">
+        <div class="panel-heading"><strong>Cupons</strong></div>
+        <div class="panel-body">
+            <form class="form-horizontal" name="form_user">
+                <div class="form-group">
+                    <label for="" class="col-sm-2">Nome</label>
+                    <div class="col-sm-4">
+                        <input type="text" ng-model="selected.nome" class="form-control">
+                    </div>
+
+                    <label for="" class="col-sm-2">Valor</label>
+                    <div class="col-sm-4">
+                        <input type="text" ng-model="selected.valor" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-2">Porcentagem</label>
+                    <div class="col-sm-4">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.porcentagem" ng-checked="selected.porcentagem"><i></i></label>
+                    </div>
+
+                    <!-- <label for="" class="col-sm-2">Criado B2C</label>
+                    <div class="col-sm-4">
+                        <label class="switch">
+                        <input type="checkbox" ng-model="selected.criadoB2c" ng-checked="selected.criadoB2c"><i></i></label>
+                    </div> -->
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-2">Status</label>
+                    <div class="col-sm-4">
+                        <input type="text" ng-model="selected.status" disabled class="form-control">
+                    </div>
+
+                    <label for="" class="col-sm-2">Representante</label>
+                    <div class="col-sm-4">
+                        <input type="text" typeahead="dealer.name for dealer in dealers | filter:$viewValue | limitTo:8" ng-model="selected.dealer" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-2">Data Inicio</label>
+                    <div class="col-sm-4">
+                        <input type="date" ng-model="selected._dataInicio" class="form-control">
+                    </div>
+
+                    <label for="" class="col-sm-2">Data Fim</label>
+                    <div class="col-sm-4">
+                        <input type="date" ng-model="selected._dataFim" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-4">
+                        <button class="btn btn-warning" ng-click="cancelEdit();">cancelar</button>
+                    </div>
+                    <div class="col-sm-4 text-right">
+                        <button type="button" ng-if="main.dealer" class="btn btn-success" ng-click="saveCupom()">salvar</button>
+                        <button type="button" ng-if="!main.dealer" class="btn btn-success" ng-click="aprovar()">Aprovar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+</div>

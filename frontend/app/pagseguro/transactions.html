@@ -1,0 +1,155 @@
+<div class="page page-table contention" ng-controller="TransactionsCtrl">
+
+	<section class="panel panel-default table-dynamic" ng-show="tabindex == 0">
+		<div class="panel-heading"><strong></span> Transações</strong></div>
+
+		<div class="table-filters">
+			<div class="row">
+				<form>
+					<div class="form-group">
+						<div class="col-sm-5">
+							<input type="text"
+								   placeholder="Pesquisar..."
+								   class="form-control"
+								   data-ng-model="searchKeywords"
+								   data-ng-keyup="search()">
+						</div>
+						<div class="col-sm-2" data-ng-controller="PagSeguroTransactionModalCtrl">
+							<script type="text/ng-template" id="PagSeguroTransactionModalCtrl.html">
+								<div class="modal-header">
+									<h3>Transação</h3>
+								</div>
+								<div class="modal-body">
+									<form class="form-horizontal ng-pristine ng-valid">
+										<div class="form-group">
+											<label for="" class="col-sm-4">Data Transação</label>
+											<div class="col-sm-8">
+												<input type="date" class="form-control" ng-model="selected._issueDate" disabled>
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="" class="col-sm-4">Comprador</label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" ng-model="selected.businesspartner" disabled>
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="" class="col-sm-4">Valor</label>
+											<div class="col-sm-8">
+												<input type="number" class="form-control" ng-model="selected.value" disabled>
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="" class="col-sm-4">Valor para Devolução</label>
+											<div class="col-sm-8">
+												<input type="number" class="form-control" ng-model="selected.refundValue">
+											</div>
+										</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-warning" ng-click="cancel();">Cancel</button>
+									<button type="button" class="btn btn-info" ng-click="confirCancel();">Cancelar</button>
+									<button type="button" class="btn btn-info" ng-click="confirRefund();">Estornar</button>
+								</div>
+							</script>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<table class="table table-bordered table-striped table-responsive">
+			<thead>
+				<tr>
+					<th><div class="th">
+						ID
+						<span class="fa fa-angle-up"
+							  data-ng-click=" order('id') "
+							  data-ng-class="{active: row == 'id'}"></span>
+						<span class="fa fa-angle-down"
+							  data-ng-click=" order('-id') "
+							  data-ng-class="{active: row == '-id'}"></span>
+					</div></th>
+					<th><div class="th">
+						Data Venda
+						<span class="fa fa-angle-up"
+							  data-ng-click=" order('issueDate') "
+							  data-ng-class="{active: row == 'issueDate'}"></span>
+						<span class="fa fa-angle-down"
+							  data-ng-click=" order('-issueDate') "
+							  data-ng-class="{active: row == '-issueDate'}"></span>
+					</div></th>
+					<th><div class="th">
+						Status
+						<span class="fa fa-angle-up"
+							  data-ng-click=" order('status') "
+							  data-ng-class="{active: row == 'status'}"></span>
+						<span class="fa fa-angle-down"
+							  data-ng-click=" order('-status') "
+							  data-ng-class="{active: row == '-status'}"></span>
+					</div></th>
+					<th><div class="th">
+						Cliente
+						<span class="fa fa-angle-up"
+							  data-ng-click=" order('businesspartner') "
+							  data-ng-class="{active: row == 'businesspartner'}"></span>
+						<span class="fa fa-angle-down"
+							  data-ng-click=" order('-businesspartner') "
+							  data-ng-class="{active: row == '-businesspartner'}"></span>
+					</div></th>
+					<th><div class="th">
+						Valor
+						<span class="fa fa-angle-up"
+							  data-ng-click=" order('value') "
+							  data-ng-class="{active: row == 'value'}"></span>
+						<span class="fa fa-angle-down"
+							  data-ng-click=" order('-value') "
+							  data-ng-class="{active: row == '-value'}"></span>
+					</div></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr data-ng-repeat="transaction in currentPageTransactions" class="draggable" ng-click="setSelected()">
+					<td>{{transaction.id}}</td>
+					<td>{{findDate(transaction.issueDate) | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+					<td>{{transaction.status}}</td>
+					<td>{{transaction.businesspartner}}</td>
+					<td>{{formatNumber(transaction.value)}}</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<footer class="table-footer">
+			<div class="row">
+				<div class="col-md-4 page-num-info">
+					<span>
+						Show 
+						<select data-ng-model="numPerPage"
+								data-ng-options="num for num in numPerPageOpt"
+								data-ng-change="onNumPerPageChange()">
+						</select> 
+						entries per page
+					</span>
+				</div>
+				<div class="col-md-4 pagination-container">
+					<pagination class="pagination-sm"
+								ng-model="currentPage"
+								total-items="filteredTransaction.length"
+								max-size="4"
+								ng-change="select(currentPage)"
+								items-per-page="numPerPage"
+								rotate="false"
+								previous-text="&lsaquo;" next-text="&rsaquo;"
+								boundary-links="true"></pagination>
+				</div>
+				<div class="col-md-4 text-right page-num-info">
+					<span>
+						Showing {{filteredTransaction.length}}/{{transactions.length}} entries
+					</span>              
+				</div>
+			</div>
+		</footer>
+	</section>
+
+</div>

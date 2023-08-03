@@ -1,0 +1,1 @@
+ALTER TABLE `businesspartner` ADD `chip_number` VARCHAR(160) NULL ;

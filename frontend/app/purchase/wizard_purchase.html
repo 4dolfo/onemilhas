@@ -1,0 +1,426 @@
+<div id="wizard_purchase_page" class="page page zoom contention" data-ng-controller="WizardPurchaseCtrl">
+    <section class="panel panel-default" ng-show="tabindex == 0">
+        <div class="panel-heading"><strong>Fornecedor</strong></div>
+        <div class="panel-body">
+            <div class="form-group">
+                <progressbar class="progressbar-xs progress-striped" value="WizardStageProgress();" type="info"></progressbar>
+            </div>
+            <div>
+                <form class="form-horizontal ng-pristine ng-valid">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <input type="text" id="wpurchasename" ng-model="wpurchase.registrationCode" typeahead="provider.registrationCode for provider in providers | filter:$viewValue | limitTo:8" class="form-control" placeholder="Informe o CPF do fornecedor" aria-owns="typeahead-provider" data-ng-model-options='{ debounce: 1000 }' data-ng-change="searchProvider()" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12 text-right">
+                            <button type="button" ng-click="fillProvidersFields();" ng-hide="tabindex == 4" class="btn btn-line-info">proximo</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>    
+
+    <section class="panel panel-default" ng-show="tabindex == 1">
+        <div class="panel-heading"><strong>Dados do Fornecedor</strong></div>
+        <div class="panel-body">
+            <div class="form-group">
+                <progressbar class="progressbar-xs progress-striped" value="WizardStageProgress();" type="info"></progressbar>
+            </div>
+            <div>
+                <form class="form-horizontal ng-pristine ng-valid" name="wpurchase_formprovider" id="formprovider">
+                    <div class="form-group">
+                        <label for="" class="col-sm-1">Nome</label>
+                        <div class="col-sm-11">
+                            <input type="text" ng-model="wpurchase.name" class="form-control" id="name" required disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="label-focus" class="col-sm-1">CPF/CNPJ</label>
+                        <div class="col-sm-11">
+                            <input type="text" ng-model="wpurchase.registrationCode" class="form-control" id="registrationCode" required disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-1">Endereço</label>
+                        <div class="col-sm-11">
+                            <input type="text" ng-model="wpurchase.adress" class="form-control" id="adress" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <label for="" class="col-sm-1">Estado</label>
+                        <div class="col-sm-3">
+                            <input id='wpurchasestate' type="text" ng-model="wpurchase.state" typeahead="state.state for state in states | filter:$viewValue | limitTo:8" class="form-control" placeholder="Pesquisar" disabled>
+                        </div>
+
+                        <label for="" class="col-sm-1">Municipio</label>
+                        <div class="col-sm-7">
+                            <input type="text" ng-model="wpurchase.city" typeahead="city.name for city in cities | filter:$viewValue | limitTo:8" class="form-control" placeholder="Pesquisar" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-1">Email</label>
+                        <div class="col-sm-5">
+                            <input type="text" ng-model="wpurchase.email" class="form-control ng-valid-email" required disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-1">Telefone Celular</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="phonenumber" ng-model="wpurchase.phoneNumber" required disabled>
+                        </div>
+
+                        <label for="" class="col-sm-1">Telefone Comercial</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="phoneNumber2" ng-model="wpurchase.phoneNumber2" disabled>
+                        </div>
+
+                        <label for="" class="col-sm-1">Telefone Residencial</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="phoneNumber3" ng-model="wpurchase.phoneNumber3" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-1">Telefone Fixo CIA Aérea</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" ng-model="wpurchase.phoneNumberAirline">
+                        </div>
+
+                        <label for="" class="col-sm-1">Telefone Cel CIA Aérea</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" ng-model="wpurchase.celNumberAirline">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-12">DADOS BANCÁRIOS</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-1">Banco</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="bank" ng-model="wpurchase.bank">
+                        </div>
+
+                        <label for="" class="col-sm-1">Agência</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="agency" ng-model="wpurchase.agency">
+                        </div>
+
+                        <label for="" class="col-sm-1">Conta</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="account" ng-model="wpurchase.account">
+                        </div>
+
+                        <label for="" class="col-sm-1">Tipo Conta</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" typeahead="type.type for type in accountType | filter:$viewValue | limitTo:8" ng-model="wpurchase.paymentType">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-1">Observações</label>
+                        <div class="col-sm-11">
+                            <textarea type="text" class="form-control" ng-model="wpurchase.description" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="button" ng-click="priorWizardStage();" ng-hide="tabindex == 0" class="btn btn-line-warning">anterior</button>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <button type="button" ng-click="validateProvidersFields();" ng-hide="tabindex == 4" class="btn btn-line-info">proximo</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel panel-default" ng-show="tabindex == 2">
+        <div class="panel-heading"><strong>Dados da Compra</strong></div>
+        <div class="panel-body">
+            <div class="form-group">
+                <progressbar class="progressbar-xs progress-striped" value="WizardStageProgress();" type="info"></progressbar>
+            </div>
+            <div>
+                <form class="form-horizontal ng-pristine ng-valid" name="wpurchase_formpurchase" id="formpurchase">
+                    <div class="form-group">
+                        <label for="" class="col-sm-2">Companhia</label>
+                        <div>
+                            <span class="ui-select">
+                                <select ng-model="wpurchase.airline">
+                                    <option class="form-control" ng-repeat="airline in airlines" value="{{airline.name}}">{{airline.name}}</option>
+                                </select>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2">Milhas</label>
+                        <div class="col-sm-2">
+                            <input type="text" id='purchase_miles' ng-keyup="setTotalCost()" ng-model="wpurchase.purchase_miles" class="form-control" required>
+                        </div>
+
+                        <label for="" class="col-sm-2">Valor por Milhar</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" name="field" ng-model="wpurchase.cost_per_thousand" ng-keyup="setTotalCost()" ui-money-mask="6">
+                        </div>
+
+                        <label for="" class="col-sm-2">Valor Total</label>
+                        <div class="col-sm-2">
+                                <input type="text" class="form-control" name="field" ng-model="wpurchase.total_cost" ng-keyup="setCosPerThousand()" ui-money-mask>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="label-focus" class="col-sm-2">Expiração</label>
+                        <div class="col-sm-4">
+                            <div class="input-group ui-datepicker">
+                                <input type="date" class="form-control" ng-model="wpurchase.miles_due_date" required>
+                            </div>
+                        </div>
+                        <label for="label-focus" class="col-sm-2">Limite Comercialização</label>
+                        <div class="col-sm-4">
+                            <div class="input-group ui-datepicker">
+                                <input type="date" class="form-control" ng-model="wpurchase.contract_due_date" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-if="wpurchase.paymentMethod != 'after_use' ">
+                        <label for="label-focus" class="col-sm-2">Pagamento</label>
+                        <div class="col-sm-4">
+                            <div class="input-group ui-datepicker">
+                                <input type="date" class="form-control" ng-model="wpurchase.pay_date">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2">Numero Cartão</label>
+                        <div class="col-sm-4">
+                            <input type="text" ng-model="wpurchase.card_number" class="form-control">
+                        </div>
+                        <div ng-show="wpurchase.airline == 'TAM' || wpurchase.airline == 'LATAM' ">
+                            <label for="" class="col-sm-2">Senha Multiplus</label>
+                            <div class="col-sm-4">
+                                <input type="text" ng-model="wpurchase.accessPassword" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2">Tipo Cartão</label>
+                        <div class="col-sm-4">
+                            <input type="text" ng-model="wpurchase.card_type" class="form-control">
+                        </div>
+                        <label for="label-focus" class="col-sm-2">Token</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="wpurchase.token">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2">Chip</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" ng-model="wpurchase.chip_number">
+                        </div>
+                    </div>
+                    <div class="form-group" ng-if="wpurchase.airline == 'LATAM' ">
+                        <label for="label-focus" class="col-sm-2">Marcar compra como promoção</label>
+                        <label class="switch" class="col-sm-1">
+                            <input type="checkbox" ng-model="wpurchase.isPromo" ng-checked="wpurchase.isPromo"><i></i>
+                        </label>
+                    </div>
+                    <div class="form-group" ng-if="wpurchase.airline == 'LATAM' ">
+                        <label for="label-focus" class="col-sm-2">Tipo Emissao</label>
+                        <span class="ui-select col-sm-2">
+                            <select ng-model="wpurchase.onlyInter">
+                                <option selected class="form-control" value="null">Nenhum</option>
+                                <option class="form-control" value="todas">Todas</option>
+                                <option class="form-control" value="true">Internacional</option>
+                                <option class="form-control" value="false">Nacional</option>
+                            </select>
+                        </span>
+                    </div>
+                    <div class="form-group"></div>
+                    <div class="form-group"></div>
+                    <div ng-repeat="dueDate in milesDueDate">
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                                <input type="number" class="form-control" ng-model="dueDate.miles">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="date" class="form-control" ng-model="dueDate.dueDate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">Vencimentos
+                        <div class="col-sm-2">
+                            <button type="button" ng-click="removeDueDate()" class="btn btn-line-primary">-</button>
+                            <button type="button" ng-click="addDueDate()" class="btn btn-line-primary">+</button>
+                        </div>
+                    </div>
+                    <div class="form-group"></div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2">Metodo pagamento</label>
+                        <span class="ui-select col-sm-2">
+                            <select ng-model="wpurchase.paymentMethod">
+                                <option class="form-control" value="prepaid">Pre pago</option>
+                                <option class="form-control" value="after_payment">Pós pago</option>
+                                <option class="form-control" value="after_use">PGTO APÓS USO</option>
+                            </select>
+                        </span>
+
+                        <label for="" class="col-sm-2" ng-if="wpurchase.paymentMethod == 'after_payment' " >Dias para pagamento</label>
+                        <span class="ui-select col-sm-2" ng-if="wpurchase.paymentMethod == 'after_payment' " >
+                            <select ng-model="wpurchase.paymentBy">
+                                <option class="form-control" value="boarding_date">Data Embarque</option>
+                                <option class="form-control" value="issue_date">Data Venda</option>
+                            </select>
+                        </span>
+
+                        <label for="" class="col-sm-2" ng-if="wpurchase.paymentMethod == 'after_payment' " >Dias para pagamento</label>
+                        <div class="col-sm-2" ng-if="wpurchase.paymentMethod == 'after_payment' " >
+                            <input type="number" class="form-control" ng-model="selected.paymentDays">
+                        </div>
+                    </div>
+                    <div class="form-group"></div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2">Observação</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" ng-model="wpurchase.description">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="button" ng-click="priorWizardStage();" ng-hide="tabindex == 0" class="btn btn-line-warning">anterior</button>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <button type="button" ng-click="validPurchaseFields();" ng-hide="tabindex == 4" class="btn btn-line-info">proximo</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel panel-default" ng-show="tabindex == 2">
+        <div class="panel-heading"><strong>Historico de Compra -- Total: {{formatNumber(getTotalPurchased(), 0)}} </strong></div>
+        <div class="panel-body">
+         <div>
+          <table class="table table-bordered table-striped table-responsive">
+            <thead>
+              <tr>
+                <th><div class="th">Companhia
+                </div></th>
+                <th><div class="th">Data da Compra
+                </div></th>
+                <th><div class="th">Descrição
+                </div></th>
+                <th><div class="th">Tipo Cartão
+                </div></th>
+                <th><div class="th">Custo por 1000
+                </div></th>
+                <th><div class="th">Vencimento
+                </div></th>
+                <th><div class="th">Custo Total
+                </div></th>
+                <th><div class="th">Milhas
+                </div></th>
+                <th><div class="th">Restante
+                </div></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-ng-repeat="history in purchaseHistory">
+                <th>{{history.airline}}</th>
+                <th>{{findDate(history.purchase_date) | date:'dd/MM/yyyy'}}</th>
+                <th>{{history.description}}</th>
+                <th>{{history.card_type}}</th>
+                <th class="text-right">R$ {{formatNumber(history.cost_per_thousand)}}</th>
+                <th>{{findDate(history.miles_due_date) | date:'dd/MM/yyyy'}}<br>{{findDate(history.miles_due_date) | date:'HH:mm:ss'}}</th>
+                <th class="text-right"> R$ {{history.total_cost}}</th>
+                <th class="text-right">{{formatNumber(history.purchase_miles, 0)}}</th>
+                <th class="text-right">{{formatNumber(history.leftover, 0)}}</th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </section>
+
+    <section class="panel panel-default" ng-show="tabindex == 3">
+        <div class="panel-heading"><strong>Resumo</strong></div>
+        <div class="panel-body">
+            <div class="form-group">
+                <progressbar class="progressbar-xs progress-striped" value="WizardStageProgress();" type="info"></progressbar>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="panel panel-profile">
+                        <ul class="list-unstyled list-info">
+                            <li>
+                                <span class="icon glyphicon glyphicon-plane"></span>
+                                <label>Companhia</label>
+                                {{wpurchase.airline}}
+                            </li>
+                            <li>
+                                <span class="icon glyphicon glyphicon-user"></span>
+                                <label>Fornecedor</label>
+                                {{wpurchase.name}}
+                            </li>
+                            <li>
+                                <span class="icon glyphicon glyphicon-credit-card"></span>
+                                <label>Cartão</label>
+                                {{wpurchase.card_number}}
+                            </li>
+                            <li>
+                                <span class="icon glyphicon glyphicon-bookmark"></span>
+                                <label>Pagamento</label>
+                                {{ wpurchase.paymentMethod == 'after_use' ? 'PGTO APÓS USO' : wpurchase.paymentMethod == 'after_payment' ? 'Pós pago' : 'Pre pago' }}
+                            </li>
+                            <li>
+                                <span class="icon glyphicon glyphicon-lock"></span>
+                                <label>Senha Resgate</label>
+                                {{wpurchase.recovery_password}}
+                            </li>
+                            <li ng-show="wpurchase.airline == 'TAM' || wpurchase.airline == 'LATAM' ">
+                                <span class="icon glyphicon glyphicon-credit-card"></span>
+                                <label>Tipo de Cartão</label>
+                                {{wpurchase.card_type}}
+                            </li>
+                            <li ng-show="wpurchase.airline == 'TAM' || wpurchase.airline == 'LATAM' ">
+                                <span class="icon glyphicon glyphicon-credit-card"></span>
+                                <label>Token</label>
+                                {{wpurchase.token}}
+                            </li>
+                            <li>
+                                <span class="icon glyphicon glyphicon-bookmark"></span>
+                                <label>Milhas</label>
+                                {{formatNumber(wpurchase.purchase_miles,0)}}
+                            </li>
+                            <li>
+                                <span class="icon fas fa-money-bill-alt"></span>
+                                <label>Valor por Milhar</label>
+                                {{formatNumber(wpurchase.cost_per_thousand)}}
+                            </li>
+                            <li>
+                                <span class="icon fas fa-money-bill-alt"></span>
+                                <label>Valor Total</label>
+                                {{formatNumber(wpurchase.total_cost)}}
+                            </li>
+                            <li>
+                                <span class="icon glyphicon glyphicon-calendar"></span>
+                                <label>Expirar em</label>
+                                {{wpurchase.miles_due_date | date:'dd/MM/yyyy'}}
+                            </li>
+                            <li>
+                                <span class="icon glyphicon glyphicon-calendar"></span>
+                                <label>Contrato</label>
+                                {{wpurchase.contract_due_date | date:'dd/MM/yyyy'}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <button type="button" ng-click="priorWizardStage();" ng-hide="tabindex == 0" class="btn btn-line-warning">anterior</button>
+            </div>
+            <div class="col-sm-6 text-right">
+                <a type="button" href="#/dashboard" ng-click="savePurchase()" class="btn btn-line-info"><i></i>confirmar</a>
+            </div>
+        </div>
+    </section>    
+</div>

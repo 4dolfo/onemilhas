@@ -1,0 +1,155 @@
+<div class="page">
+
+    <section class="panel panel-default">
+        <div class="panel-heading"><strong>Nova Compra</strong></div>
+        <div class="panel-body">
+            <div data-ui-wizard-form>
+                <h1>Fornecedor</h1>
+                <div>
+                    <section class="panel panel-default">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input type="text" ng-model="selected" typeahead="state for state in states | filter:$viewValue | limitTo:8" class="form-control" placeholder="Informe o fornecedor ou clique em próximo para novo">
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <h1>Fornecedor</h1>
+                <div>
+                    <form class="form-horizontal ng-pristine ng-valid">
+                        <div class="form-group">
+                            <label for="" class="col-sm-1">Nome</label>
+                            <div class="col-sm-11">
+                                <input type="text" class="form-control" id="label-focus">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="label-focus" class="col-sm-1">CPF</label>
+                            <div class="col-sm-11">
+                                <input type="number" class="form-control ng-dirty ng-touched ng-valid-number ng-invalid ng-invalid-required" required="" name="form.num" data-ng-model="form.num" tabindex="0" aria-required="true" aria-invalid="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-sm-1">Endereço</label>
+                            <div class="col-sm-11">
+                                <input type="text" class="form-control" id="label-focus">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-sm-1">Estado</label>
+                            <div class="col-sm-3">
+                                <input type="text" ng-model="selected" typeahead="state for state in states | filter:$viewValue | limitTo:8" class="form-control" placeholder="Pesquisar">
+                            </div>
+
+                            <label for="" class="col-sm-1">Municipio</label>
+                            <div class="col-sm-7">
+                                <input type="text" ng-model="selected" typeahead="state for state in states | filter:$viewValue | limitTo:8" class="form-control" placeholder="Pesquisar">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-sm-1">Email</label>
+                            <div class="col-sm-5">
+                                <input type="email" class="form-control ng-pristine ng-valid-email ng-invalid ng-invalid-required ng-touched" required="" data-ng-model="form.email" tabindex="0" aria-required="true" aria-invalid="true">
+                            </div>
+
+                            <label for="" class="col-sm-1">Status</label>
+                            <div class="col-sm-5">
+                                <input type="text" ng-model="selected" typeahead="state for state in states | filter:$viewValue | limitTo:8" class="form-control" placeholder="Pesquisar">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-sm-1">Telefone Celular</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="label-focus">
+                            </div>
+
+                            <label for="" class="col-sm-1">Telefone Comercial</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="label-focus">
+                            </div>
+
+                            <label for="" class="col-sm-1">Telefone Residencial</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="label-focus">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <h1>Compra</h1>
+                <div>
+                    <form class="form-horizontal ng-pristine ng-valid">
+                        <div class="form-group">
+                            <label for="" class="col-sm-2">Companhia</label>
+                            <div class="col-sm-10">
+                                <input type="text" ng-model="selected" typeahead="state for state in states | filter:$viewValue | limitTo:8" class="form-control" placeholder="Pesquisar">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-sm-2">Milhas</label>
+                            <div class="col-sm-2">
+                                <input type="number" class="form-control ng-pristine ng-valid-max ng-invalid ng-invalid-required ng-touched" required="" data-max="20" data-ng-model="form.maxVal" tabindex="0" aria-required="true" aria-invalid="true">
+                            </div>
+
+                            <label for="" class="col-sm-2">Valor por Milhar</label>
+                            <div class="col-sm-2">
+                                <input type="number" class="form-control ng-pristine ng-valid-max ng-invalid ng-invalid-required ng-touched" required="" data-max="20" data-ng-model="form.maxVal" tabindex="0" aria-required="true" aria-invalid="true">
+                            </div>
+
+                            <label for="" class="col-sm-2">Valor Total</label>
+                            <div class="col-sm-2">
+                                <input type="number" class="form-control ng-pristine ng-valid-max ng-invalid ng-invalid-required ng-touched" required="" data-max="20" data-ng-model="form.maxVal" tabindex="0" aria-required="true" aria-invalid="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-sm-2">Observação</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="label-focus">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="label-focus" class="col-sm-2">Expiração</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control ng-pristine ng-valid ng-isolate-scope ng-valid-required ng-valid-date ng-touched" datepicker-popup="dd-MMMM-yyyy" ng-model="dt" is-open="opened" min="minDate" max="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" tabindex="0" required="required" aria-required="false" aria-invalid="false">
+                            </div>
+                            <label for="label-focus" class="col-sm-2">Limite Comercialização</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control ng-pristine ng-valid ng-isolate-scope ng-valid-required ng-valid-date ng-touched" datepicker-popup="dd-MMMM-yyyy" ng-model="dt" is-open="opened" min="minDate" max="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" tabindex="0" required="required" aria-required="false" aria-invalid="false">
+                            </div>
+                        </div>
+                    </form>
+                </div>  
+
+                <h1>Cartão</h1>
+                <div>
+                    <form class="form-horizontal ng-pristine ng-valid">
+                        <div class="form-group">
+                            <label for="" class="col-sm-2">Numero Fidelidade</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="label-focus">
+                            </div>
+
+                            <label for="" class="col-sm-2">Senha Resgate</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="label-focus">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-sm-2">Assinatura Eletrônica</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="label-focus">
+                            </div>
+
+                            <label for="" class="col-sm-2">Senha Multiplus</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="label-focus">
+                            </div>
+                        </div>
+                    </form>
+                </div>  
+            </div>
+
+        </div>
+    </section>
+</div>

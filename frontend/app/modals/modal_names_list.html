@@ -1,0 +1,25 @@
+<div class="modal-header">
+    <h3>Nomes</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-6">Nome</div>
+        <div class="col-sm-4">Código</div>
+        <div class="col-sm-1">Diamante</div>
+    </div>
+
+    <div class="row" ng-repeat="person in array">
+        <div class="col-sm-6">{{person.name}}</div>
+        <div class="col-sm-4">{{person.registration_code}}</div>
+        <div class="col-sm-1">{{ (person.is_diamond == 1) ? 'SIM' : 'NÃO' }}</div>
+        <div class="col-sm-1">
+            <div ng-if="person.leftover">
+                {{ formatNumber(person.leftover, 0) }}
+            </div>
+            <!-- <div ng-if="!person.leftover">{{person.registration_code}}</div> -->
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" ng-click="cancel();">Cancel</button>
+</div>

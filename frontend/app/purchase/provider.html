@@ -1,0 +1,856 @@
+<div id="provider_page" class="page page-table zoom" data-ng-controller="ProviderCtrl" ng-class="{blockClass: !main.isMaster && (main.id != 26379 && main.id != 5745) || main.id == 5166 }">
+
+    <section class="panel panel-default table-dynamic" ng-show="isTable && !mail">
+        <div class="panel-heading">
+            <strong>
+                </span> Fornecedores </strong>
+        </div>
+
+        <div class="table-filters">
+            <div class="row">
+                <form>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="text" placeholder="Pesquisar..." class="form-control" data-ng-model="searchKeywords" data-ng-model-options='{ debounce: 1000 }'
+                                data-ng-change="search()">
+                        </div>
+                    </div>
+                </form>
+                <div class="form-group">
+                    <div class="col-md-2 page-num-info" ng-show="main.isMaster || main.changeMiles">
+                        <button class="btn btn-w-md btn-gap-v btn-line-primary" ng-click="print();">
+                            <span class="glyphicon glyphicon-print"></span> Emitir</button>
+                    </div>
+                    <div class="col-sm-2">
+                        <script type="text/ng-template" id="ProviderModalCtrl.html">
+                            <div class="modal-header">
+                                <h3>Pesquisa Avaçada</h3>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-horizontal ng-pristine ng-valid">
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Buscar SRM?</label>
+                                        <div class="col-sm-8">
+                                            <input type="checkbox" ng-model="filter.findSRM">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" ng-click="ok();">OK</button>
+                                <button type="button" class="btn btn-warning" ng-click="cancel();">Cancel</button>
+                            </div>
+                        </script>
+                        <div>
+                            <button class="btn btn-default" ng-click="openSearchProvider()">
+                                <span class="glyphicon glyphicon-search"></span> Pesquisa Avançada</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered table-striped table-responsive" name="table_provider">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="th">
+                            ID
+                            <span class="fa fa-angle-up" data-ng-click=" order('id') " data-ng-class="{active: row == 'id'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('id') " data-ng-class="{active: row == '-id'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Nome
+                            <span class="fa fa-angle-up" data-ng-click=" order('name') " data-ng-class="{active: row == 'name'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('name') " data-ng-class="{active: row == '-name'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Email
+                            <span class="fa fa-angle-up" data-ng-click=" order('email') " data-ng-class="{active: row == 'email'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('email') " data-ng-class="{active: row == '-email'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Telefone
+                            <span class="fa fa-angle-up" data-ng-click=" order('phoneNumber') " data-ng-class="{active: row == 'phoneNumber'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('phoneNumber') " data-ng-class="{active: row == '-phoneNumber'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            CPF/CNPJ
+                            <span class="fa fa-angle-up" data-ng-click=" order('registrationCode') " data-ng-class="{active: row == 'registrationCode'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('registrationCode') " data-ng-class="{active: row == '-registrationCode'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Cidade
+                            <span class="fa fa-angle-up" data-ng-click=" order('city') " data-ng-class="{active: row == 'city'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('city') " data-ng-class="{active: row == '-city'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Status
+                            <span class="fa fa-angle-up" data-ng-click=" order('status') " data-ng-class="{active: row == 'status'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('status') " data-ng-class="{active: row == '-status'}"></span>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="provider in providers" ng-click="setSelected();" class="draggable">
+                    <td>{{provider.id}}</td>
+                    <td>{{provider.name}}</td>
+                    <td>{{provider.email}}</td>
+                    <td>{{provider.phoneNumber}}</td>
+                    <td>{{provider.registrationCode}}</td>
+                    <td>{{provider.cityfullname}}</td>
+                    <td>
+                        <span class="{{providerTag(provider.status)}}">{{provider.status}}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show
+                        <select data-ng-model="numPerPage" data-ng-options="num for num in numPerPageOpt" data-ng-change="onNumPerPageChange()">
+                        </select>
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 pagination-container">
+                    <pagination class="pagination-sm" ng-model="currentPage" total-items="totalData" max-size="4" ng-change="select(currentPage)"
+                        items-per-page="numPerPage" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" boundary-links="true"></pagination>
+                </div>
+                <div class="col-md-4 text-right page-num-info">
+                    <span>
+                        Showing {{providers.length}}/{{totalData}} entries
+                    </span>
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <button type="button" ng-click="newProvider();" class="btn btn-info">Novo</button>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <section class="panel panel-default" ng-hide="isTable || mail">
+
+
+        <div class="col-sm-2" data-ng-controller="ModalDemoCtrl">
+            <script type="text/ng-template" id="ModalDemoCtrl.html">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modal-title">Ficha de Inscrição</h3>
+                </div>
+                    <div class="modal-body" id="modal-body">
+                        <fieldset>
+                            <div class="form-group">
+                                <select class="form-control" name="applicationSelect" id="applicationSelect" ng-model="application.multipleSelect" multiple>
+                                    <option value="latam" >LATAM</option>
+                                    <option value="smiles">SMILES</option>
+                                    <option value="azul">AZUL</option>
+                                    <option value="avianca">AVIANCA</option>
+                                </select>
+                            </div>
+                        </fieldset>                           
+                        <fieldset>
+                            <legend>Sumário Comercial: </legend>                            
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <tr>
+                                        <th>COMPANHIA</th>
+                                        <th>OFERTA DE PONTOS</th> 
+                                        <th>VENCIMENTO</th>
+                                        <th>VALOR 1000.Pts</th> 
+                                        <th>VALOR TOTAL</th>
+                                    </tr>                                    
+                                    <tr ng-if="application.multipleSelect == 'latam'">
+                                        <td class="success"><label>LATAM</label></td>
+                                        <td class="success"><input type="text" ng-model="application.multipleSelect.offer" ></td>
+                                        <td class="success"><input type="date" ng-model="application.multipleSelect.milesDueDate" ></td>
+                                        <td class="success"><input type="text" ng-model="application.multipleSelect.costPerThousand" ></td>
+                                        <td class="success"><input type="text"  ng-model="application.multipleSelect.totalCost" ></td> 
+                                    </tr>
+                                    <tr ng-if="application.multipleSelect == 'smiles'">
+                                        <td class="warning"><label>GOL</label></td>
+                                        <td class="warning"><input type="text" ng-model="application.multipleSelect.offer" ></td>
+                                        <td class="warning"><input type="date" ng-model="application.multipleSelect.milesDueDate" ></td>
+                                        <td class="warning"><input type="text" ng-model="application.multipleSelect.costPerThousand" ></td>
+                                        <td class="warning"><input type="text" ng-model="application.multipleSelect.totalCost" ></td>                                    
+                                    </tr>
+                                    <tr ng-if="application.multipleSelect == 'azul'">                                        
+                                        <td class="danger"><label>AZUL</label></td>
+                                        <td class="danger"><input type="text" ng-model="application.multipleSelect.offer" ></td>
+                                        <td class="danger"><input type="date" ng-model="application.multipleSelect.milesDueDate" ></td>
+                                        <td class="danger"><input type="text" ng-model="application.multipleSelect.costPerThousand" ></td>
+                                        <td class="danger"><input type="text" ng-model="application.multipleSelect.totalCost" ></td>                                          
+                                    </tr>
+                                    <tr ng-if="application.multipleSelect == 'avianca'">                                        
+                                        <td class="info"><label>AVIANCA</label></td>
+                                        <td class="info"><input type="text" ng-model="application.multipleSelect.offer" ></td>
+                                        <td class="info"><input type="date" ng-model="application.multipleSelect.milesDueDate" ></td>
+                                        <td class="info"><input type="text" ng-model="application.multipleSelect.costPerThousand" ></td>
+                                        <td class="info"><input type="text" ng-model="application.multipleSelect.totalCost" ></td>                                               
+                                    </tr>
+                                </table>
+                            </div>                                
+                        </fieldset>  
+
+                        <fieldset>
+                            <legend>Dados Cadastrais: </legend>
+                            <form class="form-horizontal">                              
+                                <div class="form-group">
+                                    <div class="col-sm-6">
+                                        <label>Nome</label>
+                                        <input type="text" class="form-control" id="Appname" ng-model="application.name" placeholder="Nome">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label>CPF</label>
+                                        <input type="text" class="form-control" id="AppregistrationCode" placeholder="CPF" ng-model="application.registrationCode">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-6">
+                                        <label>Data Nascimento</label>
+                                        <input type="date" class="form-control" ng-model="application.birthdate" placeholder="Data de Nascimento">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label>Profissão</label>
+                                        <input type="text" class="form-control" ng-model="application.company_name" placeholder="Profissão">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <label>Endereço</label>
+                                        <input type="text" class="form-control" ng-model="application.adress" placeholder="Endereço">
+                                    </div>                                    
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-6">
+                                        <label>Cidade</label>
+                                        <input type="text" class="form-control" ng-model="application.city" placeholder="Cidade">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label>Estado</label>
+                                        <input type="text" class="form-control" ng-model="application.state" placeholder="Estado">
+                                    </div>                                    
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-4">
+                                        <label>Tel.Fixo</label>
+                                        <input type="text" class="form-control" ng-model="application.phoneNumber3" placeholder="Tel.Fixo">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>TeL.Cel</label>
+                                        <input type="text" class="form-control" ng-model="application.phoneNumber" placeholder="Tel.Cel">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>Comercial</label>
+                                        <input type="text" class="form-control" ng-model="application.phoneNumber2" placeholder="Comercial">
+                                    </div>                                  
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-4">
+                                        <label>Email</label>
+                                        <input type="text" class="form-control" ng-model="application.email" placeholder="Email">
+                                    </div>                          
+                                </div>
+                            </form>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Análise de Crédito</legend>
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <div class="col-sm-4">
+                                        <label>Score Crédito</label>
+                                        <input type="text" class="form-control" ng-model="application.creditAnalysis" placeholder="Score de Crédito">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>Cpf Regular?</label>
+                                        <input type="text" class="form-control" ng-model="application.registrationCodeCheck" placeholder="CPF Regular?">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>Endereço Confere</label>
+                                        <input type="text" class="form-control" ng-model="application.adressCheck" placeholder="Endereço COnfere Cadastro?">
+                                    </div>                                                 
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-4">
+                                        <label>Cliente Recorrente ?</label>
+                                        <input type="text" class="form-control" ng-model="application.clientCheck" placeholder="Cliente Recorrente? ">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>Mesma Companhia ?</label>
+                                        <input type="text" class="form-control" ng-model="application.airlineCheck" placeholder="Mesma Companhia ?">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>Registro de Débitos ?</label>
+                                        <input type="text" class="form-control" ng-model="application.debitCheck" placeholder="Registro de Débitos?">
+                                    </div>                                                 
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <label>Caso positivo, descrever:</label>
+                                        <textarea class="form-control" rows="5" id="comment"></textarea>
+                                    </div>                                                
+                                </div>
+                            </form>
+                        </fieldset>
+                        <fieldset>
+                                <legend>Dados do Cartão</legend>
+                                <form class="form-horizontal">                                                                          
+                                   
+                                    <div class="form-group" ng-if="application.multipleSelect == 'latam' ">
+                                        <h5>TAM</h5>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" ng-model="application.latam.loyaltyLatam" placeholder="FIDELIDADE">
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" ng-model="application.latam.passwordMultiplus" placeholder="Múltiplos">
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" ng-model="application.latam.passwordRecovery" placeholder="SENHA RESGATE">
+                                        </div>                                                 
+                                    </div>
+                                    
+                                    <div class="form-group" ng-if="application.multipleSelect == 'smiles' ">
+                                        <h5>SMILES</h5>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" ng-model="application.gol.cardNumber" placeholder="Nº.Cartão">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" ng-model="application.gol.password" placeholder="Senha">
+                                        </div>                                                                                       
+                                    </div>
+                                    
+                                    <div class="form-group" ng-if="application.multipleSelect == 'azul' ">
+                                        <h5>AZUL</h5>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" ng-model="application.azul.cardNumber" placeholder="Nº.Cartão">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" ng-model="application.azul.password" placeholder="Senha">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group" ng-if="application.multipleSelect == 'avianca' ">
+                                        <h5>AVIANCA</h5>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" ng-model="application.avianca.cardNumber" placeholder="Nº.Cartão">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" ng-model="application.avianca.password" placeholder="Senha">
+                                        </div>                                                                                       
+                                    </div>
+                                </form>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Questionário Confirmação</legend>
+                            <form class="form-horizontal">
+                                <div class="checkbox"><label><input type="checkbox" ng-model="application.checkbox.fullNameCheck"> 1. Nome Completo? </label></div>
+                                <div class="checkbox"><label><input type="checkbox" ng-model="application.checkbox.affiliationCheck"> 2. Filiação </label></div>
+                                <div class="checkbox"><label><input type="checkbox" ng-model="application.checkbox.registerCheck"> 3. CPF </label></div>
+                                <div class="checkbox"><label><input type="checkbox" ng-model="application.checkbox.ageCheck"> 4. Idade </label></div>
+                                <div class="checkbox"><label><input type="checkbox" ng-model="application.checkbox.birthCheck"> 5. Data de Nascimento </label></div>
+                                <div class="checkbox"><label><input type="checkbox" ng-model="application.checkbox.recordAddressCheck"> 6. Endereço Informado na ficha? Residencial? </label></div>
+                                <div class="checkbox"><label><input type="checkbox" ng-model="application.checkbox.addressOldCheck"> 7. Confirmação de Endereços Antigos</label></div>
+                                <div class="checkbox"><label><input type="checkbox" ng-model="application.checkbox.companyNameCheck"> 8. Possui empresas no nome ? </label></div>
+                                <div class="checkbox"><label><input type="checkbox" ng-model="application.checkbox.phoneCheck"> 9. Confirmação em Telefone Fixo?</label></div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <label>Observação: </label>
+                                        <textarea class="form-control" ng-model="application.checkbox.observation" rows="5" id=""></textarea>
+                                    </div>                                                
+                                </div>
+                            </form>
+                        </fieldset>
+                        <fieldset>
+                            <legend>One Milhas</legend>
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                        <div class="col-sm-4">
+                                            <label>Data de Cotação</label>
+                                            <input type="date" class="form-control" ng-model="application.date_quote" placeholder="Data de Cotação: ">
+                                        </div>
+                                        <div class="col-sm-4"> 
+                                            <label>Data de Ligação</label>
+                                            <input type="date" class="form-control" ng-model="application.connection_date" placeholder="Data de Ligação: ">
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="checkbox"><label><input type="checkbox" ng-model="application.approvedCard"> Ficha Aprovada? </label></div>
+                                        </div>                                        
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-6">
+                                        <label>Responsável Análise</label>
+                                        <input type="text" class="form-control" ng-model="application.responsible_analyst" placeholder="Responsável Análise ">
+                                    </div> 
+                                    <div class="col-sm-6">
+                                        <label>Responsável Aprovação</label>
+                                        <input type="text" class="form-control" ng-model="application.responsible_approval" placeholder="Responsável Aprovação ">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <label>Observação/ Justificativa </label>
+                                        <textarea class="form-control" rows="5" id=""></textarea>
+                                    </div>                                                
+                                </div>
+                            </form>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Pagamento</legend>
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <div class="col-sm-4">
+                                        <label>Banco</label>
+                                        <input type="text" class="form-control" ng-model="application.bank" placeholder="Banco ">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>Código</label>
+                                        <input type="text" class="form-control" ng-model="application.code" placeholder="Cod. ">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>Agência</label> 
+                                        <input type="text" class="form-control" ng-model="application.agency" placeholder="Agência ">
+                                    </div>                                      
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-4">  
+                                        <label>Op</label>
+                                        <input type="text" class="form-control" ng-model="application.op" placeholder="OP. ">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>Conta</label>
+                                        <input type="text" class="form-control" ng-model="application.account" placeholder="Conta ">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>Titular</label>
+                                        <input type="text" class="form-control" ng-model="application.holder" placeholder="Titular ">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <label>ANDAMENTO</label>
+                                        <textarea class="form-control" ng-model="application.progress" rows="5" id=""></textarea>
+                                    </div>                                                
+                                </div>
+                            </form>
+                        </fieldset>
+                        <div class="col-sm-4 text-center">
+                            <button type="button" class="btn btn-info" ng-click="printBankStatement();"><span class="glyphicon glyphicon-cloud-download"></span>Ficha de Inscrição</button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-warning" ng-click="cancel();">Cancel</button>
+                    </div>
+            </script>
+        </div>
+
+        <div class="panel-heading">
+            <strong>Fornecedor</strong> -
+            <button ng-if="selected.id" class="btn btn-info smallBtn" type="button" ng-click="printProvider()">Imprimir</button>
+        </div>
+        <div class="panel-body">
+            <form class="form-horizontal" name="form_provider">
+                <div class="form-group">
+                    <label for="" class="col-sm-12">DADOS CLIENTE</label>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Nome</label>
+                    <div class="col-sm-7">
+                        <input type="text" ng-model="selected.name" class="form-control" id="name" typeahead="provider.name for provider in providers | filter:$viewValue | limitTo:8"
+                            required>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="checkbox" ng-model="noRegistrationCode">Não possui CPF
+                        <br>
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="button" class="btn btn-warning smallBtn" ng-click="validateData();">Validar</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="label-focus" class="col-sm-1">CPF</label>
+                    <div class="col-sm-3">
+                        <input type="text" ui-mask="999.999.999-99" ng-model="selected.registrationCode" class="form-control" id="registrationCode"
+                            typeahead="provider.registrationCode for provider in providers | filter:$viewValue | limitTo:8" ng-required="!noRegistrationCode"
+                            ng-keyup="searchRegistrationCode()">
+                    </div>
+
+                    <label for="label-focus" class="col-sm-1">Nascimento</label>
+                    <div class="col-sm-2">
+                        <input type="date" ng-model="selected.birthdate" class="form-control">
+                    </div>
+
+                    <label for="" class="col-sm-1">Nome Mãe</label>
+                    <div class="col-sm-4">
+                        <input type="text" ng-model="selected.nameMother" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-12">DADOS LOCALIZAÇÂO</label>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">CEP</label>
+                    <div class="col-sm-2">
+                        <input type="text" ng-model="selected.zipCode" class="form-control" ui-mask="99999-999">
+                    </div>
+
+                    <div class="col-sm-2">
+                        <button class="btn btn-info smallBtn" ng-click="getCEP();" type="button">Buscar CEP</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Endereço</label>
+                    <div class="col-sm-8">
+                        <input type="text" ng-model="selected.adress" class="form-control" id="adress">
+                    </div>
+
+                    <label for="" class="col-sm-1">Número</label>
+                    <div class="col-sm-2">
+                        <input type="text" ng-model="selected.adressNumber" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Complemento</label>
+                    <div class="col-sm-2">
+                        <input type="text" ng-model="selected.adressComplement" class="form-control">
+                    </div>
+
+                    <label for="" class="col-sm-1">Bairro</label>
+                    <div class="col-sm-5">
+                        <input type="text" ng-model="selected.adressDistrict" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Estado</label>
+                    <div class="col-sm-2">
+                        <input id="providerstate" type="text" ng-model="selected.state" typeahead="state.state for state in states | filter:$viewValue | limitTo:8"
+                            class="form-control" placeholder="Pesquisar">
+                    </div>
+
+                    <label for="" class="col-sm-1">Municipio</label>
+                    <div class="col-sm-5">
+                        <input type="text" ng-model="selected.city" typeahead="city.name for city in cities | filter:$viewValue | limitTo:8" class="form-control"
+                            placeholder="Pesquisar">
+                    </div>
+
+                    <label for="" class="col-sm-1">Data Registro</label>
+                    <div class="col-sm-2">
+                        <input type="date" class="form-control" ng-model="selected.registerDate">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Email</label>
+                    <div class="col-sm-6">
+                        <input type="text" ng-model="selected.email" class="form-control ng-valid-email" required>
+                    </div>
+
+                    <label for="label-focus" class="col-sm-1">Profissão</label>
+                    <div class="col-sm-4">
+                        <input type="text" ng-model="selected.company_name" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="label-focus" class="col-sm-1">Empresa</label>
+                    <div class="col-sm-6">
+                        <input type="text" ng-model="selected.typeSociety" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Status</label>
+                    <div class="col-sm-4">
+                        <input type="text" ng-model="selected.status" typeahead="status for status in providerStatus | filter:$viewValue | limitTo:8"
+                            class="form-control" placeholder="Pesquisar">
+                    </div>
+
+                    <label for="" class="col-sm-1">Parceiro</label>
+                    <div class="col-sm-4">
+                        <input type="text" ng-model="selected.associatedProvider" typeahead="provider for provider in providerList | filter:$viewValue | limitTo:8"
+                            class="form-control" placeholder="Pesquisar">
+                    </div>
+                </div>
+
+                <div class="form-group" ng-show="selected.status == 'Bloqueado' || selected.status == 'Reprovado'">
+                    <label for="" class="col-sm-2" ng-show="selected.status == 'Bloqueado'">Motivo Bloqueio</label>
+                    <label for="" class="col-sm-2" ng-show="selected.status == 'Reprovado'">Motivo Reprovação</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="blockreason" ng-model="selected.blockreason">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <br>
+                    <label for="" class="col-sm-12">DADOS CONTATO</label>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Telefone Celular</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="phonenumber" ng-model="selected.phoneNumber" required>
+                    </div>
+
+                    <label for="" class="col-sm-1">Telefone Comercial</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="phoneNumber2" ng-model="selected.phoneNumber2">
+                    </div>
+
+                    <label for="" class="col-sm-1">Telefone Residencial</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="phoneNumber3" ng-model="selected.phoneNumber3">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Telefone Fixo CIA Aérea</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" ng-model="selected.phoneNumberAirline">
+                    </div>
+
+                    <label for="" class="col-sm-1">Telefone Cel CIA Aérea</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" ng-model="selected.celNumberAirline">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-12">DADOS BANCÁRIOS</label>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Banco</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" id="bank" ng-model="selected.bank">
+                    </div>
+
+                    <label for="" class="col-sm-1">Agência</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" id="agency" ng-model="selected.agency">
+                    </div>
+
+                    <label for="" class="col-sm-1">Conta</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" id="account" ng-model="selected.account">
+                    </div>
+
+                    <label for="" class="col-sm-1">Tipo Conta</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" typeahead="type.type for type in accountType | filter:$viewValue | limitTo:8" ng-model="selected.paymentType">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Operação</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" ng-model="selected.bankOperation">
+                    </div>
+
+                    <label for="" class="col-sm-1">Nome Titular</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" ng-model="selected.bankNameOwner">
+                    </div>
+
+                    <label for="" class="col-sm-1">CPF Titular</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" ng-model="selected.cpfNameOwner">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-12">ANALISE CPF</label>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Score</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" ng-model="selected.creditAnalysis">
+                    </div>
+
+                    <label for="" class="col-sm-1">CPF Regular</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" ng-model="selected.registrationCodeCheck">
+                    </div>
+
+                    <label for="" class="col-sm-1">Endereço Confere</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" ng-model="selected.adressCheck">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Registro de débito</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" ng-model="selected.creditDescription">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Observações</label>
+                    <div class="col-sm-11">
+                        <textarea type="text" class="form-control" ng-model="selected.description" />
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <button type="button" class="btn btn-danger" ng-click="cancelEdit();">cancelar</button>
+                </div>
+                <div class="col-sm-6">
+                    <div ng-controller="ModalDemoCtrl" class="modal-demo">
+                        <button type="button" class="btn btn-default" ng-click="open('lg')">Ficha de Inscrição</button>
+                    </div>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <button type="button" class="btn btn-success" ng-click="saveProvider()">confirmar</button>
+                </div>
+
+                <div class="col-sm-6 text-center">
+                    <button type="button" class="btn btn-info" ng-click="toggleNewUpload();">
+                        <span class="glyphicon glyphicon-upload"></span> Novo Upload</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="panel panel-default" ng-show="newUpload && !mail" nv-file-drop="" uploader="uploader" filters="queueLimit, customFilter">
+        <div class="panel-heading">
+            <strong>
+                <span class="glyphicon glyphicon-upload"></span> Upload de Arquivo</strong>
+        </div>
+        <div class="panel-body">
+            <input type="file" nv-file-select uploader="uploader" multiple/>
+            <br/>
+            <div class="well my-drop-zone" nv-file-over="" uploader="uploader">
+                Arraste e solte
+            </div>
+            <div class="col-md-9" style="margin-bottom: 40px">
+                <h3>Fila de Upload</h3>
+                <p>Quantidade de arquivos: {{ uploader.queue.length }}</p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th width="50%">Name</th>
+                            <th ng-show="uploader.isHTML5">Size</th>
+                            <th ng-show="uploader.isHTML5">Progress</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in uploader.queue">
+                            <td>
+                                <strong>{{ item.file.name }}</strong>
+                            </td>
+                            <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                            <td ng-show="uploader.isHTML5">
+                                <div class="progress" style="margin-bottom: 0;">
+                                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <span ng-show="item.isSuccess">
+                                    <i class="glyphicon glyphicon-ok"></i>
+                                </span>
+                                <span ng-show="item.isCancel">
+                                    <i class="glyphicon glyphicon-ban-circle"></i>
+                                </span>
+                                <span ng-show="item.isError">
+                                    <i class="glyphicon glyphicon-remove"></i>
+                                </span>
+                            </td>
+                            <td nowrap>
+                                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload(); loadFiles();" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                    <span class="glyphicon glyphicon-upload"></span> Upload
+                                </button>
+                                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                </button>
+                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div>
+                    <div>
+                        Progresso Fila:
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-success btn-s" ng-click="uploader.uploadAll(); loadFiles();" ng-disabled="!uploader.getNotUploadedItems().length">
+                        <span class="glyphicon glyphicon-upload"></span> Upload all
+                    </button>
+                    <button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
+                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+                    </button>
+                    <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                        <span class="glyphicon glyphicon-trash"></span> Remove all
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="panel panel-default" ng-hide="isTable || mail">
+        <div class="panel-heading">
+            <strong>
+                <span class="glyphicon glyphicon-download"></span> Arquivo Armazenados</strong>
+        </div>
+        <div class="panel-body">
+            <ul class="list-unstyled list-info">
+                <li ng-repeat="file in filesLoaded">
+                    <a type="button" href="{{file.url}}" target="_blank"> Donwload </a>{{file.keyname}}
+                    <span class="glyphicon glyphicon-remove" ng-click="removeFile(file)"></span>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="panel panel-default mail-container mail-compose" ng-show="mail">
+        <div class="panel-heading">
+            <strong>Escrever Email</strong>
+        </div>
+        <div class="panel-body">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label for="mail_to" class="col-xs-2">Para:</label>
+                    <div class="col-xs-10">
+                        <input type="text" ng-model="webemail.emailpartner" id="mail_to" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="mail_cc" class="col-xs-2">CC:</label>
+                    <div class="col-xs-10">
+                        <input type="text" id="mail_cc" ng-model="webemail.mailcc" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="mail_subject" class="col-xs-2">Assunto:</label>
+                    <div class="col-xs-10">
+                        <input type="text" id="mail_subject" ng-model="webemail.subject" class="form-control">
+                    </div>
+                </div>
+                <input type="file" nv-file-select uploader="uploader" />
+                <br/>
+                <div text-angular ng-model="webemail.emailContent" ng-class="ui-editor">
+                </div>
+            </form>
+            <div class="mail-actions">
+                <button ng-click="mailOrder();" class="btn btn-sm btn-primary">enviar</button>
+                <div class="btn btn-warning" ng-click="cancelEdit();">cancelar</div>
+            </div>
+        </div>
+    </section>
+</div>

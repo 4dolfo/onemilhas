@@ -1,0 +1,26 @@
+<div class="modal-header">
+    <h3>Autorização de OP</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal ng-pristine ng-valid">
+        <div class="form-group">
+            <label for="" class="col-sm-4">PIN</label>
+            <div class="col-sm-4">
+            <input type="password" class="form-control" ng-model="permissions.pinCode">
+            </div>
+        </div>
+        <div class="form-group" ng-if="!permissions.type">
+            <div class="col-sm-4">
+            <button type="button" class="btn btn-primary" ng-click="check();">Confirmar</button>
+            </div>
+        </div>
+        <div class="form-group" ng-if="permissions.type == 'Comercial'">
+            <div class="col-sm-4">
+            <button type="button" class="btn btn-primary" ng-click="check();">Confirmar Comercial</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-warning" ng-click="cancel();">Cancel</button>
+</div>

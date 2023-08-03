@@ -1,0 +1,348 @@
+<div class="page page-dashboard contention" data-ng-controller="DashboardCtrl">
+
+    <!-- stats -->
+    <div class="row">
+        <div class="col-lg-12 col-xsm-12" ng-show="main.isMaster || sumData || main.id == 8693">
+            <section class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="form-group" ng-hide="showFilter">
+                            <div class="row">
+                                <label for="" class="col-sm-2" style="margin-left: 10px; margin-top: 15px;">Período (dias)</label>
+                                <div class="col-sm-2">
+                                    <input type="number" class="form-control" placeholder="Dias" data-ng-blur="onFilterBlur()" data-ng-keyup="onFilterEnterKey($event.keyCode)" ng-model="filter.days">
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 10px;">
+                                <label for="" class="col-sm-2" style="margin-left: 10px; margin-top: 15px;">Pontos fornecedor (mínimo)</label>
+                                <div class="col-sm-2">
+                                    <input type="number" class="form-control" placeholder="Pontos" data-ng-blur="onFilterBlur()" data-ng-keyup="onFilterEnterKey($event.keyCode)" ng-model="filter.points">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row" style="margin-top: 10px;">
+                                <label for="" class="col-sm-2" style="margin-left: 10px; margin-top: 15px;">Habilitar Pesquisa</label>
+                                <div class="col-sm-2">
+                                    <input class="form-check-input" type="checkbox" ng-model="showFilter" style="margin-top: 15px;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="showFilter">
+                            <div class="form-group" class="col-sm-2">
+                                <label for="" class="col-sm-2" style="margin-left: 10px;"> Data Filtro</label>
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="date" ng-model="filter.dateFrom" class="form-control" ng-change="search()">
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="date" ng-model="filter.dateTo" class="form-control" ng-change="search()">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+        <div class="col-lg-3 col-xsm-6" ng-show="main.isMaster">
+            <div class="panel mini-box">
+                <span class="box-icon bg-warning">
+                    <i class="fa fa-cart-arrow-down"></i>
+                </span>
+                <div class="box-info">
+                    <p class="size-h2">{{formatNumber(SumPurchaseMiles.miles, 0)}}
+                        <span class="size-h4"> milhas</span>
+                    </p>
+                    <p class="text-muted">
+                        <span>R$ {{formatNumber(SumPurchaseMiles.cost)}}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-xsm-6" ng-show="SumOrderMiles">
+            <div class="panel mini-box">
+                <span class="box-icon bg-success">
+                    <i class="fa fa-fire"></i>
+                </span>
+                <div class="box-info">
+                    <p class="size-h2">{{formatNumber(SumOrderMiles.miles, 0)}}</p>
+                    <p class="text-muted">
+                        <span>milhas</span>
+                    </p>
+                    <div class="row">
+                        <div class="box-info col-sm-12">
+                            <p class="text-muted" style="margin-right: 10px;">
+                                <div class="text-muted" ng-model=SumOrderMiles_detalhes ng-click="SumOrderMiles_detalhes = !SumOrderMiles_detalhes">
+                                    <span ng-show="SumOrderMiles_detalhes">Detalhes [-]</span>
+                                    <span ng-hide="SumOrderMiles_detalhes">Detalhes [+]</span>
+                                </div>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="margin-top: 20px;" ng-show="SumOrderMiles_detalhes">
+                            <div class="col-sm-12">
+                                <p class="text-muted">
+                                    <span>R$ {{formatNumber(SumOrderMiles.cost)}}</span>
+                                </p>
+                            </div>
+                            <div class="col-sm-12">
+                                <p class="text-muted">
+                                    <span>Milhas Totais: {{formatNumber(SumOrderMiles.miles, 0)}} </span>
+                                </p>
+                            </div>
+                            <div class="col-sm-12">
+                                <p class="text-muted">
+                                    <span>Milhas Usadas: {{formatNumber(SumOrderMiles.used, 0)}} </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-xsm-6" ng-show="main.isMaster">
+            <div class="panel mini-box">
+                <span class="box-icon bg-primary-light">
+                    <i class="fa fa-cubes"></i>
+                </span>
+                <div class="box-info">
+                    <p class="size-h2">{{formatNumber(SumMilesLef.miles, 0)}}</p>
+                    <p class="text-muted">
+                        <span>Estoque de Milhas</span>
+                    </p>
+                </div>
+                <div class="row">
+                    <div class="box-info col-sm-12">
+                        <p class="text-muted" style="margin-right: 10px;">
+                            <div class="text-muted" ng-model=SumMilesLef_detalhes ng-click="SumMilesLef_detalhes = !SumMilesLef_detalhes">
+                                <span ng-show="SumMilesLef_detalhes">Detalhes [-]</span>
+                                <span ng-hide="SumMilesLef_detalhes">Detalhes [+]</span>
+                            </div>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div style="margin-top: 20px;" ng-show="SumMilesLef_detalhes">
+                        <div class="col-sm-12">
+                            <p class="text-muted">
+                                <span>Milhas bloqueadas: {{formatNumber(SumMilesLef.miles_bloqueadas, 0)}} </span>
+                            </p>
+                        </div>
+                        <div class="col-sm-12">
+                            <p class="text-muted">
+                                <span>Milhas desbloqueadas: {{formatNumber(SumMilesLef.miles_desbloqueadas, 0)}} </span>
+                            </p>
+                        </div>
+                        <div class="col-sm-12">
+                            <p class="text-muted">
+                            </p>
+                        </div>
+                        <div class="col-sm-12" ng-repeat="airline in averageMiles">
+                            <p class="text-muted" ng-hide="airline.name=='AVIANCA'">
+                                <span style="margin-left: 15px;">Milhas {{airline.name}}: {{formatNumber(airline.miles, 0)}} </span>
+                            </p>
+                        </div>
+                        <div class="col-sm-12">
+                            <p class="text-muted">
+                                <span style="margin-left: 15px;">Milhas cards RED: {{formatNumber(SumMilesLef.miles_rb, 0)}} </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-xsm-6" ng-show="main.isMaster">
+            <div class="panel mini-box">
+                <span class="box-icon bg-primary">
+                    <i class="fas fa-money-bill-alt"></i>
+                </span>
+                <div class="box-info">
+                    <p class="size-h2">R$ {{formatNumber(TotalBalance.value)}}</p>
+                    <p class="text-muted">
+                        <span>Saldo</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 col-xsm-6" ng-if="sumData">
+            <div class="panel mini-box col-lg-4">
+                <span class="box-icon bg-success">
+                    <i class="fa fa-fire"></i>
+                </span>
+                <div class="box-info">
+                    <p class="size-h2">{{formatNumber(sumData.Sales, 0)}}
+                        <span class="size-h4"> milhas</span>
+                    </p>
+                    <p class="text-muted">
+                        <span>Vendas Totais</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="panel mini-box col-lg-4">
+                <span class="box-icon bg-success">
+                    <i class="fa fa-fire"></i>
+                </span>
+                <div class="box-info">
+                    <p class="size-h2">{{formatNumber(sumData.SalesAndAllCancels, 0)}}
+                        <span class="size-h4"> milhas</span>
+                    </p>
+                    <p class="text-muted">
+                        <span>Vendas e Cancelamentos</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="panel mini-box col-lg-4">
+                <span class="box-icon bg-success">
+                    <i class="fa fa-fire"></i>
+                </span>
+                <div class="box-info">
+                    <p class="size-h2">{{formatNumber(sumData.SalesAndValuedCancels, 0)}}
+                        <span class="size-h4"> milhas</span>
+                    </p>
+                    <p class="text-muted">
+                        <span>Vendas e Cancelamentos com valor</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- end stats -->
+
+    <div class="row" ng-show="main.isMaster">
+        <div class="col-md-8">
+            <section class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>
+                        <span>Fluxo Financeiro</span>
+                    </strong>
+                </div>
+                <div class="panel-body">
+                    <div morris-chart data-data="comboData" data-type="bar" data-xkey="month" data-ykeys='["a", "b"]' data-labels='["Compras", "Vendas"]'
+                        data-bar-colors='["#176799","#42A4BB","#78D6C7"]' style="height: 220px;"></div>
+                </div>
+            </section>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>
+                        <span>Estoque de Milhas</span>
+                    </strong>
+                </div>
+                <div class="panel-body">
+                    <div data-flot-chart data-data="donutChart2.data" data-options="donutChart2.options" style="width: 100%; height: 200px;"></div>
+                    {{SRMViagens[0].miles}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6" ng-show="main.isMaster || main.financial">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong>
+                    <span class="glyphicon glyphicon-th"></span> Alerta (Analise de risco)</strong>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="client in checkRiskAnalysis">
+                            <td>{{client.client}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="col-md-6" ng-show="main.isMaster">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong>
+                    <span class="glyphicon glyphicon-th"></span> Compras com vencimento próximo</strong>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>CIA</th>
+                            <th>Restante</th>
+                            <th>Vencimento</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="purchase in purchases">
+                            <td>{{purchase.partnerName}}</td>
+                            <td>{{purchase.airline}}</td>
+                            <td class="text-right">{{formatNumber(purchase.leftover, 0)}}</td>
+                            <td>{{purchase.dueDate | date:'dd/MM/yyyy'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="col-md-6" ng-show="main.financial">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong>
+                    <span class="glyphicon glyphicon-th"></span> Prazos</strong>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="client in deadLine">
+                            <td>{{client.name}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8" ng-show="main.dealer">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong>
+                    <span class="glyphicon glyphicon-th"></span> Clientes</strong>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nome -- Total: {{countClients()}}</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="client in clients" ng-hide="main.id == '22091'">
+                            <td>{{client.name}}</td>
+                            <td>{{client.status}}</td>
+                        </tr>
+                        <tr ng-show="main.id == '22091'">
+                            <td>{{clients[0].name}}</td>
+                            <td>{{clients[0].status}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

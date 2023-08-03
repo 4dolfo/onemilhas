@@ -1,0 +1,74 @@
+<div class="modal-header">
+    <h3>Atualização de dados</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <label for="" class="col-md-4">Nome Cliente</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" ng-model="clientRegistrationUpdates.nome">
+        </div>
+    </div>
+    <div class="row">
+        <label for="" class="col-md-4">CNPJ</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" ng-model="clientRegistrationUpdates.registrationCode">
+        </div>
+    </div>
+    <div class="row">
+        <label for="" class="col-md-4">Razao Social</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" ng-model="clientRegistrationUpdates.social_name">
+        </div>
+    </div>
+    <div class="row">
+        <label for="" class="col-md-4">Endereço</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" ng-model="clientRegistrationUpdates.adress">
+        </div>
+    </div>
+    <div class="row">
+        <label for="" class="col-md-4">Numero</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" ng-model="clientRegistrationUpdates.adressNumber">
+        </div>
+    </div>
+    <div class="row">
+        <label for="" class="col-md-4">Complemento</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" ng-model="clientRegistrationUpdates.adressComplement">
+        </div>
+    </div>
+    <div class="row">
+        <label for="" class="col-md-4">Bairro</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" ng-model="clientRegistrationUpdates.adressDistrict">
+        </div>
+    </div>
+    <div class="row">
+        <label for="" class="col-md-4">CEP</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" ng-model="clientRegistrationUpdates.zipCode">
+        </div>
+    </div>
+    <div class="row">
+        <label for="" class="col-md-4">TEL CEL</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" ng-model="clientRegistrationUpdates.phoneNumber">
+        </div>
+    </div>
+    <div class="row">
+        <label for="" class="col-md-4">TEL COM</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" ng-model="clientRegistrationUpdates.phoneNumber2">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <button class="btn btn-danger" ng-click="reject(clientRegistrationUpdates);">Rejeitar</button>
+            <button class="btn btn-info" ng-click="accept(clientRegistrationUpdates);">Aceitar</button>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" ng-click="cancel();">Cancel</button>
+</div>

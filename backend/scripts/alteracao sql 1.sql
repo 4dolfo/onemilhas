@@ -1,0 +1,3 @@
+CREATE TABLE `paths_markup_plans` ( `id` INT NOT NULL AUTO_INCREMENT , `plans_control_config_id` INT NOT NULL , `airport_code` VARCHAR(3) NOT NULL , `discount` DOUBLE(20,2) NOT NULL DEFAULT '0.00' , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+ALTER TABLE `paths_markup_plans` ADD INDEX(`plans_control_config_id`);
+ALTER TABLE `paths_markup_plans` ADD CONSTRAINT `fk_path_markup_plans_control_config_id` FOREIGN KEY (`plans_control_config_id`) REFERENCES `plans_control_config`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;

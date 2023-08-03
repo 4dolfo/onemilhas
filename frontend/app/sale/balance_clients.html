@@ -1,0 +1,397 @@
+<div class="page page-dashboard contention" data-ng-controller="BalanceClientsCtrl">
+
+    <div class="row">
+        <div class="col-lg-12 col-xsm-12">
+            <section class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                          <label for="" class="col-sm-4">Período (dias)</label>
+                          <div class="col-sm-8">
+                              <input type="number" class="form-control" placeholder="Últimos 30 Dias" data-ng-keyup="search()" ng-model="filter.days">
+                          </div>
+                        </div>
+                        <div class="form-group" ng-if="(main.commercial || main.isMaster) && !main.dealer">
+                            <label for="" class="col-sm-3">Representantes - Leader Boarding</label>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-info" ng-click="showLeaderBoarding()">Exibir</button>
+                            </div>
+                            <label for="" class="col-sm-3">Representantes - Mensal</label>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-info" ng-click="showMonthDealers()">Exibir</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div class="row" ng-if="!showCharts">
+        <div class="col-md-12">
+            <section class="panel panel-default">
+                <div class="panel-heading"><strong><span>Fluxo Clientes</span></strong></div>
+                <div class="panel-body">
+                    <div morris-clients-dailys
+                         data-data="clientsDaily"
+                         data-type="line"
+                         data-xkey="date"
+                         data-ykeys='["clients", "sales"]'
+                         data-labels='["Clientes", "Vendas"]'
+                         data-bar-colors='["#0000ff","#ff9933","#ff0000"]'
+                         style="height: 300px;"
+                         ></div>
+                </div>
+            </section> 
+        </div>
+
+         <div class="col-md-8">
+            <section class="panel panel-default">
+                <div class="panel-heading"><strong><span>Fluxo de Emissões(Trechos)</span></strong></div>
+                <div class="panel-body">
+                    <div data-flot-chart-clients-sales
+                         data-data="clientChart"
+                         data-options="options"
+                         style="width: 100%; height: 690px;"
+                         ></div>
+                </div>
+            </section> 
+        </div>
+
+        <div class="col-md-4">
+            <section class="panel panel-default">
+                <div class="panel-heading"><strong><span>Fluxo de Companhias(Trechos)</span></strong></div>
+                <div class="panel-body">
+                    <div data-flot-chart-clients-airline
+                         data-data="airlineChart"
+                         data-options="options"
+                         style="width: 100%; height: 300px;"
+                         ></div>
+                </div>
+            </section> 
+        </div>
+
+        <div class="col-md-4">
+            <section class="panel panel-default">
+                <div class="panel-heading"><strong><span>Fluxo de Companhias(Milhas)</span></strong></div>
+                <div class="panel-body">
+                    <div data-flot-miles-clients-airline
+                         data-data="airlineMiles"
+                         data-options="options"
+                         style="width: 100%; height: 300px;"
+                         ></div>
+                </div>
+            </section> 
+        </div>
+
+        <div class="col-md-4">
+            <section class="panel panel-default">
+                <div class="panel-heading"><strong><span>Agências Emissões/Total</span></strong></div>
+                <div class="panel-body">
+                    <div data-flot-chart-clients-totals
+                         data-data="clientsTotal"
+                         data-options="options"
+                         style="width: 100%; height: 300px;"
+                         ></div>
+                </div>
+            </section> 
+        </div>
+
+        <div class="col-md-8">
+            <section class="panel panel-default">
+                <div class="panel-heading"><strong><span>Fluxo Emissões(Trechos)</span></strong></div>
+                <div class="panel-body">
+                    <div bar-clients-total
+                         data-data="comboData"
+                         data-type="bar"
+                         data-xkey="month"
+                         data-ykeys='["sales", "LATAM", "GOL", "AZUL", "AVIANCA"]'
+                         data-labels='["Trechos", "LATAM", "GOL", "AZUL", "AVIANCA"]'
+                         data-bar-colors='["#176799","#42A4BB","#78D6C7"]'
+                         style="height: 300px;"
+                         ></div>
+                </div>
+            </section> 
+        </div>
+
+        <div class="col-md-4">
+            <section class="panel panel-default">
+                <div class="panel-heading"><strong><span>Emissões por estado</span></strong></div>
+                <div class="panel-body">
+                    <div data-chart-clients-states
+                         data-data="clientsState"
+                         data-options="options"
+                         style="width: 100%; height: 300px;"
+                         ></div>
+                </div>
+            </section> 
+        </div>
+
+        <div class="col-md-4">
+            <section class="panel panel-default">
+                <div class="panel-heading"><strong><span>Clientes por estado</span></strong></div>
+                <div class="panel-body">
+                    <div data-chart-clients-count-states
+                         data-data="clientsCountState"
+                         data-options="options"
+                         style="width: 100%; height: 300px;"
+                         ></div>
+                </div>
+            </section> 
+        </div>
+
+        <div class="col-md-4">
+            <section class="panel panel-default">
+                <div class="panel-heading"><strong><span>Fluxo de Cancelamentos(Trechos)</span></strong></div>
+                <div class="panel-body">
+                    <div data-flot-clients-cancels
+                         data-data="clientsCancels"
+                         data-options="options"
+                         style="width: 100%; height: 300px;"
+                         ></div>
+                </div>
+            </section> 
+        </div>
+
+        <div class="col-md-6">
+            <section class="panel panel-default">
+                <div class="panel-heading"><strong><span>Aeroportos - Partidas</span></strong></div>
+                <div class="panel-body">
+                    <div morris-airports-from
+                         data-data="airportsFrom"
+                         data-type="bar"
+                         data-xkey="airport"
+                         data-ykeys='["count"]'
+                         data-labels='["Trechos"]'
+                         data-bar-colors='["#176799","#42A4BB","#78D6C7"]'
+                         style="height: 300px;"
+                         ></div>
+                </div>
+            </section> 
+        </div>
+
+        <div class="col-md-6">
+            <section class="panel panel-default">
+                <div class="panel-heading"><strong><span>Aeroportos - Destinos</span></strong></div>
+                <div class="panel-body">
+                    <div morris-airports-to
+                         data-data="airportsTo"
+                         data-type="bar"
+                         data-xkey="airport"
+                         data-ykeys='["count"]'
+                         data-labels='["Trechos"]'
+                         data-bar-colors='["#78D6C7","#176799","#42A4BB"]'
+                         style="height: 300px;"
+                         ></div>
+                </div>
+            </section> 
+        </div>
+
+        <div class="col-md-12">
+            <section class="panel panel-default">
+                <div class="panel-heading"><strong><span>Aeroportos - Trechos</span></strong></div>
+                <div class="panel-body">
+                    <div morris-airports-trechos
+                         data-data="airportsTo"
+                         data-type="bar"
+                         data-xkey="airport"
+                         data-ykeys='["count"]'
+                         data-labels='["Trechos"]'
+                         data-bar-colors='["#42A4BB","#78D6C7"]'
+                         style="height: 400px;"
+                         ></div>
+                </div>
+            </section> 
+        </div>
+    </div>
+
+    <!-- <section class="panel panel-default table-dynamic" ng-if="showCharts">
+        <div class="panel-heading"><strong></span>Representantes - Totais</strong></div>
+
+        <div class="table-filters">
+            <div class="row">
+                <form>
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <input type="text" placeholder="Pesquisar..." class="form-control" ng-model="searchKeywords" ng-keyup="searchDealers()">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                  <th><div class="th">Nome
+                    <span class="fa fa-angle-up"
+                          data-ng-click=" order('name') "
+                          data-ng-class="{active: row == 'name'}"></span>
+                    <span class="fa fa-angle-down"
+                          data-ng-click=" order('-name') "
+                          data-ng-class="{active: row == '-name'}"></span>
+                  </div></th>
+                  <th><div class="th">Agências
+                    <span class="fa fa-angle-up"
+                          data-ng-click=" order('clients') "
+                          data-ng-class="{active: row == 'clients'}"></span>
+                    <span class="fa fa-angle-down"
+                          data-ng-click=" order('-clients') "
+                          data-ng-class="{active: row == '-clients'}"></span>
+                  </div></th>
+                  <th><div class="th">Vendas
+                    <span class="fa fa-angle-up"
+                          data-ng-click=" order('sales') "
+                          data-ng-class="{active: row == 'sales'}"></span>
+                    <span class="fa fa-angle-down"
+                          data-ng-click=" order('-sales') "
+                          data-ng-class="{active: row == '-sales'}"></span>
+                  </div></th>
+                  <th><div class="th">Pontos
+                    <span class="fa fa-angle-up"
+                          data-ng-click=" order('milesOriginal') "
+                          data-ng-class="{active: row == 'milesOriginal'}"></span>
+                    <span class="fa fa-angle-down"
+                          data-ng-click=" order('-milesOriginal') "
+                          data-ng-class="{active: row == '-milesOriginal'}"></span>
+                  </div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="dealer in currentPageDealers">
+                    <td>{{dealer.name}}</td>
+                    <td>{{dealer.clients}}</td>
+                    <td>{{formatNumber(dealer.sales, 0)}}</td>
+                    <td><div class="text-right">{{formatNumber(dealer.milesOriginal, 0)}}</div></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show 
+                        <select data-ng-model="numPerPage" data-ng-options="num for num in numPerPageOpt" data-ng-change="onNumPerPageChange()"></select> 
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 text-right pagination-container">
+                    <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="filteredDealers.length"
+                                max-size="4"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true"></pagination>
+                </div>
+                <div class="col-md-4 text-right page-num-info">
+                    <span>
+                        Showing {{filteredDealers.length}}/{{dealersAnalysis.length}} entries
+                    </span>              
+                </div>
+            </div>
+        </footer>
+    </section> -->
+
+    <section class="panel panel-default table-dynamic" ng-if="showCharts && monthDealers">
+        <div class="panel-heading">
+            <strong>Representantes - Mensal</strong>
+                <div class="col-sm-2" data-ng-controller="DealerTableModalCtrl">
+                    <script type="text/ng-template" id="DealerTableModal.html">
+                        <div class="modal-header">
+                            <h3>Pesquisa Avaçada</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal ng-pristine ng-valid">
+                                <div class="form-group">
+                                    <label for="" class="col-sm-4">Pesquisa</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-4">Data</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-4">De</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group ui-datepicker">
+                                            <input type="month" ng-model="filterDealer.issueDateFrom" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-4">Até</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group ui-datepicker">
+                                            <input type="month" ng-model="filterDealer.issueDateTo" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" ng-click="ok();">OK</button>
+                            <button class="btn btn-warning" ng-click="cancel();">Cancel</button>
+                        </div>
+                    </script>
+                    <button class="btn btn-default smallBtn" ng-click="open()"><span class="glyphicon glyphicon-search"></span></button>
+                </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive big-table">
+            <thead>
+                <tr>
+                    <th ng-repeat-start="month in dealersMonth.months" ng-if="month.name == 'Representantes' "> 
+                        <div class="small-th">{{month.name}}</div>
+                    </th>
+                    <th ng-if="month.name != 'Representantes' " class="left-border"><div class="small-th">{{getMonthDate(month.name)}}<br>Clientes</div></th>
+                    <th ng-if="month.name != 'Representantes' "><div class="small-th">Vendas</div></th>
+                    <th ng-if="month.name != 'Representantes' " ng-repeat-end><div class="small-th"><div class="text-right">Milhas</div></div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="dealer in dealersMonth.data">
+                    <td ng-repeat-start="month in dealersMonth.months" ng-if="month.name == 'Representantes' ">{{dealer[month.name]}}</td>
+                    <td ng-if="month.name != 'Representantes' " class="left-border">{{dealer[month.name].clients}}</td>
+                    <td ng-if="month.name != 'Representantes' ">{{dealer[month.name].sales}}</td>
+                    <td ng-repeat-end ng-if="month.name != 'Representantes' "><div class="text-right">{{formatNumber(dealer[month.name].milesOriginal, 0)}}</div></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </section>
+
+
+    <section class="panel panel-default table-dynamic" ng-if="showCharts && leaderBoarding">
+        <div class="panel-heading">
+            <strong>Representantes - Leader Boarrding</strong>
+            <span class="ui-select">
+                <select ng-model="filterLeaderBoarding.days" ng-change="loadleaderBoarding()">
+                    <option class="form-control" value="0">Hoje</option>
+                    <option class="form-control" value="1">Desde Ontem</option>
+                    <option class="form-control" value="7">Uma semana</option>
+                    <option class="form-control" value="30">Um mês</option>
+                </select>
+            </span>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive">
+            <thead>
+                <tr>
+                    <th>Representante</th>
+                    <th>Milhas</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="data in leaderBoardingData">
+                    <td>{{data.dealer}}</td>
+                    <td>{{formatNumber(data.miles, 0)}}</td>
+                    <td>{{formatNumber(data.value)}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </section>
+</div>

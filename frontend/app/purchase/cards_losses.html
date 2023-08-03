@@ -1,0 +1,212 @@
+<div id="cards_pendency_page" class="page page-table contention zoom" data-ng-controller="CardsLossesCtrl">
+
+    <section class="panel panel-default table-dynamic" ng-show="tabindex == 0">
+        <div class="panel-heading"><strong></span> Cartões com pendencia</strong></div>
+
+        <div class="table-filters">
+            <div class="row">
+                <form>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="text"
+                                   placeholder="Pesquisar..."
+                                   class="form-control"
+                                   data-ng-model="searchKeywords"
+                                   data-ng-model-options='{ debounce: 1000 }'
+                                   data-ng-change="search()">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive">
+            <thead>
+                <tr>
+                    <th><div class="th">
+                        Nome
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('partnerName') "
+                              data-ng-class="{active: row == 'partnerName'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('partnerName') "
+                              data-ng-class="{active: row == '-partnerName'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        CPF
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('registrationCode') "
+                              data-ng-class="{active: row == 'registrationCode'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('registrationCode') "
+                              data-ng-class="{active: row == '-registrationCode'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Companhia
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('airline') "
+                              data-ng-class="{active: row == 'airline'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('airline') "
+                              data-ng-class="{active: row == '-airline'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Estoque
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('leftOver') "
+                              data-ng-class="{active: row == 'leftOver'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('leftOver') "
+                              data-ng-class="{active: row == '-leftOver'}"></span>
+                    </div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="cards in cardsBloqued" ng-click="setSelected();">
+                    <td>{{cards.partnerName}}</td>
+                    <td>{{cards.registrationCode}}</td>
+                    <td>{{cards.airline}}</td>
+                    <td>{{formatNumber(cards.leftOver, 0)}}</td>
+                    
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show 
+                        <select data-ng-model="numPerPage"
+                                data-ng-options="num for num in numPerPageOpt"
+                                data-ng-change="onNumPerPageChange()">
+                        </select> 
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 pagination-container">
+                    <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="totalData"
+                                max-size="4"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true"></pagination>
+                </div>
+                <div class="col-md-4 text-right page-num-info">
+                    <span>
+                        Showing {{cardsBloqued.length}}/{{totalData}} entries
+                    </span>              
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <!-- Input -->
+    <section class="panel panel-default" ng-show="tabindex == 1">
+
+        <div class="panel-heading"><strong>Dados da Compra</strong></div>
+        <div class="panel-body">
+            <div class="divider"></div>
+            <div class="ui-tab-container">
+                <tabset justified="true" class="ui-tab">
+                    <tab heading="Dados do Cartão">
+                        <div class="ui-tab-container">
+                            <div class="panel-body">
+                                <form class="form-horizontal" name="form_purchase">
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-2">Nome</label>
+                                        <div class="col-sm-5">
+                                            <input type="text" ng-model="selected.partnerName" class="form-control" id="label-focus" ng-readonly="true">
+                                        </div>
+                                        <label for="" class="col-sm-1">Email</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" data-ng-model="selected.email" ng-readonly="true">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-2">Companhia</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" ng-model="selected.airline" typeahead="state for state in states | filter:$viewValue | limitTo:8" class="form-control" placeholder="Pesquisar" ng-readonly="true">
+                                        </div>
+
+                                        <label for="" class="col-sm-1">Milhas</label>
+                                        <div class="col-sm-4">
+                                            <input type="number" class="form-control" data-ng-model="selected.leftOver" ng-readonly="true">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-2">Numero Cartão</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" id="label-focus" ng-model="selected.card_number" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                      <div class="col-sm-1">
+                                      </div>
+                                      <div class="col-sm-1">
+                                          <label>Bloqueado</label>
+                                          <label class="switch">
+                                          <input type="checkbox" ng-model="selected.bloqued" ng-checked="selected.bloqued"><i></i></label>
+                                      </div>
+                                      <div class="col-sm-1">
+                                      </div>
+                                      <div class="col-sm-1">
+                                          <label>Prioridade</label>
+                                          <label class="switch">
+                                          <input type="checkbox" ng-model="selected.priority" ng-checked="selected.priority"><i></i></label>
+                                      </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-6">
+                                            <button class="btn btn-warning" ng-click="back();">Voltar</button>
+                                        </div>
+                                        <div class="col-sm-6 text-right">
+                                            <button class="btn btn-success" ng-click="saveStatus();">Salvar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </tab>
+                    <tab heading="Progresso">
+                      <form class="form-horizontal" name="form_purchase">
+                          <div class="form-group">
+                              <label for="" class="col-sm-2">Tipo de Cartão</label>
+                              <div class="col-sm-8">
+                                  <textarea type="text" class="form-control" ng-model="selected.newProgress"/>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                          </div>
+                          <div class="form-group">
+                              <div class="col-sm-6">
+                                  <button class="btn btn-warning" ng-click="back();">Voltar</button>
+                              </div>
+                              <div class="col-sm-6 text-right">
+                                  <button class="btn btn-success" ng-click="savePrograss();">Salvar Andamento</button>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                          </div>
+                          <div class="form-group" ng-repeat="log in selected.progress">
+                              <div class="col-sm-1">
+                                  <label>{{findDate(log.issue_date) | date:'dd/MM/yyyy'}}<br>{{findDate(log.issue_date) | date:'HH:mm:ss'}}</label>
+                              </div>
+                              <div class="col-sm-1">
+                                  <label>{{log.userName}}</label>
+                              </div>
+                              <div class="col-sm-8">
+                                  <textarea type="text" class="form-control" ng-model="log.description" disabled/>
+                              </div><br><br>
+                          </div>
+                      </form>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </section>
+    <!-- end Input -->
+</div>  

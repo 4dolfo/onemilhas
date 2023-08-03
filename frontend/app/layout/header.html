@@ -1,0 +1,471 @@
+<header class="clearfix">
+    <a id="menu-toggle" href="#/" data-toggle-min-nav class="toggle-min">
+        <i class="fa fa-bars"></i>
+    </a>
+
+    <!-- Logo -->
+    <div class="logo">
+        <a href="#/dashboard">
+            <span id="header_title">{{main.brand}}</span>
+        </a>
+    </div>
+
+    <!-- needs to be put after logo to make it working-->
+    <div class="menu-button badge-background-color" toggle-off-canvas>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </div>
+
+    <div class="top-nav">
+        <ul class="nav-left list-unstyled" ng-if="!mobilecheck()">
+            <li class="dropdown draggable" dropdown is-open="isopeBell">
+                <a class="dropdown-toggle" dropdown-toggle ng-disabled="disabled" ng-click="toggleOpen()">
+                    <i class="fas fa-bell badge-color nav-icon"></i>
+                    <span class="badge badge-warning">{{notifications.length}}</span>
+                </a>
+                <div class="dropdown-menu with-arrow panel panel-default">
+                    <div class="panel-heading">
+                        Você tem {{notifications.length}} notificações.
+                        <!-- <button type="button" class="btn btn-info smallBtn text-right" ng-click="newNote();">Novo</button> -->
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="notification in notifications">
+                            <a class="media">
+                                <span class="media-left media-icon">
+                                    <span class="round-icon sm bg-info">
+                                        <i class="fas fa-bell badge-color"></i>
+                                    </span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">{{notification}}</span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <!-- <li class="list-group-item">
+                            <a class="media">
+                                <span class="media-left media-icon">
+                                    <span class="round-icon sm bg-success"><i class="fa fa-bell-o"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">Novos pedidos realizados</span>
+                                    <span class="text-muted block">2min atras</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a class="media">
+                                <span class="media-left media-icon">
+                                    <span class="round-icon sm bg-info"><i class="fa fa-bell-o"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">Alteração de senha</span>
+                                    <span class="text-muted">3 horas atras</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a class="media">
+                                <span class="media-left media-icon">
+                                    <span class="round-icon sm bg-danger"><i class="fa fa-bell-o"></i></span>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">Novo cliente cadastrado</span>
+                                    <span class="text-muted">9 horas atras</span>
+                                </div>
+                            </a>
+                        </li> -->
+                    </ul>
+                    <div class="panel-footer text-right">
+                        <button type="button" class="btn btn-indo smallBtn" ng-click="removeAll();">Limpar</button>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        
+
+        <ul class="nav-left list-unstyled">
+            <li ng-show="(main.isMaster || main.sale || main.wizardSale || main.commercial || main.milesBench || main.changeMiles || main.internRefund) && !main.dealer">
+                <div data-ng-controller="ClientDataCtrl">
+                    <script type="text/ng-template" style="max-height: 420px; overflow-y: auto;" id="ClientData.html">
+                    <div class="modal-header blockClass">
+                        <h3>Clientes</h3>
+                    </div>
+                    <div class="modal-body modal-body">
+                      <form class="form-horizontal ng-pristine ng-valid">
+                        <div class="form-group">
+                            <label for="" class="col-sm-4 blockClass">Pesquisar</label>
+                          <div class="col-sm-8">
+                            <input type="text"
+                                class="form-control blockClass"
+                                ng-model="filter.name"
+                                data-ng-model-options="{ debounce: 500 }"
+                                data-ng-change="search()">
+                          </div>
+                        </div>
+                        <table class="table table-bordered table-striped table-responsive">
+                            <thead>
+                                <tr class="blockClass">
+                                    <th><div class="th">
+                                        Nome
+                                    </div></th>
+                                    <th><div class="th">
+                                        Telefone
+                                    </div></th>
+                                    <th><div class="th">
+                                        Telefone 2
+                                    </div></th>
+                                    <th><div class="th">
+                                        Pagamento
+                                    </div></th>
+                                    <th><div class="th">
+                                        Status
+                                    </div></th>
+                                    <th><div class="th">
+                                        Credito
+                                    </div></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-ng-repeat="client in clients" class="blockClass">
+                                    <td><label>{{client.name}}</label></td>
+                                    <td>{{client.phoneNumber}}</td>
+                                    <td>{{client.phoneNumber2}}</td>
+                                    <td>{{client.paymentType}}</td>
+                                    <td>{{client.status}}</td>
+                                    <td>{{ formatNumber(client.total_credits) }}</td>
+                                </tr>
+                            </tbody>
+                      </table>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-warning" ng-click="cancel();">Fechar</button>
+                    </div>
+                  </script>
+                    <button type="button" class="btn btn-line-info" ng-click="open()">Clientes</button>
+                </div>
+            </li>
+            <li ng-show="main.isMaster || main.permission">
+                <div data-ng-controller="ProvidersDialogDataCtrl">
+                    <script type="text/ng-template" style="max-height: 420px; min-height: 240px; overflow-y: auto;" id="ProviderData.html">
+                    <div class="modal-header blockClass">
+                        <h3>Fornecedores</h3>
+                    </div>
+                    <div class="modal-body modal-body">
+                      <form class="form-horizontal ng-pristine ng-valid">
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 blockClass">Pesquisar</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control blockClass" ng-model-options='{ debounce: 1000 }' ng-change="search()" ng-model="filter.name" typeahead="provider.name for provider in providers | filter:$viewValue | limitTo:8">
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-info" ng-click="search();">Buscar</button>
+                            </div>
+                        </div>
+                        <table class="table table-bordered table-striped table-responsive" ng-show="showData">
+                            <thead>
+                                <tr class="blockClass">
+                                    <th><div class="th">
+                                        Nome
+                                    </div></th>
+                                    <th><div class="th">
+                                        Telefone
+                                    </div></th>
+                                    <th><div class="th">
+                                        Telefone 2
+                                    </div></th>
+                                    <th><div class="th">
+                                        Telefone 3
+                                    </div></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <trclass="blockClass">
+                                    <td><label>{{filtered.name}}</label></td>
+                                    <td>{{filtered.phoneNumber}}</td>
+                                    <td>{{filtered.phoneNumber2}}</td>
+                                    <td>{{filtered.phoneNumber3}}</td>
+                                </tr>
+                            </tbody>
+                      </table>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-warning" ng-click="cancel();">Fechar</button>
+                    </div>
+                  </script>
+                    <button type="button" class="btn btn-line-info" ng-click="open()">Fornecedores</button>
+                </div>
+            </li>
+            <li>
+                <div data-ng-controller="NotesCtrl" ng-if="!mobilecheck()">
+                    <script type="text/ng-template" style="max-height: 420px; overflow-y: auto;" id="Notes.html">
+                    <div class="modal-header blockClass">
+                        <h3>Notas</h3>
+                    </div>
+                    <div class="modal-body modal-body">
+                      <form class="form-horizontal ng-pristine ng-valid">
+                        <div class="form-group">
+                            <label for="" class="col-sm-4 blockClass">Pesquisar</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control blockClass" ng-keyup="search()" ng-model="filter.name">
+                          </div>
+                        </div>
+                        <div class="form-group" ng-repeat="note in filteredNotes">
+                            <div class="col-sm-11">
+                                <textarea type="text" class="form-control" ng-model="note.reminder" disabled/>
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-danger btn-xs" ng-click="remove(note)">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-11">
+                                <textarea type="text" class="form-control" ng-model="new.description"/>
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-success btn-xs" ng-click="createNote()">+</button>
+                            </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-warning" ng-click="cancel();">Fechar</button>
+                    </div>
+                  </script>
+                    <button type="button" class="btn btn-line-info" ng-click="open()">Notas</button>
+                </div>
+            </li>
+            <li>
+                <div data-ng-controller="ChecklistCtrl" ng-if="!mobilecheck()">
+                    <script type="text/ng-template" style="max-height: 420px; overflow-y: auto;" id="Checklist.html">
+                    <div class="modal-header blockClass">
+                        <h3>Checklist</h3>
+                    </div>
+                    <div class="modal-body modal-body">
+                      <form class="form-horizontal ng-pristine ng-valid">
+                        <div class="form-group" ng-repeat="note in checklist">
+                            <div class="col-sm-8">
+                                <textarea type="text" class="form-control" ng-model="note.task" disabled/>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="switch" class="col-sm-1">
+                                    <input type="checkbox" ng-click="checkNote(note)" ng-model="note.done" ng-checked="note.done"><i></i>
+                                    <p ng-if="note.checkDate != ''"> {{ findDate(note.checkDate) | date:'dd/MM/yyyy HH:mm:ss' }} </p>
+                                </label>
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-danger btn-xs" ng-click="remove(note)">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group">
+                            <div class="col-sm-11">
+                                <textarea type="text" class="form-control" ng-model="new.task"/>
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-success btn-xs" ng-click="createNote()">+</button>
+                            </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-warning" ng-click="cancel();">Fechar</button>
+                    </div>
+                  </script>
+
+                    <button type="button" ng-if="main.financial" class="btn btn-line-info" ng-click="open()">Checklist</button>
+                    <span style="margin-left: -20px;" ng-if="userTasks > 0" class="badge badge-warning">{{userTasks}}</span>
+                </div>
+            </li>
+            <li ng-show="(main.wizardSale || main.isMaster) && !main.dealer">
+                <div data-ng-controller="ResponsesCtrl">
+                    <script type="text/ng-template" style="max-height: 420px; overflow-y: auto;" id="Responses.html">
+                    <div class="modal-header">
+                        <h3>Respostas</h3>
+                    </div>
+                    <div class="modal-body modal-body">
+                      <form class="form-horizontal ng-pristine ng-valid">
+                        <div class="form-group">
+                            <label for="" class="col-sm-4">Pesquisar</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control" ng-keyup="search()" ng-model="filter.name">
+                          </div>
+                        </div>
+                        <div class="form-group" ng-repeat="note in filteredNotes">
+                            <div class="col-sm-11">
+                                <textarea type="text" class="form-control" ng-model="note.reminder" readonly/>
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-danger btn-xs" ng-click="remove(note)">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+
+                                <button style="margin-top: 8px;" type="button" class="btn btn-warning btn-xs" copy-to-clipboard="{{note.reminder}}">
+                                    <span class="fas fa-copy"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-11">
+                                <textarea type="text" class="form-control" ng-model="new.description"/>
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-success btn-xs" ng-click="createNote()">+</button>
+                            </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-warning" ng-click="cancel();">Fechar</button>
+                    </div>
+                  </script>
+                    <button type="button" class="btn btn-line-info" ng-click="open()">Respostas</button>
+                </div>
+            </li>
+        </ul>
+
+        <ul class="nav-right list-unstyled" ng-if="main.wizardSale && !mobilecheck()">
+            <li>
+                <div data-ng-controller="InfoCtrl">
+                    <script type="text/ng-template" style="width: 1000px; margin-left: -190px; overflow-y: auto;" id="Info.html">                       
+                        <div class="panel panel-default ht">
+                            <div class="panel-heading blockClass">
+                                <center><h3>Informações</h3></center>
+                            </div>
+                            <div class="panel-body panel-body">                                
+                                <form class="form-horizontal ng-pristine ng-valid">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-1"></div>
+                                            <div class="col-sm-2">
+                                                <label for="" class="col-sm-5 blockClass">Pesquisar</label>
+                                            </div>
+                                            <div class="col-sm-7">
+                                                <input type="text" class="form-control blockClass" ng-keyup="search()" ng-model="filter.name">
+                                            </div>
+                                            <div class="col-sm-2">
+                                            </div>
+                                        </div>     
+                                    </div>
+                                    <div class="form-group" ng-repeat="info in filteredInfo">
+                                        <div class="row">
+                                            <div class="col-sm-1"></div>
+                                            <div class="col-sm-9">
+                                                <textarea style="height:150px;" type="text" class="panel form-control" ng-model="info.reminder" disabled/>
+
+                                                <h6>Lido por :</h6>
+                                                <ui-select multiple ng-model="info.read[0]" theme="bootstrap" close-on-select="false" style="width: 600px; height: 50px;" title="Não foi lido por ninguém" ng-disabled ="info || !info">
+                                                    <ui-select-match placeholder="">{{$item.name}}</ui-select-match>
+                                                    <ui-select-choices repeat="read in info.read[0] | filter:$select.search">
+                                                        {{read.name}}
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <hr>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <button ng-if="main.id == 8693 || main.isMaster" type="button" class="btn btn-danger btn-xs" ng-click="remove(info)">
+                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                </button>
+                                                <br>
+                                                <br>
+                                                <div class="has-warning">
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input ng-disabled="info.checkBox" type="checkbox" ng-model="info.checkBox"
+                                                                ng-change="toggleCheckFunction(info)" id="checkboxWarning" value="option1">Lido</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>                                                                                
+                                    </div>
+                                    <div class="form-group" ng-if="main.id == 8693 || main.isMaster">
+                                        <div class="row">
+                                            <div class="col-sm-1"></div>
+                                            <div class="col-sm-9">
+                                                <textarea id="texteArea" style="height:150px;" type="text" class="panel form-control" ng-model="new.description"  maxlength="5000" />
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <button type="button" class="btn btn-success btn-xs" ng-click="createInfo()">+</button>
+                                            </div>
+                                        </div>                                        
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="panel-footer">
+                                <button type="button" class="btn btn-warning" ng-click="cancel();">Fechar</button>
+                            </div>
+                        </div>
+                    </script>
+                    <button type="button" class="btn btn-line-info" ng-click="open()">Informações</button>
+                </div>
+            </li>
+        </ul>
+        <ul class="nav-left list-unstyled" ng-if="main.wizardSale">
+            <li class="dropdown draggable" dropdown is-open="isopeBell" data-ng-controller="InfoCtrl">
+                <a class="dropdown-toggle" dropdown-toggle ng-disabled="disabled" ng-click="toggleOpen()">
+                    <h3><span ng-if="notificationsInfo.length > 0" ng-change="toggleCheckFunction()" style="margin-left: -20px; position: absolute; left: 0px; width: 20px;" class="badge badge-warning">{{notificationsInfo.length}}</span></h3>
+                </a>
+                <div class="dropdown-menu with-arrow panel panel-default">
+                    <div class="panel-heading">
+                        Você tem {{notificationsInfo.length}} notificações.
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="notification in notificationsInfo track by $index ">
+                            <a class="media">
+                                <span class="media-left media-icon">
+                                    <span class="round-icon sm bg-info">
+                                        <i class="fa fa-bell-o"></i>
+                                    </span>
+                                </span>
+                                <div class="media-body">
+                                  <span>{{notification}}</span>                                 
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="panel-footer text-right">
+                        <button type="button" class="btn btn-indo smallBtn" ng-click="removeAll();">Limpar</button>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+        <ul class="nav-right pull-right list-unstyled">
+            <li class="dropdown text-normal nav-profile" dropdown is-open="status.isopenProfile">
+                <a href="javascript:;" class="dropdown-toggle" dropdown-toggle ng-disabled="disabled">
+                    <img src={{main.image}} alt="" class="img-circle img30_30">
+                    <span class="hidden-xs">
+                        <span id="header_title" data-i18n={{main.name}}></span>
+                    </span>
+                </a>
+                <ul class="dropdown-menu with-arrow pull-right">
+                    <li>
+                        <a href="#/page/profile">
+                            <i class="fa fa-user"></i>
+                            <span>Meu Perfil</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#/page/lock-screen">
+                            <i class="fa fa-lock"></i>
+                            <span>Bloquear</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#/page/signin" ng-click="signOut()">
+                            <i class="fa fa-sign-out"></i>
+                            <span>Sign Out</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</header>

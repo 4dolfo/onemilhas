@@ -1,0 +1,1963 @@
+<div id="refund_page" class="page page-table contention" ng-controller="RefoundCtrl">
+    <section class="panel panel-default table-dynamic" ng-show="tabindex == 0 && pendencys.length > 0">
+        <div class="panel-heading">
+            <strong>Pendencias</strong>
+            <div data-ng-controller="SalePendencyDescriptionModalCtrl">
+                <script type="text/ng-template" id="SalePendencyModalDescription.html">
+                    <div class="modal-header">
+                        <h3>Definição de pendência</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal ng-pristine ng-valid">
+                            <div class="form-group" ng-repeat="log in logsPendencys">
+                                <label for="" class="col-sm-2">{{findDate(log.issue_date) | date:'dd/MM/yyyy HH:mm:ss'}}</label>
+                                <label for="" class="col-sm-2">{{log.userName}}</label>
+                                <div class="col-sm-8">
+                                    <textarea type="text" class="form-control" ng-model="log.description" disabled />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-4">Descrição motivo</label>
+                                <div class="col-sm-8">
+                                    <textarea type="text" class="form-control" ng-model="selected.pendencyDescription"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4"></div>
+                                <div class="col-sm-8">
+                                    <label class="switch">Pendência
+                                    <input type="checkbox" ng-model="selected.isPendency" ng-checked="selected.isPendency"><i></i></label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" ng-click="ok();">OK</button>
+                        <button type="button" class="btn btn-warning" ng-click="cancel();">Cancel</button>
+                    </div>
+                </script>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="th">
+                            ID
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Data Venda
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Status
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Cliente
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Companhia
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Passageiro
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Localizador
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Origem
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Destino
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Milhas Usadas
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Embarque
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            External ID
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="sale in pendencys" class="draggable" ng-click="setSelectedPendency(sale);">
+                    <td>{{sale.id}}</td>
+                    <td>{{findDate(sale.issueDate) | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                    <td>
+                        <span class="{{saleTag(sale.status)}}">{{sale.status}}</span>
+                    </td>
+                    <td>{{sale.client}}</td>
+                    <td>{{sale.airline}}</td>
+                    <td>{{sale.paxName}}</td>
+                    <td>{{sale.flightLocator}}</td>
+                    <td>{{sale.from}}</td>
+                    <td>{{sale.to}}</td>
+                    <td>
+                        <div class="text-right">{{formatNumber(sale.milesused,0)}}</div>
+                    </td>
+                    <td>{{findDate(sale.boardingDate) | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                    <td>{{sale.externalId}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="panel panel-default table-dynamic" ng-show="tabindex == 0">
+        <div class="panel-heading">
+            <strong>Evento de Venda</strong>
+            <div class="col-sm-2" ng-show="main.isMaster || main.changeMiles">
+                <button type="button" class="btn btn-line-info smallBtn" ng-click="findRefundByFilter()">Reembolsos</button>
+            </div>
+        </div>
+
+        <div class="table-filters">
+            <div class="row">
+                <form>
+                    <div class="form-group">
+                        <div class="col-sm-5" ng-hide="isEmitter()">
+                            <input type="text" placeholder="Pesquisar..." class="form-control" data-ng-model="searchKeywords" data-ng-model-options="{ debounce: 500 }"
+                                data-ng-change="loadOrders()">
+                        </div>
+                        <div class="col-sm-2">
+                            <script type="text/ng-template" id="SaleRefoundModalDemoCtrl.html">
+                                <div class="modal-header">
+                                    <h3>Pesquisa Avançada</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-horizontal ng-pristine ng-valid">
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Nome Fornecedor</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.providerName" typeahead="provider.name for provider in providers | filter:$viewValue | limitTo:8" placeholder="Pesquisar" > 
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-hide="isEmitter()">
+                                            <label for="" class="col-sm-4">CPF Fornecedor</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.providerRegistrationCode">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Cliente</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.client" typeahead="client.name for client in clients | filter:$viewValue | limitTo:8" placeholder="Pesquisar" > 
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-hide="isEmitter()">
+                                            <label for="" class="col-sm-4">Cartão</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.cardNumber">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Passageiro</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.paxName">
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-hide="isEmitter()">
+                                            <label for="" class="col-sm-4">Companhia</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.airline">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Localizador</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.flightLocator">
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-hide="isEmitter()">
+                                            <label for="" class="col-sm-4">E-ticket</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.ticket_code">
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-hide="isEmitter()">
+                                            <label for="" class="col-sm-4">ID Pedido Online</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.externalid">
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-hide="isEmitter()">
+                                            <label for="" class="col-sm-4">Status</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="filter.status" typeahead="status for status in saleStatus | filter:$viewValue | limitTo:8" placeholder="Pesquisar" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-hide="isEmitter()">
+                                            <label for="" class="col-sm-12">Data Embarque</label>
+                                        </div>
+                                        <div class="form-group" ng-hide="isEmitter()">
+                                            <label for="" class="col-sm-4">De</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group ui-datepicker">
+                                                    <input type="date" 
+                                                       id='saleboardingDateFrom'
+                                                       ng-model="filter.boardingDateFrom"
+                                                       class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-hide="isEmitter()">
+                                            <label for="" class="col-sm-4">Até</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group ui-datepicker">
+                                                    <input type="date" 
+                                                       id='saleboardingDateTo'
+                                                       ng-model="filter.boardingDateTo"
+                                                       class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-hide="isEmitter()">
+                                            <label for="" class="col-sm-12">Data Venda</label>
+                                        </div>
+                                        <div class="form-group" ng-hide="isEmitter()">
+                                            <label for="" class="col-sm-4">De</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group ui-datepicker">
+                                                    <input type="date" 
+                                                       ng-model="filter.saleDateFrom"
+                                                       class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-hide="isEmitter()">
+                                            <label for="" class="col-sm-4">Até</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group ui-datepicker">
+                                                    <input type="date" 
+                                                       ng-model="filter.saleDateTo"
+                                                       class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-show="main.changeMiles" ng-hide="isEmitter()">
+                                            <label for="" class="col-sm-12">Data Reembolso</label>
+                                        </div>
+                                        <div class="form-group" ng-show="main.changeMiles" ng-hide="isEmitter()">
+                                            <label for="" class="col-sm-4">De</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group ui-datepicker">
+                                                    <input type="date" 
+                                                       ng-model="filter.refundDateFrom"
+                                                       class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-show="main.changeMiles" ng-hide="isEmitter()">
+                                            <label for="" class="col-sm-4">Até</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group ui-datepicker">
+                                                    <input type="date" 
+                                                       ng-model="filter.refundDateTo"
+                                                       class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-show="main.changeMiles" ng-hide="isEmitter()">
+                                            <label for="" class="col-sm-12">Data Retorno</label>
+                                        </div>
+                                        <div class="form-group" ng-show="main.changeMiles" ng-hide="isEmitter()">
+                                            <label for="" class="col-sm-4">De</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group ui-datepicker">
+                                                    <input type="date" 
+                                                       ng-model="filter.returnDateFrom"
+                                                       class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-show="main.changeMiles" ng-hide="isEmitter()">
+                                            <label for="" class="col-sm-4">Até</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group ui-datepicker">
+                                                    <input type="date" 
+                                                       ng-model="filter.returnDateTo"
+                                                       class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" ng-click="ok();">OK</button>
+                                    <button type="button" class="btn btn-warning" ng-click="cancel();">Cancel</button>
+                                </div>
+                            </script>
+                            <button type="button" class="btn btn-default" ng-click="openSearchModal()">
+                                <span class="glyphicon glyphicon-search"></span> Pesquisa Avançada</button>
+                        </div>
+                        <div class="col-sm-2" ng-show="main.isMaster || main.changeMiles || main.sale">
+
+                            <div class="btn-group dropdown" dropdown is-open="isopenDropDown">
+                                <button type="button" class="btn btn-info dropdown-toggle" dropdown-toggle ng-disabled="disabled">Relatorio
+                                    <span class="caret"></span>
+                                </button>
+                                <div class="dropdown-menu with-arrow panel panel-default">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <button ng-click="printNoShowListOrderBy();" class="btn btn-info"> Agrupado</button>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <button ng-click="printNoShowList();" class="btn btn-info"> Sem Agrupar</button>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <button ng-click="refundsToCsv();" class="btn btn-info"> export</button>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <button ng-click="reportSales();" class="btn btn-info"> export Vendas</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- <button type="button" class="btn btn-info" ng-click="printNoShowList()"> Relatorio</button> -->
+                        </div>
+                        <div class="col-sm-2" ng-show="main.isMaster || main.sale">
+                            <button type="button" class="btn btn-line-info" ng-click="toRefundConference();">Conferência Reembolsos</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive" ng-hide="showRefunds">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="th">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            ID
+                            <span class="fa fa-angle-up" data-ng-click=" order('id') " data-ng-class="{active: row == 'id'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('id') " data-ng-class="{active: row == '-id'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Data Venda
+                            <span class="fa fa-angle-up" data-ng-click=" order('issueDate') " data-ng-class="{active: row == 'issueDate'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('issueDate') " data-ng-class="{active: row == '-issueDate'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Status
+                            <span class="fa fa-angle-up" data-ng-click=" order('status') " data-ng-class="{active: row == 'status'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('status') " data-ng-class="{active: row == '-status'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Cliente
+                            <span class="fa fa-angle-up" data-ng-click=" order('client') " data-ng-class="{active: row == 'client'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('client') " data-ng-class="{active: row == '-client'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Companhia
+                            <span class="fa fa-angle-up" data-ng-click=" order('airline') " data-ng-class="{active: row == 'airline'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('airline') " data-ng-class="{active: row == '-airline'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Passageiro
+                            <span class="fa fa-angle-up" data-ng-click=" order('paxName') " data-ng-class="{active: row == 'paxName'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('paxName') " data-ng-class="{active: row == '-paxName'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Localizador
+                            <span class="fa fa-angle-up" data-ng-click=" order('flightLocator') " data-ng-class="{active: row == 'flightLocator'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('flightLocator') " data-ng-class="{active: row == '-flightLocator'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Origem
+                            <span class="fa fa-angle-up" data-ng-click=" order('from') " data-ng-class="{active: row == 'from'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('from') " data-ng-class="{active: row == '-from'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Destino
+                            <span class="fa fa-angle-up" data-ng-click=" order('to') " data-ng-class="{active: row == 'to'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('to') " data-ng-class="{active: row == '-to'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Milhas Usadas
+                            <span class="fa fa-angle-up" data-ng-click=" order('milesused') " data-ng-class="{active: row == 'milesused'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('milesused') " data-ng-class="{active: row == '-milesused'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Embarque
+                            <span class="fa fa-angle-up" data-ng-click=" order('boardingDate') " data-ng-class="{active: row == 'boardingDate'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('boardingDate') " data-ng-class="{active: row == '-boardingDate'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            External ID
+                            <span class="fa fa-angle-up" data-ng-click=" order('externalId') " data-ng-class="{active: row == 'externalId'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" orderDown('externalId') " data-ng-class="{active: row == '-externalId'}"></span>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="sale in sales" class="draggable">
+                    <td>
+                        <input ng-model="sale.checked" name="checkbillspay" type="checkbox" ng-click='addRow()' value="option1">
+                    </td>
+                    <td ng-click="setSelected();">{{sale.id}}</td>
+                    <td ng-click="setSelected();">{{findDate(sale.issueDate) | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                    <td ng-click="setSelected();">
+                        <span class="{{saleTag(sale.status)}}">{{sale.status}}</span>
+                    </td>
+                    <td ng-click="setSelected();">{{sale.client}}</td>
+                    <td ng-click="setSelected();">{{sale.airline}}</td>
+                    <td ng-click="setSelected();">{{sale.paxName}}</td>
+                    <td ng-click="setSelected();">{{sale.flightLocator}}</td>
+                    <td ng-click="setSelected();">{{sale.from}}</td>
+                    <td ng-click="setSelected();">{{sale.to}}</td>
+                    <td ng-click="setSelected();">
+                        <div class="text-right">{{formatNumber(sale.milesused,0)}}</div>
+                    </td>
+                    <td ng-click="setSelected();">{{findDate(sale.boardingDate) | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                    <td ng-click="setSelected();">{{sale.externalId}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer" ng-hide="showRefunds">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show
+                        <select data-ng-model="numPerPage" data-ng-options="num for num in numPerPageOpt" data-ng-change="onNumPerPageChange()">
+                        </select>
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 pagination-container">
+                    <pagination class="pagination-sm" ng-model="currentPageSale" total-items="totalData" max-size="4" ng-change="select(currentPageSale)"
+                        items-per-page="numPerPage" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" boundary-links="true"></pagination>
+                </div>
+                <div class="col-md-4 text-right page-num-info">
+                    <span>
+                        Showing {{sales.length}}/{{totalData}} entries
+                    </span>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <section class="panel panel-default" ng-show="tabindex == 1">
+        <div class="panel-heading">
+            <strong>Venda</strong>
+            <div data-ng-controller="SalePendencyModalCtrl">
+                <script type="text/ng-template" id="SalePendencyModal.html">
+                    <div class="modal-header">
+                        <h3>Definição de pendência</h3>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal ng-pristine ng-valid">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4">Descrição motivo</label>
+                                <div class="col-sm-8">
+                                    <textarea type="text" class="form-control" ng-model="selected.pendencyDescription"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4"></div>
+                                <div class="col-sm-8">
+                                    <label class="switch">Pendência
+                                    <input type="checkbox" ng-model="selected.isPendency" ng-checked="selected.isPendency"><i></i></label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" ng-click="ok();">OK</button>
+                        <button type="button" class="btn btn-warning" ng-click="cancel();">Cancel</button>
+                    </div>
+                </script>
+                <button type="button" class="btn btn-default smallBtn" ng-click="open()">Definir Pendência</button>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="divider"></div>
+            <div class="ui-tab-container">
+                <tabset justified="true" class="ui-tab">
+                    <tab heading="Dados do Pedido">
+                        <form class="form-horizontal" name="sale_formorder">
+                            <div class="form-group" ng-show="main.isMaster || main.sale || main.changeSale">
+                                <label for="" class="col-sm-2">Usuário</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id='saleairline' ng-model="selected.user" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Companhia</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id='saleairline' ng-model="selected.airline" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-hide="selected.saleByThird == 'Y'">
+                                <label for="" class="col-sm-2">Forncedor</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id='saleprovider' ng-model="selected.providerName" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Cliente</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id='saleclient' ng-model="selected.client" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-show="selected.saleByThird == 'Y'">
+                                <label for="" class="col-sm-2">Venda por terceiro</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id='saleclient' ng-model="selected.providerName" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Metodo de venda</label>
+                                <div class="col-sm-5">
+                                    <input type="text" ng-model="selected.sale_method" class="form-control" disabled>
+                                </div>
+
+                                <label for="" class="col-sm-1">Emissor</label>
+                                <div class="col-sm-4">
+                                    <input type="text" ng-model="selected.issuing" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Origem</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id='saleairportfrom' ng-model="selected.airportNamefrom" typeahead="airport.label for airport in airports | filter:$viewValue | limitTo:8"
+                                        class="form-control" placeholder="Pesquisar" disabled>
+                                </div>
+                                <label for="" class="col-sm-2">Destino</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id='saleairportto' ng-model="selected.airportNameto" typeahead="airport.label for airport in airports | filter:$viewValue | limitTo:8"
+                                        class="form-control" placeholder="Pesquisar" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Data Embarque</label>
+                                <div class="col-sm-4">
+                                    <input type="datetime-local" placeholder="yyyy-MM-ddTHH:mm:ss" id='saleboardingDate' ng-model="boardingDate" class="form-control"
+                                        disabled>
+                                </div>
+
+                                <label for="" class="col-sm-2">Data Desembarque</label>
+                                <div class="col-sm-4">
+                                    <input type="datetime-local" placeholder="yyyy-MM-ddTHH:mm:ss" ng-model="landingDate" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Descrição Vôo</label>
+                                <div class="col-sm-4">
+                                    <input type="text" ng-model="selected.flight" class="form-control" disabled>
+                                </div>
+                                <label for="" class="col-sm-2">Horário/Trajeto</label>
+                                <div class="col-sm-4">
+                                    <input type="text" ng-model="selected.flightHour" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Observação</label>
+                                <div class="col-sm-10">
+                                    <input type="text" ng-model="selected.description" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Passageiro</label>
+                                <div class="col-sm-3">
+                                    <input type="text" ng-model="selected.paxName" class="form-control" disabled>
+                                </div>
+                                <label for="" class="col-sm-1">Nascimento</label>
+                                <div class="col-sm-2">
+                                    <div class="input-group ui-datepicker">
+                                        <input type="date" id='salepaxBirthdate' class="form-control" ng-model="paxBirthdate" disabled>
+                                    </div>
+                                </div>
+                                <label for="" class="col-sm-1">Documento</label>
+                                <div class="col-sm-3">
+                                    <input type="text" ng-model="selected.paxRegistrationCode" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-6">
+                                    <button type="button" class="btn btn-danger" ng-click="toggleFormTable();">Cancelar Alteração</button>
+                                </div>
+                            </div>
+                        </form>
+                    </tab>
+                    <tab heading="Solicitar Reembolso" ng-show="main.isMaster || main.sale || main.changeMiles">
+                        <form class="form-horizontal" name="sale_formflight">
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Localizador</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" ng-model="selected.flightLocator" disabled>
+                                </div>
+
+                                <label for="" class="col-sm-2">Status Borderô</label>
+                                <br>
+                                <div class="col-sm-4">
+                                    <div ng-repeat="bill in selected.billetStatus" ng-show="main.isMaster || main.changeMiles || main.sale">
+                                        <label for="">{{bill.type}} - {{bill.status}} - ${{formatNumber(bill.value)}}</label>
+                                        <br>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Ticket</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" ng-model="selected.ticket_code" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Taxa Aeroporto</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" ng-blur="setKickBack()" ng-model="selected.tax" id="saletax" disabled>
+                                </div>
+                                <label for="" class="col-sm-2">Taxa DU</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" ng-blur="setKickBack()" ng-model="selected.duTax" disabled id="saledutax">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Bagagem</label>
+                                <div class="col-sm-4">
+                                    <input type="number" class="form-control" disabled ng-model="selected.baggage_price">
+                                </div>
+
+                                <label for="" class="col-sm-2">Assento conforto</label>
+                                <div class="col-sm-4">
+                                    <input type="number" class="form-control" disabled ng-model="selected.special_seat">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Milhas Trecho</label>
+                                <div class="col-sm-4">
+                                    <input type="text" disabled class="form-control" ng-model="selected.milesOriginal" id="salemilesused">
+                                </div>
+                                <label for="" class="col-sm-2">Valor Cobrado</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" ng-blur="setKickBack()" ng-model="selected.amountPaid" id="saleamountpaid" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Cartão de Crédito</label>
+                                <div class="col-sm-4">
+                                    <input type="text" disabled class="form-control" ng-model="selected.cardTax">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-3">Data Expiração Pontos</label>
+                                <div class="col-sm-5">
+                                    {{findDate(selected.expirationDate) | date:'dd/MM/yyyy'}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-3">Ultima Compra</label>
+                                <div class="col-sm-5">
+                                    {{findDate(selected.lastPurchase) | date:'dd/MM/yyyy'}}
+                                </div>
+                            </div>
+                            <div class="form-group" ng-show="(selected.status != 'Reembolso Solicitado' && selected.status != 'Reembolso CIA' && selected.status != 'Reembolso No-show Solicitado') && (main.isMaster || main.changeMiles)">
+                                <label for="" class="col-sm-3">Data Retorno</label>
+                                <div class="col-sm-6">
+                                    {{findDate(selected.returnDate) | date:'dd/MM/yyyy'}}
+                                </div>
+                            </div>
+ 
+                            <div class="form-group" ng-if=" ( main.saleRevertRefund || main.isMaster ) && ( selected.status == 'Reembolso Solicitado' || selected.status == 'Reembolso CIA' || selected.status == 'Reembolso Confirmado'  || selected.status == 'Reembolso No-show Solicitado'  || selected.status == 'Reembolso No-show Confirmado' || selected.status == 'Reembolso Nao Solicitado' || selected.status == 'Reembolso Perdido' || selected.status == 'Remarcação Solicitado' || selected.status == 'Remarcação Confirmado' ) ">
+                                <div class="col-sm-2">
+                                    <button class="btn btn-info" ng-click="revertStatus();">Reverter Status</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="text-center">
+                                    <div data-ng-controller="BloquedCardWaitingModalCtrl">
+                                        <script type="text/ng-template" id="BloquedCardWaitingModalCtrl.html">
+                                        <div class="modal-header">
+                                            <h3>Registro</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form class="form-horizontal ng-pristine ng-valid">
+                                                <textarea type="text" class="form-control" ng-model="card.description"/>
+                                                <div class="form-group">
+                                                </div>
+                                                <label class="switch">Bloquear
+                                                <input type="checkbox" ng-model="card.blocked" ng-checked="card.blocked"><i></i></label>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-warning" ng-click="cancel()">Cancelar</button>
+                                            <button class="btn btn-info" ng-click="ok()">Registrar</button>
+                                        </div>
+                                    </script>
+                                        <button class="btn btn-info" ng-click="open();">Bloquear Cartão</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Status Pedido</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" ng-model="selected.status" disabled>
+                                </div>
+
+                                <div class="col-sm-2" ng-show="selected.status == 'Emitido' || selected.status == 'Remarcação Solicitado' || selected.status == 'Reembolso Pendente' || selected.status == 'Remarcação Confirmado' || selected.status == 'Reembolso No-show Solicitado' || selected.status == 'Reembolso No-show Confirmado' ">
+                                    <button type="button" class="btn btn-info" ng-click="fillEmailContent()"> Enviar Orçamento</button>
+                                </div>
+
+                                <div class="col-sm-2" ng-controller="RefundCtrl" ng-show="selected.status == 'Emitido' || selected.status == 'Reembolso Pendente' || selected.status == 'Remarcação Solicitado' || selected.status == 'Remarcação Confirmado' || selected.status == 'Reembolso No-show Solicitado' || selected.status == 'Reembolso No-show Confirmado'">
+                                    <script type="text/ng-template" id="Refund.html">
+                                        <div class="modal-header">
+                                            <h3>Solicitar Reembolso</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form class="form-horizontal ng-pristine ng-valid">
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-12 label label-danger">{{getTextRefund()}}</label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-4">Valor Custo de Cancelamento do bilhete</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="number" class="form-control" ng-model="refund.valueRefund" id="refundvalue">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-4">Valor Custo do Cliente</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="number" class="form-control" ng-model="refund.value"id="value">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-4">No-show</label>
+                                                    <div class="col-sm-8">
+                                                        <label class="switch">
+                                                        <input  type="checkbox" ng-model="refund.noShow" ng-checked="refund.noShow"><i></i></label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-4">Data expiração dos pontos</label>
+                                                    <div class="col-sm-8">
+                                                        {{findDate(selected.expirationDate) | date:'dd/MM/yyyy'}}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-4">Parceiro</label>
+                                                    <span class="ui-select">
+                                                      <select ng-model="refund.partner">
+                                                          <option class="form-control" ng-repeat="method in saleMethods" value="{{method}}">{{method}}</option>
+                                                      </select>
+                                                    </span>
+                                                </div>
+                                                <div class="form-group">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-4">Pesquisar</label>
+                                                    <span class="ui-select">
+                                                      <select ng-model="filter.card_number" ng-change="search()">
+                                                          <option class="form-control" ng-repeat="card in internalCards" value="{{card.card_number}}">{{card.card_number}}</option>
+                                                      </select>
+                                                    </span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-4">Numero Cartão</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" ng-model="refund.tax_card"class="form-control" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-4">Senha</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" ng-model="refund.tax_password"class="form-control" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-4">Tipo</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" ng-model="refund.tax_cardType" class="form-control" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-4">Vencimento</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="date" ng-model="refund.tax_dueDate" class="form-control" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-4">Fornecedor</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" ng-model="refund.tax_providerName" class="form-control" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                  <label for="" class="col-sm-4">CPF</label>
+                                                  <div class="col-sm-8">
+                                                    <input type="text" ng-model="refund.provider_registration" class="form-control" disabled>
+                                                  </div>
+                                                </div>
+                                                <div class="form-group">
+                                                  <label for="" class="col-sm-4">Endereço</label>
+                                                  <div class="col-sm-8">
+                                                    <input type="text" ng-model="refund.provider_adress" class="form-control" disabled>
+                                                  </div>
+                                                </div>
+                                                <div class="form-group">
+                                                  <label for="" class="col-sm-4">Nascimento</label>
+                                                  <div class="col-sm-8">
+                                                    <input type="date" ng-model="refund.birthdate" class="form-control" disabled>
+                                                  </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <div class="text-left col-sm-6">
+                                                <button type="button" class="btn btn-warning" ng-click="cancel()">Fechar</button>
+                                            </div>
+                                            <div class="text-right col-sm-6">
+                                                <button type="button" class="btn btn-primary" ng-click="ok()">Confirmar</button>
+                                            </div>
+                                        </div>
+                                    </script>
+                                    <button type="button" class="btn btn-info" ng-click="open()">
+                                        <span class="fa fa-history"></span> Solicitar Reembolso</button>
+                                </div>
+
+                                <div class="col-sm-6" ng-controller="RefundCtrl" ng-show="(selected.status == 'Reembolso Solicitado' || selected.status == 'Reembolso CIA' || selected.status == 'Reembolso No-show Solicitado') && (main.isMaster || main.changeMiles)">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-info" ng-click="closeRefund()">
+                                            <span class="fa fa-history"></span> Confirmar Reembolso</button>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-3">Alterar cartão utilizado</label>
+                                        <span class="ui-select">
+                                            <select ng-model="selected.tax_card">
+                                                <option class="form-control" ng-repeat="card in internalCards" value="{{card.card_number}}">{{card.card_number}}</option>
+                                            </select>
+                                        </span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-3">Data Retorno</label>
+                                        <div class="input-group ui-datepicker">
+                                            <input type="date" class="form-control" ng-model="selected.returnDate" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-3">Valor Custo</label>
+                                        <div class="col-sm-5">
+                                            <input type="number" class="form-control" ng-model="selected.billsPayValue">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-show="(selected.status == 'Reembolso Solicitado' || selected.status == 'Reembolso No-show Solicitado') && (main.isMaster || main.changeMiles) ">
+                                <label for="" class="col-sm-2">Data Solicitação</label>
+                                <div class="col-sm-3">
+                                    <input type="date" class="form-control" ng-model="selected.airlineSolicitation">
+                                </div>
+                                <div class="col-sm-4">
+                                    <button class="btn btn-info" ng-click="ConfirmSolicitation();">Alterar Status para Solicitado na CIA</button>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-show="(selected.status == 'Reembolso Solicitado' || selected.status == 'Reembolso No-show Solicitado') && (main.isMaster || main.changeMiles) ">
+                                <label for="" class="col-sm-2">Reembolso</label>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-primary" ng-click="noRefundModal(false);">Reembolso não solcititado</button>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-primary" ng-click="noRefundModal(true);">Reembolso Perdido</button>
+                                </div>
+
+                                <!-- Modal -->
+                                <div>
+                                    <script type="text/ng-template" id="reembolsoConfirm.html">
+                                        <div class="modal-header">
+                                            <h3 ng-show="is_perdido">Reembolso Perdido</h3>
+                                            <h3 ng-hide="is_perdido">Reembolso Não Solicitado</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h4>Confirmar operação?</h4>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-primary" ng-click="ok()">Sim</button>
+                                            <button class="btn btn-warning" ng-click="cancel()">Não</button>
+                                        </div>
+                                    </script>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-danger" ng-click="toggleFormTable();">Cancelar Alteração</button>
+                                </div>
+                                <div class="col-sm-3" ng-controller="ShowCardCtrl">
+                                    <script type="text/ng-template" id="Card.html">
+                                            <div class="modal-header">
+                                                <h3>Dados Cartão</h3>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form class="form-horizontal ng-pristine ng-valid">
+                                                    <div class="form-group">
+                                                        <label for="" class="col-sm-4">Numero Cartão</label>
+                                                        <div class="col-sm-8">
+                                                           {{cards.card_number}} / {{cards.card_registrationCode}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="" class="col-sm-4">Senha</label>
+                                                        <div class="col-sm-8">
+                                                            {{cards.recovery_password}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group" ng-show="selected.airline == 'TAM' || selected.airline == 'LATAM'">
+                                                        <label for="" class="col-sm-4">Senha de Resgate</label>
+                                                        <div class="col-sm-8">
+                                                          <input type="text" class="form-control" ng-model="cards.access_password" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group" ng-show="selected.airline == 'TAM' || selected.airline == 'LATAM'">
+                                                        <label for="" class="col-sm-4">Assinatura eletronica</label>
+                                                        <div class="col-sm-8">
+                                                          <input type="text" class="form-control" ng-model="cards.access_id" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group" ng-show="selected.airline == 'TAM' || selected.airline == 'LATAM'">
+                                                        <label for="" class="col-sm-4">Tipo de Cartão</label>
+                                                        <div class="col-sm-8">
+                                                          <input type="text" class="form-control" ng-model="cards.card_type" disabled>
+                                                        </div>
+                                                    </div><br>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                            <div class="text-left col-sm-6">
+                                                <button type="button" class="btn btn-warning" ng-click="cancel()">Fechar</button>
+                                            </div>
+                                            </div>
+                                        </script>
+                                    <button type="button" class="btn btn-warning" ng-click="open();">Dados Cartão</button>
+                                </div>
+                            </div>
+                        </form>
+                    </tab>
+                    <tab heading="Remarcação" ng-show="main.isMaster || main.sale || main.changeMiles" ng-click="openRepricingWarning()">
+                        <div class="panel-heading">
+                            <strong>Valores Originas</strong>
+                        </div>
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="" class="col-sm-1">Origem</label>
+                                <div class="col-sm-5">
+                                    <input type="text" id='saleairportfrom' ng-model="selected.airportNamefrom" typeahead="airport.label for airport in airports | filter:$viewValue | limitTo:8"
+                                        class="form-control" placeholder="Pesquisar" disabled>
+                                </div>
+                                <label for="" class="col-sm-1">Destino</label>
+                                <div class="col-sm-5">
+                                    <input type="text" id='saleairportto' ng-model="selected.airportNameto" typeahead="airport.label for airport in airports | filter:$viewValue | limitTo:8"
+                                        class="form-control" placeholder="Pesquisar" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Data Embarque</label>
+                                <div class="col-sm-4">
+                                    <input type="datetime-local" placeholder="yyyy-MM-ddTHH:mm:ss" id='saleboardingDate' ng-model="boardingDate" class="form-control"
+                                        disabled>
+                                </div>
+
+                                <label for="" class="col-sm-2">Data Desembarque</label>
+                                <div class="col-sm-4">
+                                    <input type="datetime-local" placeholder="yyyy-MM-ddTHH:mm:ss" ng-model="landingDate" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-1">Localizador</label>
+                                <div class="col-sm-3">
+                                    <input type="text" ng-model="selected.flightLocator" class="form-control" disabled>
+                                </div>
+                                <label for="" class="col-sm-1">Ticket</label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" ng-model="selected.ticket_code">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-1">Descrição Vôo</label>
+                                <div class="col-sm-2">
+                                    <input type="text" ng-model="selected.flight" class="form-control" disabled>
+                                </div>
+                                <label for="" class="col-sm-1">Horário/Trajeto</label>
+                                <div class="col-sm-2">
+                                    <input type="text" ng-model="selected.flightHour" class="form-control" disabled>
+                                </div>
+                                <label for="" class="col-sm-1">Milhas Usadas</label>
+                                <div class="col-sm-2">
+                                    <input type="text" ng-model="selected.milesused" id="milesOld" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </form>
+                        <br>
+                        <form class="form-horizontal" name="sale_formflight">
+                            <div class="panel-heading">
+                                <strong>Valores Novos</strong>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Origem</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id='saleairportfrom' ng-model="repricing.airportNamefrom" typeahead="airport.label for airport in airports | filter:$viewValue | limitTo:8"
+                                        class="form-control" placeholder="Pesquisar" required>
+                                </div>
+                                <label for="" class="col-sm-2">Destino</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id='saleairportto' ng-model="repricing.airportNameto" typeahead="airport.label for airport in airports | filter:$viewValue | limitTo:8"
+                                        class="form-control" placeholder="Pesquisar" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Data Embarque</label>
+                                <div class="col-sm-4">
+                                    <input type="datetime-local" ng-model="repricing.boardingDate" class="form-control"
+                                        required>
+                                </div>
+                                <label for="" class="col-sm-2">Data Desembarque</label>
+                                <div class="col-sm-4">
+                                    <input type="datetime-local" ng-model="repricing.landingDate" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-1">Descrição Vôo</label>
+                                <div class="col-sm-2">
+                                    <input type="text" ng-model="repricing.flight" class="form-control" required>
+                                </div>
+                                <label for="" class="col-sm-1">Localizador</label>
+                                <div class="col-sm-2">
+                                    <input type="text" ng-model="repricing.flightLocator" class="form-control">
+                                </div>
+                                <label for="" class="col-sm-1">Horário/Trajeto</label>
+                                <div class="col-sm-2">
+                                    <input type="text" ng-model="repricing.flightHour" class="form-control" required>
+                                </div>
+                                <label for="" class="col-sm-1">Diferença em Milhas</label>
+                                <div class="col-sm-2">
+                                    <input type="text" ng-model="repricing.milesused" id="newMiles" class="form-control" ng-blur="milesusedBlur()" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-1">valor p/1000</label>
+                                <div class="col-sm-2">
+                                    <input type="text" ng-model="repricing.newValue" id="newValue" class="form-control" required>
+                                </div>
+                                <label for="" class="col-sm-2">Custo Remarcação</label>
+                                <div class="col-sm-2">
+                                    <input type="text" id="repricingCost" ng-model="repricing.cost" class="form-control" required>
+                                </div>
+
+                                <span class="ui-select">
+                                    <!-- 
+                                    <select ng-model="repricing.method" id="repricing.method">
+                                        <option class="form-control" ng-repeat="possibilities in safePossibilities" value="{{possibilities.method}}">{{possibilities.method}}</option>
+                                    </select>
+                                    -->
+                                    
+                                    <select ng-model="repricing.method" ng-options="possibilities.method as possibilities.method for possibilities in safePossibilities"></select>
+                                </span>
+
+                                <div class="col-sm-2" ng-show="selected.status == 'Remarcação Solicitado' ">
+                                    <button type="button" class="btn btn-info" ng-click="confirmRepricing();">Confirmar retorno dos pontos</button>
+                                </div>
+
+                                <!-- <label for="" class="col-sm-1">Remarcação por parceiro</label>
+                                <span class="ui-select">
+                                  <select ng-model="repricing.partner">
+                                      <option class="form-control" ng-repeat="method in saleMethods" value="{{method}}">{{method}}</option>
+                                  </select>
+                              </span> -->
+                            </div>
+                            <div class="form-group">
+                                <div class="text-center">
+                                    <div data-ng-controller="BloquedCardWaitingModalCtrl">
+                                        <script type="text/ng-template" id="BloquedCardWaitingModalCtrl.html">
+                                        <div class="modal-header">
+                                            <h3>Registro</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form class="form-horizontal ng-pristine ng-valid">
+                                                <textarea type="text" class="form-control" ng-model="card.description"/>
+                                                <div class="form-group">
+                                                </div>
+                                                <label class="switch">Bloquear
+                                                <input type="checkbox" ng-model="card.blocked" ng-checked="card.blocked"><i></i></label>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-warning" ng-click="cancel()">Cancelar</button>
+                                            <button class="btn btn-info" ng-click="ok()">Registrar</button>
+                                        </div>
+                                    </script>
+                                        <button class="btn btn-info" ng-click="open();">Bloquear Cartão</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-6">
+                                    <button type="button" class="btn btn-danger" ng-click="toggleFormTable();">Cancelar Alteração</button>
+                                    <div class="col-sm-6" ng-controller="ShowCardCtrl">
+                                        <script type="text/ng-template" id="Card.html">
+                                            <div class="modal-header">
+                                                <h3>Dados Cartão</h3>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form class="form-horizontal ng-pristine ng-valid">
+                                                    <div class="form-group">
+                                                        <label for="" class="col-sm-4">Numero Cartão</label>
+                                                        <div class="col-sm-8">
+                                                           {{cards.card_number}} / {{cards.card_registrationCode}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="" class="col-sm-4">Senha</label>
+                                                        <div class="col-sm-8">
+                                                            {{cards.recovery_password}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="" class="col-sm-4">Email</label>
+                                                        <div class="col-sm-8">
+                                                            {{cards.email_provider}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group" ng-show="selected.airline == 'TAM' || selected.airline == 'LATAM'">
+                                                        <label for="" class="col-sm-4">Senha de Resgate</label>
+                                                        <div class="col-sm-8">
+                                                          <input type="text" class="form-control" ng-model="cards.access_password" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group" ng-show="selected.airline == 'TAM' || selected.airline == 'LATAM'">
+                                                        <label for="" class="col-sm-4">Assinatura eletronica</label>
+                                                        <div class="col-sm-8">
+                                                          <input type="text" class="form-control" ng-model="cards.access_id" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group" ng-show="selected.airline == 'TAM' || selected.airline == 'LATAM'">
+                                                        <label for="" class="col-sm-4">Tipo de Cartão</label>
+                                                        <div class="col-sm-8">
+                                                          <input type="text" class="form-control" ng-model="cards.card_type" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="" class="col-sm-4">Restante Banco de Milhas</label>
+                                                        <div class="col-sm-8">
+                                                            {{formatNumber(cards.leftOver, 0)}}
+                                                        </div>
+                                                    </div><br>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-warning" ng-click="cancel()">Fechar</button>
+                                            </div>
+                                        </script>
+                                        <button type="button" class="btn btn-warning" ng-click="open();">Dados Cartão</button>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <button type="button" class="btn btn-info" ng-click="fillEmailRepricing();">Enviar Orçamento</button>
+
+                                    <div class="col-sm-2" ng-show="selected.status == 'Emitido' || 'Remarcação Solicitado' || 'Remarcação Confirmado' ">
+                                        <script type="text/ng-template" id="RepricingCtrl.html">
+                                          <div class="modal-header">
+                                              <h3>Solicitar Remarcação</h3>
+                                          </div>
+                                          <div class="modal-body">
+                                              <form class="form-horizontal ng-pristine ng-valid">
+                                                  <div class="form-group">
+                                                      <label for="" class="col-sm-4">Valor Custo de Cancelamento do bilhete</label>
+                                                      <div class="col-sm-8">
+                                                          <input type="number" class="form-control" ng-model="repricing.valuerepricing"id="repricingvalue">
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label for="" class="col-sm-4">Valor Custo do Cliente</label>
+                                                      <div class="col-sm-8">
+                                                          <input type="number" class="form-control" ng-model="repricing.value"id="value">
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label for="" class="col-sm-4">Parceiro</label>
+                                                      <span class="ui-select">
+                                                        <select ng-model="repricing.partner">
+                                                            <option class="form-control" ng-repeat="method in saleMethods" value="{{method}}">{{method}}</option>
+                                                        </select>
+                                                      </span>
+                                                  </div>
+                                                  <div class="form-group">
+                                                  </div>
+                                                  <div class="form-group" ng-show="repricing.milesused < 0">
+                                                      <label for="" class="col-sm-4">Pontos Retornaram</label>
+                                                      <div class="col-sm-8">
+                                                          <label class="switch">
+                                                          <input  type="checkbox" ng-model="repricing.returnMiles" ng-checked="repricing.returnMiles"><i></i></label>
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-group">
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label for="" class="col-sm-4">Pesquisar</label>
+                                                      <span class="ui-select">
+                                                        <select ng-model="filter.card_number" ng-change="search()">
+                                                            <option class="form-control" ng-repeat="card in internalCards" value="{{card.card_number}}">{{card.card_number}}</option>
+                                                        </select>
+                                                      </span>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label for="" class="col-sm-4">Numero Cartão</label>
+                                                      <div class="col-sm-8">
+                                                          <input type="text" ng-model="repricing.tax_card"class="form-control" disabled>
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label for="" class="col-sm-4">Senha</label>
+                                                      <div class="col-sm-8">
+                                                          <input type="text" ng-model="repricing.tax_password"class="form-control" disabled>
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label for="" class="col-sm-4">Tipo</label>
+                                                      <div class="col-sm-8">
+                                                          <input type="text" ng-model="repricing.tax_cardType" class="form-control" disabled>
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label for="" class="col-sm-4">Vencimento</label>
+                                                      <div class="col-sm-8">
+                                                          <input type="date" ng-model="repricing.tax_dueDate" class="form-control" disabled>
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label for="" class="col-sm-4">Fornecedor</label>
+                                                      <div class="col-sm-8">
+                                                          <input type="text" ng-model="repricing.tax_providerName" class="form-control" disabled>
+                                                      </div>
+                                                  </div>
+                                                  <div class="form-group">
+                                                    <label for="" class="col-sm-4">CPF</label>
+                                                    <div class="col-sm-8">
+                                                      <input type="text" ng-model="repricing.provider_registration" class="form-control" disabled>
+                                                    </div>
+                                                  </div>
+                                                  <div class="form-group">
+                                                    <label for="" class="col-sm-4">Endereço</label>
+                                                    <div class="col-sm-8">
+                                                      <input type="text" ng-model="repricing.provider_adress" class="form-control" disabled>
+                                                    </div>
+                                                  </div>
+                                                  <div class="form-group">
+                                                    <label for="" class="col-sm-4">Nascimento</label>
+                                                    <div class="col-sm-8">
+                                                      <input type="date" ng-model="repricing.birthdate" class="form-control" disabled>
+                                                    </div>
+                                                  </div>
+                                              </form>
+                                          </div>
+
+                                          <div class="modal-footer">
+                                              <div class="text-left col-sm-6">
+                                                  <button type="button" class="btn btn-warning" ng-click="cancel()">Fechar</button>
+                                              </div>
+                                              <div class="text-right col-sm-6">
+                                                  <button type="button" class="btn btn-primary" ng-click="ok()">Confirmar</button>
+                                              </div>
+                                          </div>
+                                      </script>
+                                        <button type="button" class="btn btn-info" ng-click="openRepricingModal()">Gerar Remarcação</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </tab>
+                    <tab heading="Cancelamento">
+                        <form>
+                            <div class="form-group">
+                                <div class="col-sm-6 text-right" ng-controller="CancelCtrl" ng-show="selected.status == 'Cancelamento Pendente' || selected.status == 'Pendente' || selected.status == 'Emitido'">
+                                    <script type="text/ng-template" id="Cancel.html">
+                                        <div class="modal-header">
+                                            <h3>Cancelamento de Venda</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form class="form-horizontal ng-pristine ng-valid">
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-4">Numero Cartão</label>
+                                                    <div class="col-sm-8">
+                                                      <input type="text" class="form-control" ng-model="cards.card_number" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-4">Senha</label>
+                                                    <div class="col-sm-8">
+                                                      <input type="text" class="form-control" ng-model="cards.recovery_password" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" ng-show="selected.airline == 'TAM' || selected.airline == 'LATAM'">
+                                                    <label for="" class="col-sm-4">Senha de Resgate</label>
+                                                    <div class="col-sm-8">
+                                                      <input type="text" class="form-control" ng-model="cards.access_password" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-4">Titular</label>
+                                                    <div class="col-sm-8">
+                                                      <input type="text" class="form-control" ng-model="cards.name_provider" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-4">Endereço</label>
+                                                    <div class="col-sm-8">
+                                                      <input type="text" class="form-control" ng-model="cards.adress_provider" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-4">Email</label>
+                                                    <div class="col-sm-8">
+                                                      <input type="text" class="form-control" ng-model="cards.email_provider" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" ng-show="selected.airline=='TAM' || selected.airline=='LATAM'">
+                                                    <label for="" class="col-sm-4">Senha de Resgate</label>
+                                                    <div class="col-sm-8">
+                                                      <input type="text" class="form-control" ng-model="cards.access_password" disabled>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-4">Nosso Custo</label>
+                                                    <div class="col-sm-8">
+                                                      <input type="text" id="ourCost" class="form-control" ng-model="selected.ourCost">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-4">Data Solicitação Cancelamento</label>
+                                                    <div class="col-sm-8">
+                                                      <input type="date" class="form-control" ng-model="selected.cancelDate">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-4">Custo Cancelamento do Cliente</label>
+                                                    <div class="col-sm-8">
+                                                      <input type="text" id="cancelcost" class="form-control" ng-model="selected.CancelCost">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-4">Motivo Cancelamento</label>
+                                                    <div class="col-sm-8">
+                                                      <input type="text" class="form-control" ng-model="selected.CancelReason">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <div class="text-left col-sm-6">
+                                                <button type="button" class="btn btn-warning" ng-click="cancel()">Voltar</button>
+                                            </div>
+                                            <div class="text-right col-sm-6">
+                                                <button type="button" class="btn btn-primary" ng-click="ok()">Cancelar Venda</button>
+                                            </div>
+                                        </div>
+                                    </script>
+                                    <button type="button" class="btn btn-warning" ng-click="open();">Cancelar Pedido</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div ng-show="selected.status=='Cancelamento Solicitado' && (main.isMaster || main.sale || main.changeSale || main.changeMiles)">
+                                    <div class="col-md-4">
+                                        <label for="" class="col-sm-4">Data retorno dos pontos</label>
+                                        <div class="col-sm-4">
+                                            <input type="date" class="form-control" ng-model="selected.returnPointsDate">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="col-sm-12">
+                                            <button type="button" class="btn btn-info" ng-click="ClosecancelSale();">Cancelamento Confirmado</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-show="selected.status=='Cancelamento Solicitado' && (main.isMaster || main.sale || main.changeSale || main.changeMiles)">
+                                    <div class="col-md-4">
+                                        <div class="col-sm-12">
+                                            <button type="button" class="btn btn-info" ng-click="notConfirmedCancelSale();">Cancelamento Não Solicitado</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12" ng-if=" ( main.saleRevertRefund || main.isMaster ) && ( selected.status == 'Cancelamento Solicitado' || selected.status == 'Cancelamento Efetivado' ) ">
+                                    <button class="btn btn-info" ng-click="revertStatus();">Reverter Status</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12" ng-show="selected.status != 'Cancelamento Solicitado'">
+                                    <button type="button" class="btn btn-info" ng-click="fillEmailCancel();">Enviar Orçamento</button>
+                                </div>
+                            </div>
+                        </form>
+                    </tab>
+                    <tab heading="Histórico" ng-show="main.isMaster || main.sale || main.changeMiles">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="panel panel-profile">
+                                        <ul ng-repeat="log in saleLog" class="list-unstyled list-info">
+                                            <li>
+                                                <label>{{findDate(log.issue_date) | date:'dd/MM/yyyy HH:mm:ss'}}</label>
+                                                <label ng-if="log.partner">{{log.partner}}</label>
+                                                {{log.description}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4">Descrição</label>
+                                <div class="col-sm-8">
+                                    <textarea type="text" class="form-control" ng-model="selected.saleLog" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-info" ng-click="registerLog();">Registrar Confirmado</button>
+                            </div>
+                        </form>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel panel-default mail-container mail-compose" ng-show="tabindex == 2">
+        <div class="panel-heading">
+            <strong>Escrever Email</strong>
+        </div>
+        <div class="panel-body">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label for="mail_to" class="col-xs-2">Para:</label>
+                    <div class="col-xs-10">
+                        <input type="text" ng-model="wsalemail.emailpartner" id="mail_to" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="mail_cc" class="col-xs-2">CC:</label>
+                    <div class="col-xs-10">
+                        <input type="text" id="mail_cc" ng-model="wsalemail.mailcc" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="mail_subject" class="col-xs-2">Assunto:</label>
+                    <div class="col-xs-10">
+                        <input type="text" id="mail_subject" ng-model="wsalemail.subject" class="form-control">
+                    </div>
+                </div>
+                <div text-angular ng-model="wsalemail.emailContent" ng-class="ui-editor">
+                </div>
+            </form>
+            <div class="mail-actions">
+                <div class="text-left col-sm-6">
+                    <button type="button" class="btn btn-warning" ng-click="back();">cancelar</button>
+                </div>
+                <div class="text-right col-sm-6">
+                    <button type="button" ng-click="mailOrder();" class="btn btn-primary">enviar</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel panel-default" ng-show="showRefunds">
+        <div class="col-md-12">
+            <div class="panel-body">
+                <div morris-refund-chart data-data="refundsChart" data-type="line" data-xkey="month" data-ykeys='["refunds", "returns"]'
+                    data-labels='["Reembolsos", "Retornos"]' data-bar-colors='["#176799","#42A4BB","#78D6C7"]' style="height: 400px;"></div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="panel-body"> TOTAL: {{refunds.length}}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>CIA</th>
+                            <th>LOC</th>
+                            <th>PAX</th>
+                            <th>CLIENTE</th>
+                            <th>MILHAS</th>
+                            <th>REEMBOLSO</th>
+                            <th>RETORNO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="refund in filteredSales">
+                            <td>{{refund.airline}}</td>
+                            <td>{{refund.flightLocator}}</td>
+                            <td>{{refund.paxName}}</td>
+                            <td>{{refund.client}}</td>
+                            <td class="text-right">{{formatNumber(refund.milesused, 0)}}</td>
+                            <td>{{findDate(refund.refundDate) | date:'dd/MM/yyyy'}}</td>
+                            <td>{{findDate(refund.returnDate) | date:'dd/MM/yyyy'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel panel-default table-dynamic" ng-show="tabindex == 3">
+        <div class="panel-heading">
+            <span>
+                <strong>Conferencia de Reembolsos</strong>
+            </span>
+        </div>
+
+        <div class="table-filters">
+            <div class="row">
+                <div class="col-md-2">
+                    <button class="btn btn-info" ng-click="backToSale();">Listagem de Vendas</button>
+                </div>
+                <div class="col-sm-2">
+                    <script type="text/ng-template" id="SaleRefoundConferenceModalDemoCtrl.html">
+                        <div class="modal-header">
+                            <h3>Pesquisa Avaçada</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal ng-pristine ng-valid">
+                                <div class="form-group" ng-hide="isEmitter()">
+                                    <label for="" class="col-sm-4">Companhia</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" ng-model="filterConference.airline">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-4">Localizador</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" ng-model="filterConference.flightLocator">
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-hide="isEmitter()">
+                                    <label for="" class="col-sm-4">Status</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" ng-model="filterConference.status" typeahead="status for status in saleStatus | filter:$viewValue | limitTo:8" placeholder="Pesquisar" >
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-hide="isEmitter()">
+                                    <label for="" class="col-sm-12">Data Embarque</label>
+                                </div>
+                                <div class="form-group" ng-hide="isEmitter()">
+                                    <label for="" class="col-sm-4">De</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group ui-datepicker">
+                                            <input type="date" 
+                                                id='saleboardingConferenceDateFrom'
+                                                ng-model="filterConference.boardingDateFrom"
+                                                class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-hide="isEmitter()">
+                                    <label for="" class="col-sm-4">Até</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group ui-datepicker">
+                                            <input type="date" 
+                                                id='saleboardingConferenceDateTo'
+                                                ng-model="filterConference.boardingDateTo"
+                                                class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-hide="isEmitter()">
+                                    <label for="" class="col-sm-12">Data Venda</label>
+                                </div>
+                                <div class="form-group" ng-hide="isEmitter()">
+                                    <label for="" class="col-sm-4">De</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group ui-datepicker">
+                                            <input type="date" 
+                                                ng-model="filterConference.saleDateFrom"
+                                                class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-hide="isEmitter()">
+                                    <label for="" class="col-sm-4">Até</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group ui-datepicker">
+                                            <input type="date" 
+                                                ng-model="filterConference.saleDateTo"
+                                                class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-show="main.changeMiles" ng-hide="isEmitter()">
+                                    <label for="" class="col-sm-12">Data Reembolso</label>
+                                </div>
+                                <div class="form-group" ng-show="main.changeMiles" ng-hide="isEmitter()">
+                                    <label for="" class="col-sm-4">De</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group ui-datepicker">
+                                            <input type="date" 
+                                                ng-model="filterConference.refundDateFrom"
+                                                class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-show="main.changeMiles" ng-hide="isEmitter()">
+                                    <label for="" class="col-sm-4">Até</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group ui-datepicker">
+                                            <input type="date" 
+                                                ng-model="filterConference.refundDateTo"
+                                                class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-show="main.changeMiles" ng-hide="isEmitter()">
+                                    <label for="" class="col-sm-12">Data Retorno</label>
+                                </div>
+                                <div class="form-group" ng-show="main.changeMiles" ng-hide="isEmitter()">
+                                    <label for="" class="col-sm-4">De</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group ui-datepicker">
+                                            <input type="date" 
+                                                ng-model="filterConference.returnDateFrom"
+                                                class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-show="main.changeMiles" ng-hide="isEmitter()">
+                                    <label for="" class="col-sm-4">Até</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group ui-datepicker">
+                                            <input type="date" 
+                                                ng-model="filterConference.returnDateTo"
+                                                class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" ng-click="okConference();">OK</button>
+                            <button type="button" class="btn btn-warning" ng-click="cancelConference();">Cancel</button>
+                        </div>
+                    </script>
+                    <button type="button" class="btn btn-default" ng-click="openSearchModalTwo()">
+                        <span class="glyphicon glyphicon-search"></span> Pesquisa Avançada</button>
+                </div>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive" name="table_client">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="th">
+                            Companhia
+                            <span class="fa fa-angle-up" data-ng-click=" order('airline') " data-ng-class="{active: row == 'airline'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" order('-airline') " data-ng-class="{active: row == '-airline'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Cliente
+                            <span class="fa fa-angle-up" data-ng-click=" order('client') " data-ng-class="{active: row == 'client'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" order('-client') " data-ng-class="{active: row == '-client'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Fornecedor
+                            <span class="fa fa-angle-up" data-ng-click=" order('providerName') " data-ng-class="{active: row == 'providerName'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" order('-providerName') " data-ng-class="{active: row == '-providerName'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Passageiro
+                            <span class="fa fa-angle-up" data-ng-click=" order('paxName') " data-ng-class="{active: row == 'paxName'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" order('-paxName') " data-ng-class="{active: row == '-paxName'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Valor
+                            <span class="fa fa-angle-up" data-ng-click=" order('Amount') " data-ng-class="{active: row == 'Amount'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" order('-Amount') " data-ng-class="{active: row == '-Amount'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Localizador
+                            <span class="fa fa-angle-up" data-ng-click=" order('flightLocator') " data-ng-class="{active: row == 'flightLocator'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" order('-flightLocator') " data-ng-class="{active: row == '-flightLocator'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Ticket
+                            <span class="fa fa-angle-up" data-ng-click=" order('ticket_code') " data-ng-class="{active: row == 'ticket_code'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" order('-ticket_code') " data-ng-class="{active: row == '-ticket_code'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Status
+                            <span class="fa fa-angle-up" data-ng-click=" order('status') " data-ng-class="{active: row == 'status'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" order('-status') " data-ng-class="{active: row == '-status'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Milhas
+                            <span class="fa fa-angle-up" data-ng-click=" order('milesused') " data-ng-class="{active: row == 'milesused'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" order('-milesused') " data-ng-class="{active: row == '-milesused'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Valor CIA
+                            <span class="fa fa-angle-up" data-ng-click=" order('valueCia') " data-ng-class="{active: row == 'valueCia'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" order('-valueCia') " data-ng-class="{active: row == '-valueCia'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            Trecho
+                            <span class="fa fa-angle-up" data-ng-click=" order('from') " data-ng-class="{active: row == 'from'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" order('-from') " data-ng-class="{active: row == '-from'}"></span>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="th">
+                            CheckIn
+                            <span class="fa fa-angle-up" data-ng-click=" order('checkinState') " data-ng-class="{active: row == 'checkinState'}"></span>
+                            <span class="fa fa-angle-down" data-ng-click=" order('-checkinState') " data-ng-class="{active: row == '-checkinState'}"></span>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="refund in refunds">
+                    <td ng-click="setSelectedRefund()">{{refund.airline}}</td>
+                    <td ng-click="setSelectedRefund()">{{refund.client}}</td>
+                    <td ng-click="setSelectedRefund()">{{refund.providerName}}</td>
+                    <td ng-click="setSelectedRefund()">{{refund.paxName}}</td>
+                    <td ng-click="setSelectedRefund()">
+                        <div class="text-right">{{formatNumber(refund.amount)}}</div>
+                    </td>
+                    <td ng-click="setSelectedRefund()">{{refund.flightLocator}}</td>
+                    <td ng-click="setSelectedRefund()">{{refund.ticket_code}}</td>
+                    <td ng-click="setSelectedRefund()">{{refund.status}}</td>
+                    <td ng-click="setSelectedRefund()">
+                        <div class="text-right">{{formatNumber(refund.milesused, 0)}}</div>
+                    </td>
+                    <td ng-click="setSelectedRefund()">
+                        <div class="text-right">{{formatNumber(refund.valueCia)}}</div>
+                    </td>
+                    <td ng-click="setSelectedRefund()">{{refund.from}} - {{refund.to}}</td>
+                    <td ng-click="setSelectedRefund()">
+                        <label class="switch">
+                            <input type="checkbox" ng-model="refund.checkinState" ng-checked="refund.checkinState" ng-click="setRefundCheck(refund)">
+                            <i></i>
+                        </label>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="panel panel-default" ng-show="tabindex == 4">
+        <div class="panel-heading">
+            <strong>Venda</strong>
+        </div>
+        <div class="panel-body">
+            <div class="divider"></div>
+            <div class="ui-tab-container">
+                <tabset justified="true" class="ui-tab">
+                    <tab heading="Dados do Pedido">
+                        <form class="form-horizontal" name="sale_formorder">
+                            <div class="form-group" ng-show="main.isMaster || main.sale || main.changeSale">
+                                <label for="" class="col-sm-2">Usuário</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id='saleairline' ng-model="selected.user" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Companhia</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id='saleairline' ng-model="selected.airline" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-hide="selected.saleByThird == 'Y'">
+                                <label for="" class="col-sm-2">Forncedor</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id='saleprovider' ng-model="selected.providerName" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Cliente</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id='saleclient' ng-model="selected.client" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-show="selected.saleByThird == 'Y'">
+                                <label for="" class="col-sm-2">Venda por terceiro</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id='saleclient' ng-model="selected.providerName" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Metodo de venda</label>
+                                <div class="col-sm-5">
+                                    <input type="text" ng-model="selected.sale_method" class="form-control" disabled>
+                                </div>
+
+                                <label for="" class="col-sm-1">Emissor</label>
+                                <div class="col-sm-4">
+                                    <input type="text" ng-model="selected.issuing" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Origem</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id='saleairportfrom' ng-model="selected.airportNamefrom" typeahead="airport.label for airport in airports | filter:$viewValue | limitTo:8"
+                                        class="form-control" placeholder="Pesquisar" disabled>
+                                </div>
+                                <label for="" class="col-sm-2">Destino</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id='saleairportto' ng-model="selected.airportNameto" typeahead="airport.label for airport in airports | filter:$viewValue | limitTo:8"
+                                        class="form-control" placeholder="Pesquisar" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Data Embarque</label>
+                                <div class="col-sm-4">
+                                    <input type="datetime-local" placeholder="yyyy-MM-ddTHH:mm:ss" id='saleboardingDate' ng-model="boardingDate" class="form-control"
+                                        disabled>
+                                </div>
+
+                                <label for="" class="col-sm-2">Data Desembarque</label>
+                                <div class="col-sm-4">
+                                    <input type="datetime-local" placeholder="yyyy-MM-ddTHH:mm:ss" ng-model="landingDate" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Descrição Vôo</label>
+                                <div class="col-sm-4">
+                                    <input type="text" ng-model="selected.flight" class="form-control" disabled>
+                                </div>
+                                <label for="" class="col-sm-2">Horário/Trajeto</label>
+                                <div class="col-sm-4">
+                                    <input type="text" ng-model="selected.flightHour" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Observação</label>
+                                <div class="col-sm-10">
+                                    <input type="text" ng-model="selected.description" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2">Passageiro</label>
+                                <div class="col-sm-3">
+                                    <input type="text" ng-model="selected.paxName" class="form-control" disabled>
+                                </div>
+                                <label for="" class="col-sm-1">Nascimento</label>
+                                <div class="col-sm-2">
+                                    <div class="input-group ui-datepicker">
+                                        <input type="date" id='salepaxBirthdate' class="form-control" ng-model="paxBirthdate" disabled>
+                                    </div>
+                                </div>
+                                <label for="" class="col-sm-1">Documento</label>
+                                <div class="col-sm-3">
+                                    <input type="text" ng-model="selected.paxRegistrationCode" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-6">
+                                    <button type="button" class="btn btn-danger" ng-click="backToConference();">Cancelar Alteração</button>
+                                </div>
+                            </div>
+                        </form>
+                    </tab>
+                    <tab heading="Histórico" ng-show="main.isMaster || main.sale || main.changeMiles">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="panel panel-profile">
+                                        <ul ng-repeat="log in saleLog" class="list-unstyled list-info">
+                                            <li>
+                                                <label>{{findDate(log.issue_date) | date:'dd/MM/yyyy HH:mm:ss'}}</label>
+                                                {{log.description}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="" class="col-sm-4">Descrição</label>
+                                <div class="col-sm-8">
+                                    <textarea type="text" class="form-control" ng-model="selected.saleLog" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-info" ng-click="registerLog();">Registrar Confirmado</button>
+                            </div>
+                        </form>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </section>
+</div>

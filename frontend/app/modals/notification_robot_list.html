@@ -1,0 +1,34 @@
+<div class="modal-header">
+    <h3>{{header}} - <button class="btn btn-warning" ng-click="updateOrder()">Atualizar</button></h3>
+</div>
+<div class="modal-body">
+    <table class="table table-bordered table-responsive">
+        <thead>
+            <tr>
+                <th>Ficha</th>
+                <th>Atual</th>
+                <th>Final</th>
+                <th>Loc</th>
+                <th>Etapa</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="log in logs">
+                <td>{{log.ficha}}</td>
+                <td>{{log.status}}</td>
+                <td>{{log.alerta}}</td>
+                <td>{{ log.status == log.alerta ? log.flightLocator : '' }}</td>
+                <td>{{log.sucesso}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <button class="btn btn-danger" ng-click="cancelOrder();">Parar emissão</button>
+    </div>
+    <div class="col-md-6"></div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" ng-click="cancel();">Cancel</button>
+</div>

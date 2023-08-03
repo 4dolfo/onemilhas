@@ -1,0 +1,180 @@
+html,
+
+#menu-toggle {
+ 	padding-left: 8px !important;
+ 	left: 24px !important;
+}
+
+#header_title {
+ 	padding-left: 60px !important;
+}
+
+.ta-editor.ta-text.ta-scroll-window.form-control{
+	height:auto !important;
+}
+
+.contention {
+    font-size: 11px;
+}
+
+.smallBtn {
+	padding: 2px 14px;
+	font-size: 12px; 
+}
+
+.my-drop-zone { border: dotted 3px lightgray; }
+.nv-file-over { border: dotted 3px red; }
+.another-file-over-class { border: dotted 3px green; }
+
+.modal-body {
+    max-height: calc(100vh - 210px);
+    overflow-y: auto;
+}
+
+.toast-center-right{
+	top: 60%;
+	right: 12px;
+	width: 60%
+}
+
+.blockClass {
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+}
+
+#barcodeTarget,  #canvasTarget {
+    margin-top: 20px;
+}
+
+.draggable {
+    cursor: pointer;
+}
+
+.voe-legal-bg {
+    background-color: #4f5d63;
+}
+
+.myGrid {
+    width: 100%;
+    height: 500px;
+}
+
+.horizontal-scroll {
+    overflow-x: auto;
+}
+
+.small-th {
+    padding: 4px 4px 4px 4px;
+}
+
+.big-table {
+    position: absolute;
+    width: 2000px;
+}
+
+.left-border {
+    border-left: 3px solid;
+}
+
+.clients-status {
+    position: absolute;
+    top: 30px;
+    z-index: 100;
+    left: 30px;
+}
+
+.text-color-red {
+    color: red;
+}
+
+.label-purple {
+    background-color: purple;
+}
+
+.inputError {
+    border-color: red;
+}
+
+.small-select {
+    padding: 3px !important;
+    min-width: 100px !important;
+    width: 100% !important;
+}
+
+.zoom {
+    zoom: 0.85;
+}
+
+.high-border {
+    border: 1px solid;
+}
+
+.top-header {
+    background-color: white !important;
+}
+
+#header_title {
+    color: black !important;
+}
+
+.top-header .logo {
+    background-color: white !important;
+}
+
+.opts-notification-order {
+    display: initial;
+    padding-left: 20px;
+    float: right;
+}
+
+.margin-left {
+    margin-left: 10px;
+}
+
+.badge-color {
+    color: darkgray;
+}
+
+/*Cards and Scrolling*/
+
+.container {
+    padding: 2px 16px;
+}
+
+.table-overflow {
+    max-height:400px;
+    overflow-y:auto;
+}
+
+/*Modal*/
+.modal-content > .ht{
+    width: 1000px; 
+    margin-left: -190px;
+}
+
+#texteArea {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+.right {
+    float: right;
+}
+
+.badge-background-color {
+    background-color: darkgray;
+}
+
+.padding10 {
+    padding: 10px;
+}
+
+.statuses {
+    margin-left:20px;
+}

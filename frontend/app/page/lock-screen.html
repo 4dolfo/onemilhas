@@ -1,0 +1,24 @@
+<div class="page page-lock" data-ng-controller="LoginCtrl">
+
+    <div class="lock-centered clearfix">
+        <div class="lock-container">
+            <!-- <div ui-time class="lock-time"></div> -->
+            
+            <section class="lock-box">
+                <div class="lock-user">{{main.name}}</div>
+                <div class="lock-img"><img src={{main.image}} alt=""></div>
+                <div class="lock-pwd">
+                    <form name="form_lock">
+                        <div class="form-group">
+                            <input type="password" placeholder="Password" class="form-control" ng-model="data.password" requiered>
+                            <a class="btn-submit">
+                                <i class="fa fa-arrow-right" ng-click="login()"></i>
+                            </a>
+                            <a href="#/" id="submit_login" class="btn btn-primary btn-lg btn-block" ng-hide="true"><i></i>confirmar</a>
+                        </div>
+                    </form>
+                </div>            
+            </section>
+        </div>
+    </div>
+</div>

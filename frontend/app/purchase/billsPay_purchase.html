@@ -1,0 +1,539 @@
+<div id="billsPay_purchase_page" class="page page-table contention zoom" data-ng-controller="PurchaseBillsPayCtrl">
+    <section class="panel panel-default table-dynamic" ng-show="tabindex == 0">
+        <div class="panel-heading"><strong></span> Pagamento compra</strong></div>
+        <div class="page page-dashboard">
+            <!-- stats -->
+            <div class="row">
+                <div class="col-lg-6 col-xsm-12">
+                    <div class="panel mini-box">
+                        <span class="box-icon bg-primary-light">
+                            <i class="fas fa-money-bill-alt"></i>
+                        </span>
+                        <div class="box-info">
+                            <p class="size-h2">{{formatNumber(sumOpenedbillspay,2)}}</p>
+                            <p class="text-muted"><span>Contas em Aberto</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-xsm-12">
+                    <div class="panel mini-box">
+                        <span class="box-icon bg-primary-light">
+                            <i class="fas fa-money-bill-alt"></i>
+                        </span>
+                        <div class="box-info">
+                            <p class="size-h2">{{formatNumber(sumClosedbillspay,2)}}</p>
+                            <p class="text-muted"><span>Contas Baixadas</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end stats -->
+        </div>
+
+        <div class="table-filters">
+            <div class="row">
+                <form>
+                  <div class="form-group">
+                      <div class="col-sm-4">
+                          <input type="text"
+                                    placeholder="Pesquisar..."
+                                    class="form-control"
+                                    data-ng-model="searchKeywords"
+                                    data-ng-model-options='{ debounce: 1000 }'
+                                    data-ng-change="search()">
+                      </div>
+                      <div class="col-sm-2" data-ng-controller="BillPayModalDemoCtrl">
+                        <script type="text/ng-template" id="BillPay.html">
+                            <div class="modal-header">
+                                <h3>Pesquisa Avaçada</h3>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-horizontal ng-pristine ng-valid">
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Nome Fornecedor</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" ng-model-options='{ debounce: 1000 }' data-ng-change="loadProvider()" ng-model="filter.providerName" typeahead="provider.name for provider in providers | filter:$viewValue | limitTo:8" placeholder="Pesquisar" > 
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">ID do Pagamento</label>
+                                        <div class="col-sm-8">
+                                            <input type="number" class="form-control" ng-model="filter.payment_id" placeholder="Ex: 534152" >
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Status</label>
+                                        <span class="ui-select">
+                                          <select ng-model="filter.status">
+                                              <option class="form-control" ng-repeat="status in billStatus" value="{{status}}">{{status}}</option>
+                                          </select>
+                                        </span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Companhia</label>
+                                        <span class="ui-select">
+                                          <select ng-model="filter.airline">
+                                              <option class="form-control" ng-repeat="airline in airlines" value="{{airline.name}}">{{airline.name}}</option>
+                                          </select>
+                                        </span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Tipo de Conta</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" ng-model="filter.account_type" typeahead="account_type for account_type in accountType | filter:$viewValue | limitTo:8" placeholder="Pesquisar" >
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Tipo de Pagamento</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" ng-model="filter.payment_type" typeahead="payment_type for payment_type in paymentType | filter:$viewValue | limitTo:8" placeholder="Pesquisar" >
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-12">Data Vencimento</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">De</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group ui-datepicker">
+                                                <input type="date" 
+                                                   id='saledueDateFrom'
+                                                   ng-model="filter.dueDateFrom"
+                                                   class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Até</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group ui-datepicker">
+                                                <input type="date" 
+                                                   id='saledueDateTo'
+                                                   ng-model="filter.dueDateTo"
+                                                   class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary" ng-click="ok();">OK</button>
+                                <button class="btn btn-warning" ng-click="cancel();">Cancel</button>
+                            </div>
+                        </script>
+                        <button class="btn btn-default" ng-click="open()"><span class="glyphicon glyphicon-search"></span> Pesquisa Avançada</button>
+                      </div>
+                      <div class="col-md-2">
+                        <button class="btn btn-line-primary" ng-click="print();"><span class="glyphicon glyphicon-print"></span>  Emitir Relatorio</button>
+                      </div>
+                      <div class="col-md-2">
+                        <button class="btn btn-line-primary" ng-click="filtroHoje()"><span class="glyphicon glyphicon-search"></span>  Buscar Hoje</button>
+                      </div>
+                      <div class="col-md-2" ng-if="main.isMaster || main.purchasePaymentPruchase">
+                        <script type="text/ng-template" id="BillPayTwo.html">
+                            <div class="modal-header">
+                                <h3>Pagamento</h3>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-horizontal ng-pristine ng-valid">
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-12">Data </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4">Data de Pagamento</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group ui-datepicker">
+                                                <input type="date" 
+                                                   id='saledueDateFromPay'
+                                                   ng-model="filter.dueDateFromPay"
+                                                   class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary" ng-click="ok();">OK</button>
+                                <button class="btn btn-warning" ng-click="cancel();">Cancel</button>
+                            </div>
+                        </script>
+                        <button class="btn btn-success" ng-click="saveClosePay()"><span class="fa fa-check"></span>Realizar Baixa</button>
+                      </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-responsive">
+            <thead>
+                <tr>
+                    <th><div class="th">
+                    </div></th>
+                    <th><div class="th">
+                        Id
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('id') "
+                              data-ng-class="{active: row == 'id'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('id') "
+                              data-ng-class="{active: row == '-id'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Status
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('status') "
+                              data-ng-class="{active: row == 'status'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('status') "
+                              data-ng-class="{active: row == '-status'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Fornecedor
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('provider') "
+                              data-ng-class="{active: row == 'provider'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('provider') "
+                              data-ng-class="{active: row == '-provider'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Email
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('email') "
+                              data-ng-class="{active: row == 'email'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('email') "
+                              data-ng-class="{active: row == '-email'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Banco
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('bank') "
+                              data-ng-class="{active: row == 'bank'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('bank') "
+                              data-ng-class="{active: row == '-bank'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Agencia
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('agency') "
+                              data-ng-class="{active: row == 'agency'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('agency') "
+                              data-ng-class="{active: row == '-agency'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Conta
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('account') "
+                              data-ng-class="{active: row == 'account'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('account') "
+                              data-ng-class="{active: row == '-account'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Tipo de Conta
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('paymentTypePartner') "
+                              data-ng-class="{active: row == 'paymentTypePartner'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('paymentTypePartner') "
+                              data-ng-class="{active: row == '-paymentTypePartner'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Descrição
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('description') "
+                              data-ng-class="{active: row == 'description'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('description') "
+                              data-ng-class="{active: row == '-description'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Valor
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('value') "
+                              data-ng-class="{active: row == 'value'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('value') "
+                              data-ng-class="{active: row == '-value'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                            Ja Pago
+                            <span class="fa fa-angle-up"
+                                  data-ng-click=" order('alreadyPaid') "
+                                  data-ng-class="{active: row == 'alreadyPaid'}"></span>
+                            <span class="fa fa-angle-down"
+                                  data-ng-click=" orderDown('alreadyPaid') "
+                                  data-ng-class="{active: row == '-alreadyPaid'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                            Restante
+                            <span class="fa fa-angle-up"
+                                    data-ng-click=" order('leftOver') "
+                                    data-ng-class="{active: row == 'leftOver'}"></span>
+                            <span class="fa fa-angle-down"
+                                    data-ng-click=" orderDown('leftOver') "
+                                    data-ng-class="{active: row == '-leftOver'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Pagamento
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('due_date') "
+                              data-ng-class="{active: row == 'due_date'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('due_date') "
+                              data-ng-class="{active: row == '-due_date'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Data de Pagamento Real
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" order('due_date') "
+                              data-ng-class="{active: row == 'due_date'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderDown('due_date') "
+                              data-ng-class="{active: row == '-due_date'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Email
+                    </div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="billpay in billpays">
+                    <td><input ng-model="billpay.checked" name="checkbillspay" type="checkbox" ng-click='addRow()' value="option1" ></td>
+                    <td bgcolor='{{findColor(billpay);}}' ng-click="setSelected()">{{billpay.id}}</td>
+                    <td bgcolor='{{findColor(billpay);}}' ng-click="setSelected()"><span class="{{billPayTag(billpay.status)}}">{{getStatusDesc(billpay.status)}}</span></td>
+                    <td bgcolor='{{findColor(billpay);}}' ng-click="setSelected()">{{billpay.provider}}<br>{{billpay.registrationCode}}</td>
+                    <td bgcolor='{{findColor(billpay);}}' ng-click="setSelected()">{{billpay.email}}</td>
+                    <td bgcolor='{{findColor(billpay);}}' ng-click="setSelected()">{{billpay.bank}}</td>
+                    <td bgcolor='{{findColor(billpay);}}' ng-click="setSelected()">{{billpay.agency}}</td>
+                    <td bgcolor='{{findColor(billpay);}}' ng-click="setSelected()">{{billpay.account}}</td>
+                    <td bgcolor='{{findColor(billpay);}}' ng-click="setSelected()">{{billpay.paymentTypePartner}}</td>
+                    <td bgcolor='{{findColor(billpay);}}' ng-click="setSelected()">{{billpay.description}}</td>
+                    <td bgcolor='{{findColor(billpay);}}' ng-click="setSelected()"><div class="text-right">{{formatNumber(billpay.actual_value,2)}}</div></td>
+                    <td bgcolor='{{findColor(billpay);}}' ng-click="setSelected()"><div class="text-right">{{formatNumber(billpay.alreadyPaid,2)}}</div></td>
+                    <td bgcolor='{{findColor(billpay);}}' ng-click="setSelected()"><div class="text-right">{{formatNumber(billpay.leftOver,2)}}</div></td>
+                    <td bgcolor='{{findColor(billpay);}}' ng-click="setSelected()">{{ billpay.due_date == '' ? '' : (billpay.due_date | date:'dd/MM/yyyy') }}</td>
+                    <td bgcolor='{{findColor(billpay);}}' ng-click="setSelected()">{{ findDate(billpay.paymentDate) | date:'dd/MM/yyyy'}}</td>
+                    <td bgcolor='{{findColor(billpay);}}'><button type="button" class="btn btn-info smallBtn" ng-click="sendEmail(); $event.stopPropagation();">Reenvio de comprovante</button></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Show 
+                        <select data-ng-model="numPerPage"
+                                data-ng-options="num for num in numPerPageOpt"
+                                data-ng-change="onNumPerPageChange()">
+                        </select> 
+                        entries per page
+                    </span>
+                </div>
+                <div class="col-md-4 page-num-info">
+                    <span>
+                        Showing {{billpays.length}}/{{totalData}} entries
+                    </span>              
+                </div>
+                <div class="col-md-4 text-right pagination-container">
+                    <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="totalData"
+                                max-size="4"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true"></pagination>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <!-- Input -->
+    <section class="panel panel-default" ng-show="tabindex == 1">
+        <div class="panel-heading"><strong>Contas a Pagar -- {{selected.provider}}</strong></div>
+        <div class="panel-body">
+            <form class="form-horizontal" name="form_billpay">
+                <div class="form-group">
+                    <label for="label-focus" class="col-sm-1">Ja Pago</label>
+                    <div class="col-sm-11">
+                        <input type="number" ng-model="selected.alreadyPaid" class="form-control">
+                    </div>
+                </div>
+                <!-- <div class="form-group">
+                    <label for="label-focus" class="col-sm-1">Valor Juros</label>
+                    <div class="col-sm-11">
+                        <input type="text" ng-model="selected.tax"  ng-readonly="selected.status == 'B'" ng-blur="setActual_Value()" class="form-control" id="bpay_tax">
+                    </div>
+                </div> -->
+                <!-- <div class="form-group">
+                    <label for="" class="col-sm-1">Valor Desconto</label>
+                    <div class="col-sm-11">
+                        <input type="text" ng-model="selected.discount" ng-readonly="selected.status == 'B'" ng-blur="setActual_Value()" class="form-control" id="bpay_discount">
+                    </div>
+                </div> -->
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Valor Atual</label>
+                    <div class="col-sm-11">
+                        <input type="text" ng-model="selected.actual_value" ng-readonly="true" class="form-control" id="bpay_actualvalue">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Conta</label>
+                    <div class="col-sm-2">
+                        <input type="text" ng-model="selected.account" ng-readonly="true" class="form-control">
+                    </div>
+                    <label for="" class="col-sm-1">Agencia</label>
+                    <div class="col-sm-2">
+                        <input type="text" ng-model="selected.agency" ng-readonly="true" class="form-control">
+                    </div>
+                    <label for="" class="col-sm-1">Banco</label>
+                    <div class="col-sm-2">
+                        <input type="text" ng-model="selected.bank" ng-readonly="true" class="form-control">
+                    </div>
+
+                    <label for="" class="col-sm-1">Tipo Conta</label>
+                    <div class="col-sm-2">
+                        <input type="text" ng-model="selected.paymentTypePartner" ng-readonly="true" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-1">Telefone</label>
+                    <div class="col-sm-2">
+                        <input type="text" ng-model="selected.phoneNumber" ng-readonly="true" class="form-control">
+                    </div>
+
+                    <label for="" class="col-sm-1">Tipo de Conta</label>
+                    <div class="col-sm-2">
+                        <input type="text" ng-model="selected.account_type" ng-readonly="true" class="form-control">
+                    </div>
+
+                    <label for="" class="col-sm-1">Tipo Pagamento</label>
+                    <div class="col-sm-2">
+                        <input type="text" ng-model="selected.payment_type" ng-readonly="true" class="form-control">
+                    </div>
+
+                    <label for="" class="col-sm-1">Data Pagamento</label>
+                    <div class="col-sm-2">
+                        <input type="date" ng-model="selected._due_date" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                  <label for="" class="col-sm-1">Observações</label>
+                    <div class="col-sm-11">
+                      <textarea type="text" class="form-control" ng-readonly="true" ng-model="selected.partnerDescription" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-6">
+                        <button class="btn btn-warning" ng-click="toggleFormTable();">Voltar</button>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <button type="button" class="btn btn-success" ng-click="saveBillPay()">Confirmar</button>
+                    </div>
+                </div>
+                <hr />
+                <div class="form-group" ng-if="main.purchasePaymentPruchase || main.isMaster">
+                    <div class="col-sm-12 text-center">
+                        <button type="button" ng-click="cancelBillsPay();" class="btn btn-danger">Cancelar Venda</button>
+                    </div>
+                </div>
+                <hr />
+                <div class="form-group" ng-if="main.purchasePaymentPruchase || main.isMaster">
+                    <div class="col-sm-12 text-center">
+                        <button type="button" ng-click="deleteBillsPay();" class="btn btn-danger">Cancelar Venda e excluir Fornecedor</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="panel panel-default mail-container mail-compose" ng-show="tabindex == 2" nv-file-drop="" uploader="uploader" filters="queueLimit, customFilter">
+        <div class="panel-heading"><strong>Escrever Email</strong></div>
+        <div class="panel-body">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label for="mail_to" class="col-xs-2">Para:</label>
+                    <div class="col-xs-10">
+                        <input type="text" ng-model="email.emailpartner" id="mail_to" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="mail_cc" class="col-xs-2">CC:</label>
+                    <div class="col-xs-10">
+                        <input type="text" id="mail_cc" ng-model="email.mailcc" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="mail_subject" class="col-xs-2">Assunto:</label>
+                    <div class="col-xs-10">
+                        <input type="text" id="mail_subject" ng-model="email.subject" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-4">
+                      <table class="table">
+                        <thead>
+                            <tr>
+                                <td>Name</td>
+                                <td>Progresso</td>
+                                <td>Remover</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in uploader.queue">
+                                <td><strong>{{ item.file.name }}</strong></td>
+                                <td ng-show="uploader.isHTML5">
+                                    <div class="progress" style="margin-bottom: 0;">
+                                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                    </div>
+                                </td>
+                                <td nowrap>
+                                    <button type="button" class="btn btn-success btn-xs" ng-click="item.upload(); loadFiles();" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                        <span class="glyphicon glyphicon-upload"></span> Upload
+                                    </button>
+                                    <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                        <span class="glyphicon glyphicon-trash"></span> Remove
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                  </div>
+                </div>
+                <input type="file" nv-file-select uploader="uploader" multiple /><br/>
+                <div class="well my-drop-zone" nv-file-over="" uploader="uploader">
+                  Arraste e solte
+                </div>
+                <div text-angular ng-model="email.emailContent" ng-class="ui-editor">
+                </div>
+            </form>
+            <div class="mail-actions">
+                <div class="text-right col-sm-6">
+                    <div class="btn btn-warning" ng-click="back();" >cancelar</div>
+                </div>
+                <div class="text-right col-sm-6">
+                    <button ng-click="mailOrder();" class="btn btn-sm btn-primary">enviar</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel panel-default" ng-if="tabindex == 3">
+        <div class="panel-heading"><strong>Contas a Pagar -- Calendario</strong></div>
+        <div class="panel-body">
+            <div ui-calendar="uiConfig.calendar" ng-model="eventSources"></div>
+        </div>
+    </section>
+
+    <!-- end Input -->
+</div>

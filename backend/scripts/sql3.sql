@@ -1,0 +1,9 @@
+ALTER TABLE `online_order` ADD `nome_pagador` VARCHAR(255) NULL ;
+ALTER TABLE `online_order` ADD `cpf_pagador` VARCHAR(255) NULL ;
+ALTER TABLE `online_order` ADD `endereco_pagador` VARCHAR(255) NULL ;
+ALTER TABLE `online_order` ADD `numero_endereco_pagador` VARCHAR(255) NULL ;
+ALTER TABLE `online_order` ADD `complemento_endereco_pagador` VARCHAR(255) NULL ;
+ALTER TABLE `online_order` ADD `bairro_endereco_pagador` VARCHAR(255) NULL ;
+ALTER TABLE `online_order` ADD `cidade_endereco_pagador` VARCHAR(255) NULL ;
+ALTER TABLE `online_order` ADD `estado_endereco_pagador` VARCHAR(255) NULL ;
+ALTER TABLE `online_order` ADD `cep_endereco_pagador` VARCHAR(255) NULL ;

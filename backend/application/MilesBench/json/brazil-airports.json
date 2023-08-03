@@ -1,0 +1,3887 @@
+[
+  {
+    "label": "Aeroporto de Araxa",
+    "value": "AAX_airport",
+    "orderCode": "ARAXA2",
+    "orderCodeNumber": "2",
+    "iataCode": "AAX",
+    "name": "ARAXA",
+    "type": "airport",
+    "city": {
+      "iataCode": "AAX",
+      "name": "ARAXA"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12araxa (aax), araxa (aax), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Alta Floresta",
+    "value": "AFL_airport",
+    "orderCode": "ALTA FLORESTA2",
+    "orderCodeNumber": "2",
+    "iataCode": "AFL",
+    "name": "ALTA FLORESTA",
+    "type": "airport",
+    "city": {
+      "iataCode": "AFL",
+      "name": "ALTA FLORESTA"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12alta floresta (afl), alta floresta (afl), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Aracaju",
+    "value": "AJU_airport",
+    "orderCode": "Aracaju2",
+    "orderCodeNumber": "2",
+    "iataCode": "AJU",
+    "name": "Aracaju",
+    "type": "airport",
+    "city": {
+      "iataCode": "AJU",
+      "name": "Aracaju"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12aracaju (aju), aracaju (aju), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Araçatuba",
+    "value": "ARU_airport",
+    "orderCode": "ARACATUBA2",
+    "orderCodeNumber": "2",
+    "iataCode": "ARU",
+    "name": "ARACATUBA",
+    "type": "airport",
+    "city": {
+      "iataCode": "ARU",
+      "name": "ARACATUBA"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12aracatuba (aru), aracatuba (aru), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Altamira",
+    "value": "ATM_airport",
+    "orderCode": "Altamira2",
+    "orderCodeNumber": "2",
+    "iataCode": "ATM",
+    "name": "ALTAMIRA",
+    "type": "airport",
+    "city": {
+      "iataCode": "ATM",
+      "name": "Altamira"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12altamira (atm), altamira (atm), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Araguaína",
+    "value": "AUX_airport",
+    "orderCode": "ARAGUAINA2",
+    "orderCodeNumber": "2",
+    "iataCode": "AUX",
+    "name": "ARAGUAINA",
+    "type": "airport",
+    "city": {
+      "iataCode": "AUX",
+      "name": "ARAGUAINA"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12araguaina (aux), araguaina (aux), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Barbelos",
+    "value": "BAZ_airport",
+    "orderCode": "BARBELOS2",
+    "orderCodeNumber": "2",
+    "iataCode": "BAZ",
+    "name": "BARBELOS",
+    "type": "airport",
+    "city": {
+      "iataCode": "BAZ",
+      "name": "BARBELOS"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12barbelos (baz), barbelos (baz), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Belem",
+    "value": "BEL_airport",
+    "orderCode": "Belém2",
+    "orderCodeNumber": "2",
+    "iataCode": "BEL",
+    "name": "Val de Cans",
+    "type": "airport",
+    "city": {
+      "iataCode": "BEL",
+      "name": "Belém"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12belém (bel), val de cans (bel), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Belo Horizonte",
+    "value": "BHZ_city",
+    "orderCode": "Belo Horizonte1",
+    "orderCodeNumber": "1",
+    "iataCode": "BHZ",
+    "name": "Belo Horizonte",
+    "type": "city",
+    "city": {
+      "iataCode": "BHZ",
+      "name": "Belo Horizonte"
+    },
+    "position": "0000",
+    "valueForOrder": "00001belo horizonte (bhz), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Confins",
+    "value": "CNF_airport",
+    "orderCode": "Belo Horizonte2",
+    "orderCodeNumber": "2",
+    "iataCode": "CNF",
+    "name": "Confins",
+    "type": "airport",
+    "city": {
+      "iataCode": "BHZ",
+      "name": "Belo Horizonte"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12belo horizonte (bhz), confins (cnf), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Belo Horizonte-Pampulha",
+    "value": "PLU_airport",
+    "orderCode": "Belo Horizonte2",
+    "orderCodeNumber": "2",
+    "iataCode": "PLU",
+    "name": "PAMPULHA",
+    "type": "airport",
+    "city": {
+      "iataCode": "BHZ",
+      "name": "Belo Horizonte"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12belo horizonte (bhz), pampulha (plu), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Porto Seguro",
+    "value": "BPS_airport",
+    "orderCode": "Porto Seguro2",
+    "orderCodeNumber": "2",
+    "iataCode": "BPS",
+    "name": "Porto Seguro",
+    "type": "airport",
+    "city": {
+      "iataCode": "BPS",
+      "name": "Porto Seguro"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12porto seguro (bps), porto seguro (bps), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Barreiras",
+    "value": "BRA_airport",
+    "orderCode": "BARREIRAS2",
+    "orderCodeNumber": "2",
+    "iataCode": "BRA",
+    "name": "BARREIRAS",
+    "type": "airport",
+    "city": {
+      "iataCode": "BRA",
+      "name": "BARREIRAS"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12barreiras (bra), barreiras (bra), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Brasília",
+    "value": "BSB_airport",
+    "orderCode": "Brasília2",
+    "orderCodeNumber": "2",
+    "iataCode": "BSB",
+    "name": "Brasília Intl.",
+    "type": "airport",
+    "city": {
+      "iataCode": "BSB",
+      "name": "Brasília"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12brasília (bsb), brasília intl. (bsb), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Boa Vista",
+    "value": "BVB_airport",
+    "orderCode": "Boa Vista2",
+    "orderCodeNumber": "2",
+    "iataCode": "BVB",
+    "name": "Boa Vista",
+    "type": "airport",
+    "city": {
+      "iataCode": "BVB",
+      "name": "Boa Vista"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12boa vista (bvb), boa vista (bvb), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Vilhena",
+    "value": "BVH_airport",
+    "orderCode": "VILHENA2",
+    "orderCodeNumber": "2",
+    "iataCode": "BVH",
+    "name": "VILHENA",
+    "type": "airport",
+    "city": {
+      "iataCode": "BVH",
+      "name": "VILHENA"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12vilhena (bvh), vilhena (bvh), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Bonito",
+    "value": "BYO_airport",
+    "orderCode": "Bonito2",
+    "orderCodeNumber": "2",
+    "iataCode": "BYO",
+    "name": "Bonito",
+    "type": "airport",
+    "city": {
+      "iataCode": "BYO",
+      "name": "Bonito"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12bonito (byo), bonito (byo), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Cascavel",
+    "value": "CAC_airport",
+    "orderCode": "CASCAVEL2",
+    "orderCodeNumber": "2",
+    "iataCode": "CAC",
+    "name": "CASCAVEL",
+    "type": "airport",
+    "city": {
+      "iataCode": "CAC",
+      "name": "CASCAVEL"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12cascavel (cac), cascavel (cac), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Criciuma",
+    "value": "CCM_airport",
+    "orderCode": "Criciuma2",
+    "orderCodeNumber": "2",
+    "iataCode": "CCM",
+    "name": "CRICIUMA",
+    "type": "airport",
+    "city": {
+      "iataCode": "CCM",
+      "name": "Criciuma"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12criciuma (ccm), criciuma (ccm), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Cuiaba",
+    "value": "CGB_airport",
+    "orderCode": "Cuiabá2",
+    "orderCodeNumber": "2",
+    "iataCode": "CGB",
+    "name": "Marechal Rondon",
+    "type": "airport",
+    "city": {
+      "iataCode": "CGB",
+      "name": "Cuiabá"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12cuiabá (cgb), marechal rondon (cgb), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Campo Grande",
+    "value": "CGR_airport",
+    "orderCode": "Campo Grande2",
+    "orderCodeNumber": "2",
+    "iataCode": "CGR",
+    "name": "Campo Grande",
+    "type": "airport",
+    "city": {
+      "iataCode": "CGR",
+      "name": "Campo Grande"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12campo grande (cgr), campo grande (cgr), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto Regional de Coari",
+    "value": "CIZ_airport",
+    "orderCode": "COARI2",
+    "orderCodeNumber": "2",
+    "iataCode": "CIZ",
+    "name": "COARI",
+    "type": "airport",
+    "city": {
+      "iataCode": "CIZ",
+      "name": "COARI"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12coari (ciz), coari (ciz), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Carajás",
+    "value": "CKS_airport",
+    "orderCode": "Carajas2",
+    "orderCodeNumber": "2",
+    "iataCode": "CKS",
+    "name": "CARAJAS",
+    "type": "airport",
+    "city": {
+      "iataCode": "CKS",
+      "name": "Carajas"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12carajas (cks), carajas (cks), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Corumba",
+    "value": "CMG_airport",
+    "orderCode": "Corumba2",
+    "orderCodeNumber": "2",
+    "iataCode": "CMG",
+    "name": "CORUMBA INTL",
+    "type": "airport",
+    "city": {
+      "iataCode": "CMG",
+      "name": "Corumba"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12corumba (cmg), corumba intl (cmg), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Curitiba",
+    "value": "CWB_city",
+    "orderCode": "Curitiba1",
+    "orderCodeNumber": "1",
+    "iataCode": "CWB",
+    "name": "Curitiba",
+    "type": "city",
+    "city": {
+      "iataCode": "CWB",
+      "name": "Curitiba"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-11curitiba (cwb), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Bacacheri",
+    "value": "BFH_airport",
+    "orderCode": "Curitiba2",
+    "orderCodeNumber": "2",
+    "iataCode": "BFH",
+    "name": "BACACHERI",
+    "type": "airport",
+    "city": {
+      "iataCode": "CWB",
+      "name": "Curitiba"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12curitiba (cwb), bacacheri (bfh), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Curitiba",
+    "value": "CWB_airport",
+    "orderCode": "Curitiba2",
+    "orderCodeNumber": "2",
+    "iataCode": "CWB",
+    "name": "Afonso Pena",
+    "type": "airport",
+    "city": {
+      "iataCode": "CWB",
+      "name": "Curitiba"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12curitiba (cwb), afonso pena (cwb), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Caxias do Sul",
+    "value": "CXJ_airport",
+    "orderCode": "CAXIAS DO SUL2",
+    "orderCodeNumber": "2",
+    "iataCode": "CXJ",
+    "name": "CAMPO DOS",
+    "type": "airport",
+    "city": {
+      "iataCode": "CXJ",
+      "name": "CAXIAS DO SUL"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12caxias do sul (cxj), campo dos (cxj), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Dourados",
+    "value": "DOU_airport",
+    "orderCode": "DOURADOS2",
+    "orderCodeNumber": "2",
+    "iataCode": "DOU",
+    "name": "DOURADOS",
+    "type": "airport",
+    "city": {
+      "iataCode": "DOU",
+      "name": "DOURADOS"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12dourados (dou), dourados (dou), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto Regional de Eirunepé",
+    "value": "ERN_airport",
+    "orderCode": "EIRUNEPE2",
+    "orderCodeNumber": "2",
+    "iataCode": "ERN",
+    "name": "EIRUNEPE",
+    "type": "airport",
+    "city": {
+      "iataCode": "ERN",
+      "name": "EIRUNEPE"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12eirunepe (ern), eirunepe (ern), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Fernando de Noronha",
+    "value": "FEN_airport",
+    "orderCode": "FERNANDO DE NORON2",
+    "orderCodeNumber": "2",
+    "iataCode": "FEN",
+    "name": "FERNANDO DE NORON",
+    "type": "airport",
+    "city": {
+      "iataCode": "FEN",
+      "name": "FERNANDO DE NORON"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12fernando de noron (fen), fernando de noron (fen), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Florianópolis",
+    "value": "FLN_airport",
+    "orderCode": "Florianópolis2",
+    "orderCodeNumber": "2",
+    "iataCode": "FLN",
+    "name": "Hercílio Luz",
+    "type": "airport",
+    "city": {
+      "iataCode": "FLN",
+      "name": "Florianópolis"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12florianópolis (fln), hercílio luz (fln), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Fortaleza",
+    "value": "FOR_airport",
+    "orderCode": "Fortaleza2",
+    "orderCodeNumber": "2",
+    "iataCode": "FOR",
+    "name": "Intl. Pinto Martins",
+    "type": "airport",
+    "city": {
+      "iataCode": "FOR",
+      "name": "Fortaleza"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12fortaleza (for), intl. pinto martins (for), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Governador Valadares",
+    "value": "GVR_airport",
+    "orderCode": "GOVERNADOR VALADA2",
+    "orderCodeNumber": "2",
+    "iataCode": "GVR",
+    "name": "GOVERNADOR VALADA",
+    "type": "airport",
+    "city": {
+      "iataCode": "GVR",
+      "name": "GOVERNADOR VALADA"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12governador valada (gvr), governador valada (gvr), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Goiânia",
+    "value": "GYN_airport",
+    "orderCode": "Goiânia2",
+    "orderCodeNumber": "2",
+    "iataCode": "GYN",
+    "name": "Goiânia",
+    "type": "airport",
+    "city": {
+      "iataCode": "GYN",
+      "name": "Goiânia"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12goiânia (gyn), goiânia (gyn), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto Francisco Correa da Cruz",
+    "value": "HUW_airport",
+    "orderCode": "Humaita2",
+    "orderCodeNumber": "2",
+    "iataCode": "HUW",
+    "name": "Humaita",
+    "type": "airport",
+    "city": {
+      "iataCode": "HUW",
+      "name": "Humaita"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12humaita (huw), humaita (huw), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Foz do Iguacu",
+    "value": "IGU_airport",
+    "orderCode": "Foz do Iguaçu2",
+    "orderCodeNumber": "2",
+    "iataCode": "IGU",
+    "name": "Cataratas",
+    "type": "airport",
+    "city": {
+      "iataCode": "IGU",
+      "name": "Foz do Iguaçu"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12foz do iguaçu (igu), cataratas (igu), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Imperatriz",
+    "value": "IMP_airport",
+    "orderCode": "Imperatriz2",
+    "orderCodeNumber": "2",
+    "iataCode": "IMP",
+    "name": "Imperatriz",
+    "type": "airport",
+    "city": {
+      "iataCode": "IMP",
+      "name": "Imperatriz"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12imperatriz (imp), imperatriz (imp), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Ilhéus",
+    "value": "IOS_airport",
+    "orderCode": "Ilhéus2",
+    "orderCodeNumber": "2",
+    "iataCode": "IOS",
+    "name": "Ilhéus",
+    "type": "airport",
+    "city": {
+      "iataCode": "IOS",
+      "name": "Ilhéus"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12ilhéus (ios), ilhéus (ios), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Ipatinga",
+    "value": "IPN_airport",
+    "orderCode": "IPATINGA2",
+    "orderCodeNumber": "2",
+    "iataCode": "IPN",
+    "name": "USIMINAS",
+    "type": "airport",
+    "city": {
+      "iataCode": "IPN",
+      "name": "IPATINGA"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12ipatinga (ipn), usiminas (ipn), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Tapuruquara",
+    "value": "IRZ_airport",
+    "orderCode": "Santa Isabel Rio Negro2",
+    "orderCodeNumber": "2",
+    "iataCode": "IRZ",
+    "name": "Santa Isabel Rio Negro",
+    "type": "airport",
+    "city": {
+      "iataCode": "IRZ",
+      "name": "Santa Isabel Rio Negro"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12santa isabel rio negro (irz), santa isabel rio negro (irz), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Itaituba",
+    "value": "ITB_airport",
+    "orderCode": "ITAITUBA2",
+    "orderCodeNumber": "2",
+    "iataCode": "ITB",
+    "name": "ITAITUBA",
+    "type": "airport",
+    "city": {
+      "iataCode": "ITB",
+      "name": "ITAITUBA"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12itaituba (itb), itaituba (itb), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Juiz de Fora",
+    "value": "JDF_airport",
+    "orderCode": "JUIZ DE FORA2",
+    "orderCodeNumber": "2",
+    "iataCode": "JDF",
+    "name": "F DE ASSIS",
+    "type": "airport",
+    "city": {
+      "iataCode": "JDF",
+      "name": "JUIZ DE FORA"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12juiz de fora (jdf), f de assis (jdf), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Juazeiro do Norte",
+    "value": "JDO_airport",
+    "orderCode": "Juazeiro do Norte2",
+    "orderCodeNumber": "2",
+    "iataCode": "JDO",
+    "name": "Regional do Cariri",
+    "type": "airport",
+    "city": {
+      "iataCode": "JDO",
+      "name": "Juazeiro do Norte"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12juazeiro do norte (jdo), regional do cariri (jdo), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto Prefeito Octávio de Almeida Neves",
+    "value": "JDR_airport",
+    "orderCode": "Sao Joao del Rei2",
+    "orderCodeNumber": "2",
+    "iataCode": "JDR",
+    "name": "Sao Joao del Rei",
+    "type": "airport",
+    "city": {
+      "iataCode": "JDR",
+      "name": "Sao Joao del Rei"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12sao joao del rei (jdr), sao joao del rei (jdr), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Jaguaruna",
+    "value": "JJG_airport",
+    "orderCode": "Jaguaruna2",
+    "orderCodeNumber": "2",
+    "iataCode": "JJG",
+    "name": "Aeroporto Regional Sul Humberto Ghizzo Bortoluzzi",
+    "type": "airport",
+    "city": {
+      "iataCode": "JJG",
+      "name": "Jaguaruna"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12jaguaruna (jjg), aeroporto regional sul humberto ghizzo bortoluzzi (jjg), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Joinville",
+    "value": "JOI_airport",
+    "orderCode": "Joinville2",
+    "orderCodeNumber": "2",
+    "iataCode": "JOI",
+    "name": "Lauro Carneiro de Loyola",
+    "type": "airport",
+    "city": {
+      "iataCode": "JOI",
+      "name": "Joinville"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12joinville (joi), lauro carneiro de loyola (joi), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Joao Pessoa",
+    "value": "JPA_airport",
+    "orderCode": "João Pessoa2",
+    "orderCodeNumber": "2",
+    "iataCode": "JPA",
+    "name": "Castro Pinto",
+    "type": "airport",
+    "city": {
+      "iataCode": "JPA",
+      "name": "João Pessoa"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12joão pessoa (jpa), castro pinto (jpa), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Ji Parana",
+    "value": "JPR_airport",
+    "orderCode": "JI PARANA2",
+    "orderCodeNumber": "2",
+    "iataCode": "JPR",
+    "name": "JI PARANA",
+    "type": "airport",
+    "city": {
+      "iataCode": "JPR",
+      "name": "JI PARANA"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12ji parana (jpr), ji parana (jpr), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Bauru",
+    "value": "JTC_airport",
+    "orderCode": "Baurú2",
+    "orderCodeNumber": "2",
+    "iataCode": "JTC",
+    "name": "Arealva",
+    "type": "airport",
+    "city": {
+      "iataCode": "JTC",
+      "name": "Baurú"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12baurú (jtc), arealva (jtc), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto Regional de Lábrea",
+    "value": "LBR_airport",
+    "orderCode": "LABREA2",
+    "orderCodeNumber": "2",
+    "iataCode": "LBR",
+    "name": "LABREA",
+    "type": "airport",
+    "city": {
+      "iataCode": "LBR",
+      "name": "LABREA"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12labrea (lbr), labrea (lbr), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Londrina",
+    "value": "LDB_airport",
+    "orderCode": "Londrina2",
+    "orderCodeNumber": "2",
+    "iataCode": "LDB",
+    "name": "Londrina",
+    "type": "airport",
+    "city": {
+      "iataCode": "LDB",
+      "name": "Londrina"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12londrina (ldb), londrina (ldb), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Lençois",
+    "value": "LEC_airport",
+    "orderCode": "LENCOIS2",
+    "orderCodeNumber": "2",
+    "iataCode": "LEC",
+    "name": "CHAPADA DIAMANTINA",
+    "type": "airport",
+    "city": {
+      "iataCode": "LEC",
+      "name": "LENCOIS"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12lencois (lec), chapada diamantina (lec), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Marabá",
+    "value": "MAB_airport",
+    "orderCode": "Marabá2",
+    "orderCodeNumber": "2",
+    "iataCode": "MAB",
+    "name": "Marabá",
+    "type": "airport",
+    "city": {
+      "iataCode": "MAB",
+      "name": "Marabá"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12marabá (mab), marabá (mab), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Manaus",
+    "value": "MAO_airport",
+    "orderCode": "Manaus2",
+    "orderCodeNumber": "2",
+    "iataCode": "MAO",
+    "name": "Eduardo Gomes",
+    "type": "airport",
+    "city": {
+      "iataCode": "MAO",
+      "name": "Manaus"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12manaus (mao), eduardo gomes (mao), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Macapá",
+    "value": "MCP_airport",
+    "orderCode": "Macapá2",
+    "orderCodeNumber": "2",
+    "iataCode": "MCP",
+    "name": "Macapá",
+    "type": "airport",
+    "city": {
+      "iataCode": "MCP",
+      "name": "Macapá"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12macapá (mcp), macapá (mcp), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Maceió",
+    "value": "MCZ_airport",
+    "orderCode": "Maceió2",
+    "orderCodeNumber": "2",
+    "iataCode": "MCZ",
+    "name": "Maceió",
+    "type": "airport",
+    "city": {
+      "iataCode": "MCZ",
+      "name": "Maceió"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12maceió (mcz), maceió (mcz), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto Internacional Rafic Hariri",
+    "value": "MEA_airport",
+    "orderCode": "Macae2",
+    "orderCodeNumber": "2",
+    "iataCode": "MEA",
+    "name": "MACAE",
+    "type": "airport",
+    "city": {
+      "iataCode": "MEA",
+      "name": "Macae"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12macae (mea), macae (mea), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Maringá",
+    "value": "MGF_airport",
+    "orderCode": "MARINGA2",
+    "orderCodeNumber": "2",
+    "iataCode": "MGF",
+    "name": "REGIONAL DE MARINGA",
+    "type": "airport",
+    "city": {
+      "iataCode": "MGF",
+      "name": "MARINGA"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12maringa (mgf), regional de maringa (mgf), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Marília",
+    "value": "MII_airport",
+    "orderCode": "MARILIA2",
+    "orderCodeNumber": "2",
+    "iataCode": "MII",
+    "name": "DR G VIDIGAL",
+    "type": "airport",
+    "city": {
+      "iataCode": "MII",
+      "name": "MARILIA"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12marilia (mii), dr g vidigal (mii), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Montes Claros",
+    "value": "MOC_airport",
+    "orderCode": "Montes Claros2",
+    "orderCodeNumber": "2",
+    "iataCode": "MOC",
+    "name": "MONTES CLAROS",
+    "type": "airport",
+    "city": {
+      "iataCode": "MOC",
+      "name": "Montes Claros"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12montes claros (moc), montes claros (moc), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Natal",
+    "value": "NAT_airport",
+    "orderCode": "Natal2",
+    "orderCodeNumber": "2",
+    "iataCode": "NAT",
+    "name": "São Gonçalo do Amarante",
+    "type": "airport",
+    "city": {
+      "iataCode": "NAT",
+      "name": "Natal"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12natal (nat), são gonçalo do amarante (nat), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Navegantes",
+    "value": "NVT_airport",
+    "orderCode": "Navegantes2",
+    "orderCodeNumber": "2",
+    "iataCode": "NVT",
+    "name": "Navegantes",
+    "type": "airport",
+    "city": {
+      "iataCode": "NVT",
+      "name": "Navegantes"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12navegantes (nvt), navegantes (nvt), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Cacoal",
+    "value": "OAL_airport",
+    "orderCode": "CACOAL2",
+    "orderCodeNumber": "2",
+    "iataCode": "OAL",
+    "name": "CACOAL",
+    "type": "airport",
+    "city": {
+      "iataCode": "OAL",
+      "name": "CACOAL"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12cacoal (oal), cacoal (oal), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Sinop",
+    "value": "OPS_airport",
+    "orderCode": "SINOP2",
+    "orderCodeNumber": "2",
+    "iataCode": "OPS",
+    "name": "SINOP",
+    "type": "airport",
+    "city": {
+      "iataCode": "OPS",
+      "name": "SINOP"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12sinop (ops), sinop (ops), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Parintins",
+    "value": "PIN_airport",
+    "orderCode": "PARINTINS2",
+    "orderCodeNumber": "2",
+    "iataCode": "PIN",
+    "name": "PARINTINS",
+    "type": "airport",
+    "city": {
+      "iataCode": "PIN",
+      "name": "PARINTINS"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12parintins (pin), parintins (pin), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Palmas",
+    "value": "PMW_airport",
+    "orderCode": "Palmas2",
+    "orderCodeNumber": "2",
+    "iataCode": "PMW",
+    "name": "Palmas",
+    "type": "airport",
+    "city": {
+      "iataCode": "PMW",
+      "name": "Palmas"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12palmas (pmw), palmas (pmw), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Petrolina",
+    "value": "PNZ_airport",
+    "orderCode": "Petrolina2",
+    "orderCodeNumber": "2",
+    "iataCode": "PNZ",
+    "name": "Senador Nilo Coelho",
+    "type": "airport",
+    "city": {
+      "iataCode": "PNZ",
+      "name": "Petrolina"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12petrolina (pnz), senador nilo coelho (pnz), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Porto Alegre",
+    "value": "POA_airport",
+    "orderCode": "Porto Alegre2",
+    "orderCodeNumber": "2",
+    "iataCode": "POA",
+    "name": "Salgado Filho",
+    "type": "airport",
+    "city": {
+      "iataCode": "POA",
+      "name": "Porto Alegre"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12porto alegre (poa), salgado filho (poa), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Patos de Minas",
+    "value": "POJ_airport",
+    "orderCode": "PATOS DE MINAS2",
+    "orderCodeNumber": "2",
+    "iataCode": "POJ",
+    "name": "PATOS DE MINAS",
+    "type": "airport",
+    "city": {
+      "iataCode": "POJ",
+      "name": "PATOS DE MINAS"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12patos de minas (poj), patos de minas (poj), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de São Paulo/Presidente Prudent",
+    "value": "PPB_airport",
+    "orderCode": "PRESIDENTE PRUDEN2",
+    "orderCodeNumber": "2",
+    "iataCode": "PPB",
+    "name": "BARROS",
+    "type": "airport",
+    "city": {
+      "iataCode": "PPB",
+      "name": "PRESIDENTE PRUDEN"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12presidente pruden (ppb), barros (ppb), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Porto Velho",
+    "value": "PVH_airport",
+    "orderCode": "Porto Velho2",
+    "orderCodeNumber": "2",
+    "iataCode": "PVH",
+    "name": "Porto Velho",
+    "type": "airport",
+    "city": {
+      "iataCode": "PVH",
+      "name": "Porto Velho"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12porto velho (pvh), porto velho (pvh), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Ribeirão Preto",
+    "value": "RAO_airport",
+    "orderCode": "Ribeirão Preto2",
+    "orderCodeNumber": "2",
+    "iataCode": "RAO",
+    "name": "Leite Lopes",
+    "type": "airport",
+    "city": {
+      "iataCode": "RAO",
+      "name": "Ribeirão Preto"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12ribeirão preto (rao), leite lopes (rao), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Rio Branco",
+    "value": "RBR_airport",
+    "orderCode": "Rio Branco2",
+    "orderCodeNumber": "2",
+    "iataCode": "RBR",
+    "name": "Rio Branco",
+    "type": "airport",
+    "city": {
+      "iataCode": "RBR",
+      "name": "Rio Branco"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12rio branco (rbr), rio branco (rbr), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Recife",
+    "value": "REC_airport",
+    "orderCode": "Recife2",
+    "orderCodeNumber": "2",
+    "iataCode": "REC",
+    "name": "Guararapes Intl.",
+    "type": "airport",
+    "city": {
+      "iataCode": "REC",
+      "name": "Recife"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12recife (rec), guararapes intl. (rec), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Resende",
+    "value": "REZ_airport",
+    "orderCode": "RESENDE2",
+    "orderCodeNumber": "2",
+    "iataCode": "REZ",
+    "name": "RESENDE",
+    "type": "airport",
+    "city": {
+      "iataCode": "REZ",
+      "name": "RESENDE"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12resende (rez), resende (rez), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Rio de Janeiro (RIO), Brasil",
+    "value": "RIO_city",
+    "orderCode": "Rio de Janeiro1",
+    "orderCodeNumber": "1",
+    "iataCode": "RIO",
+    "name": "Rio de Janeiro",
+    "type": "city",
+    "city": {
+      "iataCode": "RIO",
+      "name": "Rio de Janeiro"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-11rio de janeiro (rio), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto Internacional do Rio de Janeiro-Galeão",
+    "value": "GIG_airport",
+    "orderCode": "Rio de Janeiro2",
+    "orderCodeNumber": "2",
+    "iataCode": "GIG",
+    "name": "Galeão Intl.",
+    "type": "airport",
+    "city": {
+      "iataCode": "RIO",
+      "name": "Rio de Janeiro"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12rio de janeiro (rio), galeão intl. (gig), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto do Rio de Janeiro-Santos Dumont",
+    "value": "SDU_airport",
+    "orderCode": "Rio de Janeiro2",
+    "orderCodeNumber": "2",
+    "iataCode": "SDU",
+    "name": "Santos Dumont",
+    "type": "airport",
+    "city": {
+      "iataCode": "RIO",
+      "name": "Rio de Janeiro"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12rio de janeiro (rio), santos dumont (sdu), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Rondonópolis",
+    "value": "ROO_airport",
+    "orderCode": "RONDONOPOLIS2",
+    "orderCodeNumber": "2",
+    "iataCode": "ROO",
+    "name": "RONDONOPOLIS",
+    "type": "airport",
+    "city": {
+      "iataCode": "ROO",
+      "name": "RONDONOPOLIS"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12rondonopolis (roo), rondonopolis (roo), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Rio Verde",
+    "value": "RVD_airport",
+    "orderCode": "RIO VERDE2",
+    "orderCodeNumber": "2",
+    "iataCode": "RVD",
+    "name": "RIO VERDE",
+    "type": "airport",
+    "city": {
+      "iataCode": "RVD",
+      "name": "RIO VERDE"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12rio verde (rvd), rio verde (rvd), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de São Paulo ",
+    "value": "SAO_city",
+    "orderCode": "São Paulo1",
+    "orderCodeNumber": "1",
+    "iataCode": "SAO",
+    "name": "São Paulo",
+    "type": "city",
+    "city": {
+      "iataCode": "SAO",
+      "name": "São Paulo"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-11são paulo (sao), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de São Paulo-Congonhas",
+    "value": "CGH_airport",
+    "orderCode": "São Paulo2",
+    "orderCodeNumber": "2",
+    "iataCode": "CGH",
+    "name": "Congonhas",
+    "type": "airport",
+    "city": {
+      "iataCode": "SAO",
+      "name": "São Paulo"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12são paulo (sao), congonhas (cgh), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto Internacional de São Paulo-Guarulhos",
+    "value": "GRU_airport",
+    "orderCode": "São Paulo2",
+    "orderCodeNumber": "2",
+    "iataCode": "GRU",
+    "name": "Guarulhos Intl.",
+    "type": "airport",
+    "city": {
+      "iataCode": "SAO",
+      "name": "São Paulo"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12são paulo (sao), guarulhos intl. (gru), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto Internacional de Campinas",
+    "value": "VCP_airport",
+    "orderCode": "São Paulo2",
+    "orderCodeNumber": "2",
+    "iataCode": "VCP",
+    "name": "Viracopos",
+    "type": "airport",
+    "city": {
+      "iataCode": "SAO",
+      "name": "São Paulo"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12são paulo (sao), viracopos (vcp), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de São José dos Campos",
+    "value": "SJK_airport",
+    "orderCode": "São José dos Campos2",
+    "orderCodeNumber": "2",
+    "iataCode": "SJK",
+    "name": "São José dos Campos",
+    "type": "airport",
+    "city": {
+      "iataCode": "SJK",
+      "name": "São José dos Campos"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12são josé dos campos (sjk), são josé dos campos (sjk), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto Regional de São Gabriel da Cachoeira",
+    "value": "SJL_airport",
+    "orderCode": "SAO GABRIEL2",
+    "orderCodeNumber": "2",
+    "iataCode": "SJL",
+    "name": "DA CACHOEIRA",
+    "type": "airport",
+    "city": {
+      "iataCode": "SJL",
+      "name": "SAO GABRIEL"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12sao gabriel (sjl), da cachoeira (sjl), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de São José do Rio Preto",
+    "value": "SJP_airport",
+    "orderCode": "São José do Rio Preto2",
+    "orderCodeNumber": "2",
+    "iataCode": "SJP",
+    "name": "São José do Rio Preto",
+    "type": "airport",
+    "city": {
+      "iataCode": "SJP",
+      "name": "São José do Rio Preto"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12são josé do rio preto (sjp), são josé do rio preto (sjp), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto Internacional de São Luís",
+    "value": "SLZ_airport",
+    "orderCode": "São Luís2",
+    "orderCodeNumber": "2",
+    "iataCode": "SLZ",
+    "name": "Marechal Cunha Machado",
+    "type": "airport",
+    "city": {
+      "iataCode": "SLZ",
+      "name": "São Luís"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12são luís (slz), marechal cunha machado (slz), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto Internacional de Salvador",
+    "value": "SSA_airport",
+    "orderCode": "Salvador da Bahia2",
+    "orderCodeNumber": "2",
+    "iataCode": "SSA",
+    "name": "Deputado L E Magalhães",
+    "type": "airport",
+    "city": {
+      "iataCode": "SSA",
+      "name": "Salvador da Bahia"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12salvador da bahia (ssa), deputado l e magalhães (ssa), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto Internacional de Santarém",
+    "value": "STM_airport",
+    "orderCode": "Santarém2",
+    "orderCodeNumber": "2",
+    "iataCode": "STM",
+    "name": "Maestro Wilson Fonseca",
+    "type": "airport",
+    "city": {
+      "iataCode": "STM",
+      "name": "Santarém"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12santarém (stm), maestro wilson fonseca (stm), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Tabatinga",
+    "value": "TBT_airport",
+    "orderCode": "Tabatinga2",
+    "orderCodeNumber": "2",
+    "iataCode": "TBT",
+    "name": "TABATINGA INTL",
+    "type": "airport",
+    "city": {
+      "iataCode": "TBT",
+      "name": "Tabatinga"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12tabatinga (tbt), tabatinga intl (tbt), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Tefe",
+    "value": "TFF_airport",
+    "orderCode": "Tefe2",
+    "orderCodeNumber": "2",
+    "iataCode": "TFF",
+    "name": "TEFE",
+    "type": "airport",
+    "city": {
+      "iataCode": "TFF",
+      "name": "Tefe"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12tefe (tff), tefe (tff), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Teresina",
+    "value": "THE_airport",
+    "orderCode": "Teresina2",
+    "orderCodeNumber": "2",
+    "iataCode": "THE",
+    "name": "Senador Petrônio Portella",
+    "type": "airport",
+    "city": {
+      "iataCode": "THE",
+      "name": "Teresina"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12teresina (the), senador petrônio portella (the), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Três Lagoas",
+    "value": "TJL_airport",
+    "orderCode": "Três Lagoas2",
+    "orderCodeNumber": "2",
+    "iataCode": "TJL",
+    "name": "TRÊS LAGOAS",
+    "type": "airport",
+    "city": {
+      "iataCode": "TJL",
+      "name": "Três Lagoas"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12três lagoas (tjl), três lagoas (tjl), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto Regional Presidente Itamar Franco",
+    "value": "IZA_airport",
+    "orderCodeNumber": "2",
+    "iataCode": "IZA",
+    "name": "Aeroporto Regional Presidente Itamar Franco",
+    "type": "airport",
+    "city": {
+      "iataCode": "IZA",
+      "name": "Aeroporto Regional Presidente Itamar Franco"
+    },
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Tucuruí",
+    "value": "TUR_airport",
+    "orderCode": "TUCURUI2",
+    "orderCodeNumber": "2",
+    "iataCode": "TUR",
+    "name": "TUCURUI",
+    "type": "airport",
+    "city": {
+      "iataCode": "TUR",
+      "name": "TUCURUI"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12tucurui (tur), tucurui (tur), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Uberaba",
+    "value": "UBA_airport",
+    "orderCode": "Uberaba2",
+    "orderCodeNumber": "2",
+    "iataCode": "UBA",
+    "name": "UBERABA",
+    "type": "airport",
+    "city": {
+      "iataCode": "UBA",
+      "name": "Uberaba"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12uberaba (uba), uberaba (uba), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Uberlândia",
+    "value": "UDI_airport",
+    "orderCode": "Uberlândia2",
+    "orderCodeNumber": "2",
+    "iataCode": "UDI",
+    "name": "Uberlândia",
+    "type": "airport",
+    "city": {
+      "iataCode": "UDI",
+      "name": "Uberlândia"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12uberlândia (udi), uberlândia (udi), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Varginha",
+    "value": "VAG_airport",
+    "orderCode": "VARGINHA2",
+    "orderCodeNumber": "2",
+    "iataCode": "VAG",
+    "name": "MAJ BRIG",
+    "type": "airport",
+    "city": {
+      "iataCode": "VAG",
+      "name": "VARGINHA"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12varginha (vag), maj brig (vag), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Vitória da Conquista",
+    "value": "VDC_airport",
+    "orderCode": "VITORIA DA CONQUISTA2",
+    "orderCodeNumber": "2",
+    "iataCode": "VDC",
+    "name": "VITORIA DA CONQUISTA",
+    "type": "airport",
+    "city": {
+      "iataCode": "VDC",
+      "name": "VITORIA DA CONQUISTA"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12vitoria da conquista (vdc), vitoria da conquista (vdc), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Vitória",
+    "value": "VIX_airport",
+    "orderCode": "Vitória2",
+    "orderCodeNumber": "2",
+    "iataCode": "VIX",
+    "name": "Eurico de Aguiar Salles",
+    "type": "airport",
+    "city": {
+      "iataCode": "VIX",
+      "name": "Vitória"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12vitória (vix), eurico de aguiar salles (vix), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Chapecó",
+    "value": "XAP_airport",
+    "orderCode": "Chapecó2",
+    "orderCodeNumber": "2",
+    "iataCode": "XAP",
+    "name": "Chapeco",
+    "type": "airport",
+    "city": {
+      "iataCode": "XAP",
+      "name": "Chapecó"
+    },
+    "position": "00-1",
+    "valueForOrder": "00-12chapecó (xap), chapeco (xap), brasil",
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Detroit",
+    "name": "Aeroporto de Detroit",
+    "iataCode": "DTW",
+    "city": {
+      "iataCode": "DTW",
+      "name": "Aeroporto de Detroit"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Amsterdam",
+    "name": "Amsterdam",
+    "iataCode": "AMS",
+    "city": {
+      "iataCode": "AMS",
+      "name": "Amsterdam"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional Cerro Moreno",
+    "name": "Antofagasta",
+    "iataCode": "ANF",
+    "city": {
+      "iataCode": "ANF",
+      "name": "Antofagasta"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional Rodríguez Ballón",
+    "name": "Arequipa",
+    "iataCode": "AQP",
+    "city": {
+      "iataCode": "AQP",
+      "name": "Arequipa"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Arica",
+    "name": "Arica",
+    "iataCode": "ARI",
+    "city": {
+      "iataCode": "ARI",
+      "name": "Arica"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Aruba",
+    "name": "Aruba",
+    "iataCode": "AUA",
+    "city": {
+      "iataCode": "AUA",
+      "name": "Aruba"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Assunção",
+    "name": "Assunção",
+    "iataCode": "ASU",
+    "city": {
+      "iataCode": "ASU",
+      "name": "Assunção"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional de Atenas",
+    "name": "Athenas",
+    "iataCode": "ATH",
+    "city": {
+      "iataCode": "ATH",
+      "name": "Athenas"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Atlanta",
+    "name": "Atlanta",
+    "iataCode": "ATL",
+    "city": {
+      "iataCode": "ATL",
+      "name": "Atlanta"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional de Austin-Bergstrom",
+    "name": "Austin",
+    "iataCode": "AUS",
+    "city": {
+      "iataCode": "AUS",
+      "name": "Austin"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Balmaceda",
+    "name": "Balmaceda",
+    "iataCode": "BBA",
+    "city": {
+      "iataCode": "BBA",
+      "name": "Balmaceda"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional Grantley Adams",
+    "name": "Barbados",
+    "iataCode": "BGI",
+    "city": {
+      "iataCode": "BGI",
+      "name": "Barbados"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Barcelona",
+    "name": "Barcelona",
+    "iataCode": "BCN",
+    "city": {
+      "iataCode": "BCN",
+      "name": "Barcelona"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional de Belfast",
+    "name": "Belfast",
+    "iataCode": "BFS",
+    "city": {
+      "iataCode": "BFS",
+      "name": "Belfast"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Berlim-Tegel",
+    "name": "Berlim - Berlin-Tegel Intl",
+    "iataCode": "TXL",
+    "city": {
+      "iataCode": "TXL",
+      "name": "Berlim - Berlin-Tegel Intl"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Berlim-Brandemburgo",
+    "name": "Berlin - Todos",
+    "iataCode": "BER",
+    "city": {
+      "iataCode": "BER",
+      "name": "Berlin - Todos"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Bilbau",
+    "name": "Bilbao",
+    "iataCode": "BIO",
+    "city": {
+      "iataCode": "BIO",
+      "name": "Bilbao"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Bogotá",
+    "name": "Bogotá",
+    "iataCode": "BOG",
+    "city": {
+      "iataCode": "BOG",
+      "name": "Bogotá"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Boston",
+    "name": "Boston Logan Intl",
+    "iataCode": "BOS",
+    "city": {
+      "iataCode": "BOS",
+      "name": "Boston Logan Intl"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Bremen",
+    "name": "Bremen",
+    "iataCode": "BRE",
+    "city": {
+      "iataCode": "BRE",
+      "name": "Bremen"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Bruxelas",
+    "name": "Bruxelas",
+    "iataCode": "BRU",
+    "city": {
+      "iataCode": "BRU",
+      "name": "Bruxelas"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Buenos Aires",
+    "name": "Buenos Aires - Aeroparque",
+    "iataCode": "AEP",
+    "city": {
+      "iataCode": "AEP",
+      "name": "Buenos Aires - Aeroparque"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Buenos Aires/Ezeiza",
+    "name": "Buenos Aires - Ezeiza Intl",
+    "iataCode": "EZE",
+    "city": {
+      "iataCode": "EZE",
+      "name": "Buenos Aires - Ezeiza Intl"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Buenos Aires ",
+    "name": "Buenos Aires - Todos",
+    "iataCode": "BUE",
+    "city": {
+      "iataCode": "BUE",
+      "name": "Buenos Aires - Todos"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional El Loa",
+    "name": "Calama",
+    "iataCode": "CJC",
+    "city": {
+      "iataCode": "CJC",
+      "name": "Calama"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional de Calgary",
+    "name": "Calgary",
+    "iataCode": "YYC",
+    "city": {
+      "iataCode": "YYC",
+      "name": "Calgary"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional Simón Bolívar",
+    "name": "Caracas",
+    "iataCode": "CCS",
+    "city": {
+      "iataCode": "CCS",
+      "name": "Caracas"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional O'Hare",
+    "name": "Chicago O`Hare Intl",
+    "iataCode": "ORD",
+    "city": {
+      "iataCode": "ORD",
+      "name": "Chicago O`Hare Intl"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": " Internacional de Chiclayo/Peru",
+    "name": "Chiclayo",
+    "iataCode": "CIX",
+    "city": {
+      "iataCode": "CIX",
+      "name": "Chiclayo"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto da Cidade do México",
+    "name": "Cvalueade do México",
+    "iataCode": "MEX",
+    "city": {
+      "iataCode": "MEX",
+      "name": "Cvalueade do México"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional Guaraní",
+    "name": "Ciudad del Leste",
+    "iataCode": "AGT",
+    "city": {
+      "iataCode": "AGT",
+      "name": "Ciudad del Leste"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional de Cleveland Hopkins",
+    "name": "Cleveland Hopkins Intl",
+    "iataCode": "CLE",
+    "city": {
+      "iataCode": "CLE",
+      "name": "Cleveland Hopkins Intl"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto do Condado de Cuyahoga",
+    "name": "Cleveland",
+    "iataCode": "CGF",
+    "city": {
+      "iataCode": "CGF",
+      "name": "Cleveland"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional General Enrique Mosconi",
+    "name": "Comodoro Rivadavia",
+    "iataCode": "CRD",
+    "city": {
+      "iataCode": "CRD",
+      "name": "Comodoro Rivadavia"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional Carriel Sur",
+    "name": "Concepción",
+    "iataCode": "CCP",
+    "city": {
+      "iataCode": "CCP",
+      "name": "Concepción"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Copenhaga",
+    "name": "Copenhagen",
+    "iataCode": "CPH",
+    "city": {
+      "iataCode": "CPH",
+      "name": "Copenhagen"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Copiapó",
+    "name": "Copiapó",
+    "iataCode": "CPO",
+    "city": {
+      "iataCode": "CPO",
+      "name": "Copiapó"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Córdoba",
+    "name": "Córdoba",
+    "iataCode": "COR",
+    "city": {
+      "iataCode": "COR",
+      "name": "Córdoba"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Curação",
+    "name": "Curaçao",
+    "iataCode": "CUR",
+    "city": {
+      "iataCode": "CUR",
+      "name": "Curaçao"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional Alejandro Velasco Astete",
+    "name": "Cuzco",
+    "iataCode": "CUZ",
+    "city": {
+      "iataCode": "CUZ",
+      "name": "Cuzco"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional de Dallas/Fort Worth",
+    "name": "Dallas Fort Worth Intl",
+    "iataCode": "DFW",
+    "city": {
+      "iataCode": "DFW",
+      "name": "Dallas Fort Worth Intl"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional de Denver",
+    "name": "Denver",
+    "iataCode": "DEN",
+    "city": {
+      "iataCode": "DEN",
+      "name": "Denver"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Dublin",
+    "name": "Dublin",
+    "iataCode": "DUB",
+    "city": {
+      "iataCode": "DUB",
+      "name": "Dublin"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Düsseldorf",
+    "name": "Dusseldorf",
+    "iataCode": "DUS",
+    "city": {
+      "iataCode": "DUS",
+      "name": "Dusseldorf"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Vail/Eagle County",
+    "name": "Eagle County-Vail",
+    "iataCode": "EGE",
+    "city": {
+      "iataCode": "EGE",
+      "name": "Eagle County-Vail"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Edimburgo",
+    "name": "Edinburgo",
+    "iataCode": "EDI",
+    "city": {
+      "iataCode": "EDI",
+      "name": "Edinburgo"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional de Edmonton",
+    "name": "Edmonton",
+    "iataCode": "YEG",
+    "city": {
+      "iataCode": "YEG",
+      "name": "Edmonton"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional Comandante Armando Tola",
+    "name": "El Calafate",
+    "iataCode": "FTE",
+    "city": {
+      "iataCode": "FTE",
+      "name": "El Calafate"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Ricardo García Posada/El Salvador",
+    "name": "El Salvador",
+    "iataCode": "ESR",
+    "city": {
+      "iataCode": "ESR",
+      "name": "El Salvador"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Estocolmo-Arlanda",
+    "name": "Estocolmo",
+    "iataCode": "ARN",
+    "city": {
+      "iataCode": "ARN",
+      "name": "Estocolmo"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Estocolmo",
+    "name": "Estocolmo",
+    "iataCode": "STO",
+    "city": {
+      "iataCode": "STO",
+      "name": "Estocolmo"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional de Faro",
+    "name": "Faro",
+    "iataCode": "FAO",
+    "city": {
+      "iataCode": "FAO",
+      "name": "Faro"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional de Filadélfia",
+    "name": "Filadelfia",
+    "iataCode": "PHL",
+    "city": {
+      "iataCode": "PHL",
+      "name": "Filadelfia"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Frankfurt",
+    "name": "Frankfurt",
+    "iataCode": "FRA",
+    "city": {
+      "iataCode": "FRA",
+      "name": "Frankfurt"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto da Madeira",
+    "name": "Funchal",
+    "iataCode": "FNC",
+    "city": {
+      "iataCode": "FNC",
+      "name": "Funchal"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional de Genebra",
+    "name": "Geneva",
+    "iataCode": "GVA",
+    "city": {
+      "iataCode": "GVA",
+      "name": "Geneva"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Gran Canária",
+    "name": "Gran Canária",
+    "iataCode": "LPA",
+    "city": {
+      "iataCode": "LPA",
+      "name": "Gran Canária"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Hamburgo",
+    "name": "Hamburgo",
+    "iataCode": "HAM",
+    "city": {
+      "iataCode": "HAM",
+      "name": "Hamburgo"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Hanôver",
+    "name": "Hanover",
+    "iataCode": "HAJ",
+    "city": {
+      "iataCode": "HAJ",
+      "name": "Hanover"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Intercontinental George Bush",
+    "name": "Houston George Bush Intl",
+    "iataCode": "IAH",
+    "city": {
+      "iataCode": "IAH",
+      "name": "Houston George Bush Intl"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional Diego Aracena",
+    "name": "Iquique",
+    "iataCode": "IQQ",
+    "city": {
+      "iataCode": "IQQ",
+      "name": "Iquique"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Coronel FAP Francisco Secada Vignetta",
+    "name": "Iquitos",
+    "iataCode": "IQT",
+    "city": {
+      "iataCode": "IQT",
+      "name": "Iquitos"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Istambul Atatürk",
+    "name": "Istambul",
+    "iataCode": "IST",
+    "city": {
+      "iataCode": "IST",
+      "name": "Istambul"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional de Jacksonville",
+    "name": "Jacksonville",
+    "iataCode": "JAX",
+    "city": {
+      "iataCode": "JAX",
+      "name": "Jacksonville"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional Inca Manco Cápac",
+    "name": "Juliaca",
+    "iataCode": "JUL",
+    "city": {
+      "iataCode": "JUL",
+      "name": "Juliaca"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto La Florida",
+    "name": "La Serena",
+    "iataCode": "LSC",
+    "city": {
+      "iataCode": "LSC",
+      "name": "La Serena"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional de Las Vegas",
+    "name": "Las Vegas",
+    "iataCode": "LAS",
+    "city": {
+      "iataCode": "LAS",
+      "name": "Las Vegas"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Jorge Chávez/Peru",
+    "name": "Lima",
+    "iataCode": "LIM",
+    "city": {
+      "iataCode": "LIM",
+      "name": "Lima"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Humberto Delgado",
+    "name": "Lisboa",
+    "iataCode": "LIS",
+    "city": {
+      "iataCode": "LIS",
+      "name": "Lisboa"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Londres-Heathrow",
+    "name": "Londres Heathrow Intl ",
+    "iataCode": "LHR",
+    "city": {
+      "iataCode": "LHR",
+      "name": "Londres Heathrow Intl "
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Londres ",
+    "name": "Londres",
+    "iataCode": "LON",
+    "city": {
+      "iataCode": "LON",
+      "name": "Londres"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional de Los Angeles",
+    "name": "Los Angeles",
+    "iataCode": "LAX",
+    "city": {
+      "iataCode": "LAX",
+      "name": "Los Angeles"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Madrid-Barajas",
+    "name": "Madri Barajas Intl",
+    "iataCode": "MAD",
+    "city": {
+      "iataCode": "MAD",
+      "name": "Madri Barajas Intl"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Málaga",
+    "name": "Malaga",
+    "iataCode": "AGP",
+    "city": {
+      "iataCode": "AGP",
+      "name": "Malaga"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Manchester",
+    "name": "Manchester",
+    "iataCode": "MAN",
+    "city": {
+      "iataCode": "MAN",
+      "name": "Manchester"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Mareeba",
+    "name": "Mareeba",
+    "iataCode": "MRG",
+    "city": {
+      "iataCode": "MRG",
+      "name": "Mareeba"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Governador Francisco Gabrielli",
+    "name": "Mendoza",
+    "iataCode": "MDZ",
+    "city": {
+      "iataCode": "MDZ",
+      "name": "Mendoza"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional de Miami",
+    "name": "Miami Intl",
+    "iataCode": "MIA",
+    "city": {
+      "iataCode": "MIA",
+      "name": "Miami Intl"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Milão-Malpensa",
+    "name": "Milão - Malpensa Intl",
+    "iataCode": "MXP",
+    "city": {
+      "iataCode": "MXP",
+      "name": "Milão - Malpensa Intl"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Minneapolis-Saint Paul",
+    "name": "Minneapolis",
+    "iataCode": "MSP",
+    "city": {
+      "iataCode": "MSP",
+      "name": "Minneapolis"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Carrasco",
+    "name": "Montevvalueeo",
+    "iataCode": "MVD",
+    "city": {
+      "iataCode": "MVD",
+      "name": "Montevvalueeo"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Montreal",
+    "name": "Montreal",
+    "iataCode": "YMQ",
+    "city": {
+      "iataCode": "YMQ",
+      "name": "Montreal"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Pierre Elliott Trudeau",
+    "name": "Montreal",
+    "iataCode": "YUL",
+    "city": {
+      "iataCode": "YUL",
+      "name": "Montreal"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Munique-Franz Josef Strauss",
+    "name": "Munique",
+    "iataCode": "MUC",
+    "city": {
+      "iataCode": "MUC",
+      "name": "Munique"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto John F. Kennedy",
+    "name": "Nova Iorque - J.F. Kennedy Intl",
+    "iataCode": "JFK",
+    "city": {
+      "iataCode": "JFK",
+      "name": "Nova Iorque - J.F. Kennedy Intl"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto LaGuardia",
+    "name": "Nova Iorque - La Guardia",
+    "iataCode": "LGA",
+    "city": {
+      "iataCode": "LGA",
+      "name": "Nova Iorque - La Guardia"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Nuremberga",
+    "name": "Nuremberg",
+    "iataCode": "NUE",
+    "city": {
+      "iataCode": "NUE",
+      "name": "Nuremberg"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional de Orlando",
+    "name": "Orlando",
+    "iataCode": "MCO",
+    "city": {
+      "iataCode": "MCO",
+      "name": "Orlando"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Oslo Gardermoen",
+    "name": "Oslo",
+    "iataCode": "OSL",
+    "city": {
+      "iataCode": "OSL",
+      "name": "Oslo"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Carlos Hott Siebert",
+    "name": "Osorno",
+    "iataCode": "ZOS",
+    "city": {
+      "iataCode": "ZOS",
+      "name": "Osorno"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Ottawa Macdonald-Cartier",
+    "name": "Ottawa",
+    "iataCode": "YOW",
+    "city": {
+      "iataCode": "YOW",
+      "name": "Ottawa"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional Tocumen",
+    "name": "Panama City",
+    "iataCode": "PTY",
+    "city": {
+      "iataCode": "PTY",
+      "name": "Panama City"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Paris-Charles de Gaulle",
+    "name": "Paris - Charles de Gaulle Intl",
+    "iataCode": "CDG",
+    "city": {
+      "iataCode": "CDG",
+      "name": "Paris - Charles de Gaulle Intl"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional de Pequim-Capital",
+    "name": "Pequim",
+    "iataCode": "PEK",
+    "city": {
+      "iataCode": "PEK",
+      "name": "Pequim"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional de Phoenix Sky Harbor",
+    "name": "Phoenix",
+    "iataCode": "PHX",
+    "city": {
+      "iataCode": "PHX",
+      "name": "Phoenix"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Capitán FAP Guillermo Concha Iberico",
+    "name": "Piura",
+    "iataCode": "PIU",
+    "city": {
+      "iataCode": "PIU",
+      "name": "Piura"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Portland",
+    "name": "Portland",
+    "iataCode": "PDX",
+    "city": {
+      "iataCode": "PDX",
+      "name": "Portland"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Francisco Sá Carneiro",
+    "name": "Porto",
+    "iataCode": "OPO",
+    "city": {
+      "iataCode": "OPO",
+      "name": "Porto"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto do Porto Santo",
+    "name": "Porto Santo",
+    "iataCode": "PXO",
+    "city": {
+      "iataCode": "PXO",
+      "name": "Porto Santo"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional Capitão Rolden",
+    "name": "Pucallpa",
+    "iataCode": "PCL",
+    "city": {
+      "iataCode": "PCL",
+      "name": "Pucallpa"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional Padre Aldamiz",
+    "name": "Puerto Maldonado",
+    "iataCode": "PEM",
+    "city": {
+      "iataCode": "PEM",
+      "name": "Puerto Maldonado"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto El Tepual",
+    "name": "Puerto Montt",
+    "iataCode": "PMC",
+    "city": {
+      "iataCode": "PMC",
+      "name": "Puerto Montt"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Carlos Ibáñez del Campo",
+    "name": "Punta Arenas",
+    "iataCode": "PUQ",
+    "city": {
+      "iataCode": "PUQ",
+      "name": "Punta Arenas"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Punta Cana",
+    "name": "Punta Cana",
+    "iataCode": "PUJ",
+    "city": {
+      "iataCode": "PUJ",
+      "name": "Punta Cana"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Punta del Este",
+    "name": "Punta Del Este",
+    "iataCode": "PDP",
+    "city": {
+      "iataCode": "PDP",
+      "name": "Punta Del Este"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Jean Lesage",
+    "name": "Quebec",
+    "iataCode": "YQB",
+    "city": {
+      "iataCode": "YQB",
+      "name": "Quebec"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Raleigh–Durham",
+    "name": "Raleigh Durham",
+    "iataCode": "RDU",
+    "city": {
+      "iataCode": "RDU",
+      "name": "Raleigh Durham"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Piloto Civil Norberto Fernández",
+    "name": "Rio Gallegos",
+    "iataCode": "RGL",
+    "city": {
+      "iataCode": "RGL",
+      "name": "Rio Gallegos"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Rosario Islas Malvinas",
+    "name": "Rosário",
+    "iataCode": "ROS",
+    "city": {
+      "iataCode": "ROS",
+      "name": "Rosário"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Salt Lake City",
+    "name": "Salt Lake City",
+    "iataCode": "SLC",
+    "city": {
+      "iataCode": "SLC",
+      "name": "Salt Lake City"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Salta Martín Miguel de Güemes",
+    "name": "Salta",
+    "iataCode": "SLA",
+    "city": {
+      "iataCode": "SLA",
+      "name": "Salta"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Montgomery Field",
+    "name": "San Diego - Montgomery Field",
+    "iataCode": "MYF",
+    "city": {
+      "iataCode": "MYF",
+      "name": "San Diego - Montgomery Field"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional de San Diego",
+    "name": "San Diego - San Diego Intl",
+    "iataCode": "SAN",
+    "city": {
+      "iataCode": "SAN",
+      "name": "San Diego - San Diego Intl"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de São Francisco",
+    "name": "San Francisco",
+    "iataCode": "SFO",
+    "city": {
+      "iataCode": "SFO",
+      "name": "San Francisco"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de São José dos Campos",
+    "name": "San Jose",
+    "iataCode": "SJC",
+    "city": {
+      "iataCode": "SJC",
+      "name": "San Jose"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto  Viru Viru",
+    "name": "Santa Cruz de la Sierra",
+    "iataCode": "VVI",
+    "city": {
+      "iataCode": "VVI",
+      "name": "Santa Cruz de la Sierra"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Comodoro Arturo Merino Benítez",
+    "name": "Santiago",
+    "iataCode": "SCL",
+    "city": {
+      "iataCode": "SCL",
+      "name": "Santiago"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Santiago de Compostela",
+    "name": "Santiago De Compostela",
+    "iataCode": "SCQ",
+    "city": {
+      "iataCode": "SCQ",
+      "name": "Santiago De Compostela"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Las Américas",
+    "name": "Santo Domingo",
+    "iataCode": "SDQ",
+    "city": {
+      "iataCode": "SDQ",
+      "name": "Santo Domingo"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Seattle-Tacoma",
+    "name": "Seattle Tacoma Intl",
+    "iataCode": "SEA",
+    "city": {
+      "iataCode": "SEA",
+      "name": "Seattle Tacoma Intl"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Changi de Singapura ",
+    "name": "Singapura",
+    "iataCode": "SIN",
+    "city": {
+      "iataCode": "SIN",
+      "name": "Singapura"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Stuttgart",
+    "name": "Stuttgart Intl",
+    "iataCode": "STR",
+    "city": {
+      "iataCode": "STR",
+      "name": "Stuttgart Intl"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Coronel FAP Carlos Ciriani Santa Rosa",
+    "name": "Tacna",
+    "iataCode": "TCQ",
+    "city": {
+      "iataCode": "TCQ",
+      "name": "Tacna"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Tampa",
+    "name": "Tampa",
+    "iataCode": "TPA",
+    "city": {
+      "iataCode": "TPA",
+      "name": "Tampa"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Tarapoto/Peru",
+    "name": "Tarapoto",
+    "iataCode": "TPP",
+    "city": {
+      "iataCode": "TPP",
+      "name": "Tarapoto"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto La Araucanía",
+    "name": "Temuco",
+    "iataCode": "ZCO",
+    "city": {
+      "iataCode": "ZCO",
+      "name": "Temuco"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Tenerife Norte",
+    "name": "Tenerife",
+    "iataCode": "TFN",
+    "city": {
+      "iataCode": "TFN",
+      "name": "Tenerife"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Narita",
+    "name": "Tóquio - Narita Intl",
+    "iataCode": "NRT",
+    "city": {
+      "iataCode": "NRT",
+      "name": "Tóquio - Narita Intl"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Pearson de Toronto",
+    "name": "Toronto",
+    "iataCode": "YYZ",
+    "city": {
+      "iataCode": "YYZ",
+      "name": "Toronto"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Capitán FAP Carlos Martínez de Pinillos",
+    "name": "Trujillo",
+    "iataCode": "TRU",
+    "city": {
+      "iataCode": "TRU",
+      "name": "Trujillo"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Ushuaia - Malvinas Argentinas",
+    "name": "Ushuaia",
+    "iataCode": "USH",
+    "city": {
+      "iataCode": "USH",
+      "name": "Ushuaia"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Pichoy Airport ",
+    "name": "Valdivia",
+    "iataCode": "ZAL",
+    "city": {
+      "iataCode": "ZAL",
+      "name": "Valdivia"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Vancouver",
+    "name": "Vancouver",
+    "iataCode": "YVR",
+    "city": {
+      "iataCode": "YVR",
+      "name": "Vancouver"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Viena",
+    "name": "Vienna",
+    "iataCode": "VIE",
+    "city": {
+      "iataCode": "VIE",
+      "name": "Vienna"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Washington Dulles",
+    "name": "Washington - Dulles Intl",
+    "iataCode": "IAD",
+    "city": {
+      "iataCode": "IAD",
+      "name": "Washington - Dulles Intl"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Nacional Ronald Reagan de Washington",
+    "name": "Washington - Ronald Reagan National",
+    "iataCode": "DCA",
+    "city": {
+      "iataCode": "DCA",
+      "name": "Washington - Ronald Reagan National"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Winnipeg James Armstrong Richardson",
+    "name": "Winnipeg",
+    "iataCode": "YWG",
+    "city": {
+      "iataCode": "YWG",
+      "name": "Winnipeg"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Zurique",
+    "name": "Zurique",
+    "iataCode": "ZRH",
+    "city": {
+      "iataCode": "ZRH",
+      "name": "Zurique"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Aberdeen",
+    "name": "Aberdeen",
+    "iataCode": "ABZ",
+    "city": {
+      "iataCode": "ABZ",
+      "name": "Aberdeen"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Moscovo Sheremetievo",
+    "name": "Aeroporto Moscovo Sheremetievo",
+    "iataCode": "SVO",
+    "city": {
+      "iataCode": "SVO",
+      "name": "Aeroporto Moscovo Sheremetievo"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Gustavo Rojas Pinilla",
+    "name": "San Andres Island",
+    "iataCode": "ADZ",
+    "city": {
+      "iataCode": "ADZ",
+      "name": "San Andres Island"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Fort Lauderdale-Miami",
+    "name": "Fort Lauderdale-Miami",
+    "iataCode": "FLL",
+    "city": {
+      "iataCode": "FLL",
+      "name": "Fort Lauderdale-Miami"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Mariscal Sucre",
+    "name": "Quito - Mariscal Sucre International",
+    "iataCode": "UIO",
+    "city": {
+      "iataCode": "UIO",
+      "name": "Quito - Mariscal Sucre International"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Teniente Luis Candelaria",
+    "name": "Bariloche Internacional",
+    "iataCode": "BRC",
+    "city": {
+      "iataCode": "BRC",
+      "name": "Bariloche Internacional"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Ernesto Cortissoz",
+    "name": "Barranquilla - Ernesto Cortissoz International",
+    "iataCode": "BAQ",
+    "city": {
+      "iataCode": "BAQ",
+      "name": "Barranquilla - Ernesto Cortissoz International"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Suvarnabhumi",
+    "name": "Bangkok - Suvarnabhumi Internacional",
+    "iataCode": "BKK",
+    "city": {
+      "iataCode": "BKK",
+      "name": "Bangkok - Suvarnabhumi Internacional"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto da Cidade do Cabo",
+    "name": "Cvalueade do Cabo - Cape Town Internacional",
+    "iataCode": "CPT",
+    "city": {
+      "iataCode": "CPT",
+      "name": "Cvalueade do Cabo - Cape Town Internacional"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto  Domodedovo",
+    "name": "Moscow Domodedovo",
+    "iataCode": "DME",
+    "city": {
+      "iataCode": "DME",
+      "name": "Moscow Domodedovo"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Abu Dhabi",
+    "name": "Abu Dhabi International",
+    "iataCode": "AUH",
+    "city": {
+      "iataCode": "AUH",
+      "name": "Abu Dhabi International"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto do Cairo",
+    "name": "Cairo Internacional",
+    "iataCode": "CAI",
+    "city": {
+      "iataCode": "CAI",
+      "name": "Cairo Internacional"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Budapeste Ferenc Liszt",
+    "name": "Budapeste - Liszt Ferenc International",
+    "iataCode": "BUD",
+    "city": {
+      "iataCode": "BUD",
+      "name": "Budapeste - Liszt Ferenc International"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Chhatrapati Shivaji",
+    "name": "Mumbai Chhatrapati Shivaji",
+    "iataCode": "BOM",
+    "city": {
+      "iataCode": "BOM",
+      "name": "Mumbai Chhatrapati Shivaji"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Dubrovnik",
+    "name": "Dubrovnik",
+    "iataCode": "DBV",
+    "city": {
+      "iataCode": "DBV",
+      "name": "Dubrovnik"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Indira Gandhi",
+    "name": "Delhi - Indira Gandhi Internacional",
+    "iataCode": "DEL",
+    "city": {
+      "iataCode": "DEL",
+      "name": "Delhi - Indira Gandhi Internacional"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Hamad",
+    "name": "Doha - Hamad International",
+    "iataCode": "DOH",
+    "city": {
+      "iataCode": "DOH",
+      "name": "Doha - Hamad International"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Dubai",
+    "name": "Dubai International",
+    "iataCode": "DXB",
+    "city": {
+      "iataCode": "DXB",
+      "name": "Dubai International"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Tóquio",
+    "name": "Tokyo International Haneda",
+    "iataCode": "HND",
+    "city": {
+      "iataCode": "HND",
+      "name": "Tokyo International Haneda"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Oliver Tambo",
+    "name": "Joanesburgo - O.R. Tambo Internacional",
+    "iataCode": "JNB",
+    "city": {
+      "iataCode": "JNB",
+      "name": "Joanesburgo - O.R. Tambo Internacional"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Kiev-Boryspil",
+    "name": "Kiev - Boryspil International",
+    "iataCode": "KBP",
+    "city": {
+      "iataCode": "KBP",
+      "name": "Kiev - Boryspil International"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Kuala Lumpur",
+    "name": "Kuala Lumpur Internacional",
+    "iataCode": "KUL",
+    "city": {
+      "iataCode": "KUL",
+      "name": "Kuala Lumpur Internacional"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto do Kuwait",
+    "name": "Kuwait Internacional",
+    "iataCode": "KWI",
+    "city": {
+      "iataCode": "KWI",
+      "name": "Kuwait Internacional"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Pulkovo ",
+    "name": "São Petersburgo Pulkovo",
+    "iataCode": "LED",
+    "city": {
+      "iataCode": "LED",
+      "name": "São Petersburgo Pulkovo"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Henri Coandă",
+    "name": "Bucareste - Henri Coanda",
+    "iataCode": "OTP",
+    "city": {
+      "iataCode": "OTP",
+      "name": "Bucareste - Henri Coanda"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Praga",
+    "name": "Praga - Ruzyne",
+    "iataCode": "PRG",
+    "city": {
+      "iataCode": "PRG",
+      "name": "Praga - Ruzyne"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Marrakech-Menara",
+    "name": "Marrakech - Menara",
+    "iataCode": "RAK",
+    "city": {
+      "iataCode": "RAK",
+      "name": "Marrakech - Menara"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Changi de Singapura",
+    "name": "Singapura - Changi",
+    "iataCode": "SIN",
+    "city": {
+      "iataCode": "SIN",
+      "name": "Singapura - Changi"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Sófia",
+    "name": "Sofia",
+    "iataCode": "SOF",
+    "city": {
+      "iataCode": "SOF",
+      "name": "Sofia"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Sydney",
+    "name": "Sydney Kingsford Smith",
+    "iataCode": "SYD",
+    "city": {
+      "iataCode": "SYD",
+      "name": "Sydney Kingsford Smith"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Ben Gurion",
+    "name": "Tel Aviv Yafo - Ben Gurion Internacional",
+    "iataCode": "TLV",
+    "city": {
+      "iataCode": "TLV",
+      "name": "Tel Aviv Yafo - Ben Gurion Internacional"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Frédéric Chopin de Varsóvia",
+    "name": "Varsóvia - Warsaw Frederic Chopin",
+    "iataCode": "WAW",
+    "city": {
+      "iataCode": "WAW",
+      "name": "Varsóvia - Warsaw Frederic Chopin"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional Franjo Tuđman",
+    "name": "Zagreb - Pleso",
+    "iataCode": "ZAG",
+    "city": {
+      "iataCode": "ZAG",
+      "name": "Zagreb - Pleso"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Bergen",
+    "name": "Bergen - Flesland",
+    "iataCode": "BGO",
+    "city": {
+      "iataCode": "BGO",
+      "name": "Bergen - Flesland"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Guglielmo Marconi",
+    "name": "Bologna - Guglielmo Marconi",
+    "iataCode": "BLQ",
+    "city": {
+      "iataCode": "BLQ",
+      "name": "Bologna - Guglielmo Marconi"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Bari ",
+    "name": "Bari - Palese",
+    "iataCode": "BRI",
+    "city": {
+      "iataCode": "BRI",
+      "name": "Bari - Palese"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Roma",
+    "name": "Roma - Fiumicino",
+    "iataCode": "FCO",
+    "city": {
+      "iataCode": "FCO",
+      "name": "Roma - Fiumicino"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Glasgow",
+    "name": "Glasgow Internacional",
+    "iataCode": "GLA",
+    "city": {
+      "iataCode": "GLA",
+      "name": "Glasgow Internacional"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Gotemburgo-Landvetter",
+    "name": "Goteborg - Landvetter",
+    "iataCode": "GOT",
+    "city": {
+      "iataCode": "GOT",
+      "name": "Goteborg - Landvetter"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Helsínquia-Vantaa",
+    "name": "Helsinki Vantaa",
+    "iataCode": "HEL",
+    "city": {
+      "iataCode": "HEL",
+      "name": "Helsinki Vantaa"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Ibiza",
+    "name": "Ibiza",
+    "iataCode": "IBZ",
+    "city": {
+      "iataCode": "IBZ",
+      "name": "Ibiza"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Mykonos",
+    "name": "Mykonos",
+    "iataCode": "JMK",
+    "city": {
+      "iataCode": "JMK",
+      "name": "Mykonos"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Luxemburgo-Findel",
+    "name": "Luxembourg",
+    "iataCode": "LUX",
+    "city": {
+      "iataCode": "LUX",
+      "name": "Luxembourg"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Lyon-Saint-Exupéry",
+    "name": "Lyon - Saint Exupery",
+    "iataCode": "LYS",
+    "city": {
+      "iataCode": "LYS",
+      "name": "Lyon - Saint Exupery"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Marseille-Provence",
+    "name": "Marseille Provence",
+    "iataCode": "MRS",
+    "city": {
+      "iataCode": "MRS",
+      "name": "Marseille Provence"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Nápoles",
+    "name": "Nápoles - Naples International",
+    "iataCode": "NAP",
+    "city": {
+      "iataCode": "NAP",
+      "name": "Nápoles - Naples International"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Nice",
+    "name": "Nice - Côte D'Azur",
+    "iataCode": "NCE",
+    "city": {
+      "iataCode": "NCE",
+      "name": "Nice - Côte D'Azur"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Roterdã-Haia",
+    "name": "Rotterdam",
+    "iataCode": "RTM",
+    "city": {
+      "iataCode": "RTM",
+      "name": "Rotterdam"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Stavanger",
+    "name": "Stavanger - Sola",
+    "iataCode": "SVG",
+    "city": {
+      "iataCode": "SVG",
+      "name": "Stavanger - Sola"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Salzburg",
+    "name": "Salzburg - Wolfgang A Mozart",
+    "iataCode": "SZG",
+    "city": {
+      "iataCode": "SZG",
+      "name": "Salzburg - Wolfgang A Mozart"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Toulouse-Blagnac",
+    "name": "Toulouse - Blagnac",
+    "iataCode": "TLS",
+    "city": {
+      "iataCode": "TLS",
+      "name": "Toulouse - Blagnac"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Turim",
+    "name": "Turin - Caselle",
+    "iataCode": "TRN",
+    "city": {
+      "iataCode": "TRN",
+      "name": "Turin - Caselle"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Marco Polo",
+    "name": "Veneza - Marco Polo",
+    "iataCode": "VCE",
+    "city": {
+      "iataCode": "VCE",
+      "name": "Veneza - Marco Polo"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Viena",
+    "name": "Vienna Internacional",
+    "iataCode": "VIE",
+    "city": {
+      "iataCode": "VIE",
+      "name": "Vienna Internacional"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Verona Villafranca",
+    "name": "Verona - Villafranca",
+    "iataCode": "VRN",
+    "city": {
+      "iataCode": "VRN",
+      "name": "Verona - Villafranca"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional Palonegro",
+    "name": "Bucaramanga - Palonegro International",
+    "iataCode": "BGA",
+    "city": {
+      "iataCode": "BGA",
+      "name": "Bucaramanga - Palonegro International"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Comandante Espor",
+    "name": "Bahia Blanca - Comandante Espora",
+    "iataCode": "BHI",
+    "city": {
+      "iataCode": "BHI",
+      "name": "Bahia Blanca - Comandante Espora"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Birmingham-Shuttlesworth",
+    "name": "Birmingham",
+    "iataCode": "BHM",
+    "city": {
+      "iataCode": "BHM",
+      "name": "Birmingham"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Carriel Sur",
+    "name": "Concepción - Carriel Sur",
+    "iataCode": "CCP",
+    "city": {
+      "iataCode": "CCP",
+      "name": "Concepción - Carriel Sur"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto El Loa",
+    "name": "Calama",
+    "iataCode": "CJC",
+    "city": {
+      "iataCode": "CJC",
+      "name": "Calama"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Rafael Núñez",
+    "name": "Cartagena - Rafael Nunez International",
+    "iataCode": "CTG",
+    "city": {
+      "iataCode": "CTG",
+      "name": "Cartagena - Rafael Nunez International"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Camilo Daza",
+    "name": "Cúcuta - Camilo Daza",
+    "iataCode": "CUC",
+    "city": {
+      "iataCode": "CUC",
+      "name": "Cúcuta - Camilo Daza"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Cancún",
+    "name": "Cancún International",
+    "iataCode": "CUN",
+    "city": {
+      "iataCode": "CUN",
+      "name": "Cancún International"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto José Joaquín de Olmedo",
+    "name": "Guayaquil - Jose Joaquin De Olmedo",
+    "iataCode": "GYE",
+    "city": {
+      "iataCode": "GYE",
+      "name": "Guayaquil - Jose Joaquin De Olmedo"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Cataratas del Iguazú ",
+    "name": "Iguazu - Cataratas Del Iguazu",
+    "iataCode": "IGR",
+    "city": {
+      "iataCode": "IGR",
+      "name": "Iguazu - Cataratas Del Iguazu"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Mataveri",
+    "name": "Ilha de Páscoa - Mataveri Internacional",
+    "iataCode": "IPC",
+    "city": {
+      "iataCode": "IPC",
+      "name": "Ilha de Páscoa - Mataveri Internacional"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Hong Kong",
+    "name": "Hong Kong",
+    "iataCode": "HKG",
+    "city": {
+      "iataCode": "HKG",
+      "name": "Hong Kong"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Luis Muñoz Marin",
+    "name": "San Juan - Luis Munoz Marin",
+    "iataCode": "SJU",
+    "city": {
+      "iataCode": "SJU",
+      "name": "San Juan - Luis Munoz Marin"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Teixeira de Freitas",
+    "name": "Aeroporto de Teixeira de Freitas",
+    "iataCode": "TXF",
+    "city": {
+      "iataCode": "TXF",
+      "name": "Teixeira de Freitas"
+    },
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto Lauro Kurtz",
+    "name": "Aeroporto de Lauro Kurtz  Passo Fundo",
+    "iataCode": "PFB",
+    "city": {
+      "iataCode": "PFB",
+      "name": "Passo Fundo"
+    },
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto de Campos dos Goitacazes ",
+    "name": "Aeroporto de Campos dos Goitacazes",
+    "iataCode": "CAW",
+    "city": {
+      "iataCode": "CAW",
+      "name": "Campos dos Goitacazes"
+    },
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto Presidente João Suassuna",
+    "name": "Aeroporto Presidente João Suassuna",
+    "iataCode": "CPV",
+    "city": {
+      "iataCode": "CPV",
+      "name": "Campina Grande"
+    },
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto Internacional Jorge Chávez",
+    "name": "Aeroporto Internacional Jorge Chávez",
+    "iataCode": "TUC",
+    "city": {
+      "iataCode": "LIM",
+      "name": "Lima"
+    },
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto Alfonso Bonilla Aragón",
+    "name": "Aeroporto Internacional Alfonso Bonilla Aragón",
+    "iataCode": "CLO",
+    "city": {
+      "iataCode": "CLO",
+      "name": "Cali"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Simón Bolívar International Airport",
+    "name": "Simón Bolívar International Airport",
+    "iataCode": "SMR",
+    "city": {
+      "iataCode": "SMR",
+      "name": "Santa Marta"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Santa Maria Airport",
+    "name": "Santa Maria Airport",
+    "iataCode": "RIA",
+    "city": {
+      "iataCode": "RIA",
+      "name": "Santa Marta"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "José María Córdova International Airport",
+    "name": "José María Córdova International Airport",
+    "iataCode": "MDE",
+    "city": {
+      "iataCode": "MDE",
+      "name": "Rionegro"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional Piedmont Triad",
+    "name": "Aeroporto Internacional Piedmont Triad",
+    "iataCode": "GSO",
+    "city": {
+      "iataCode": "GSO",
+      "name": "Greensboro Piedmont Triad"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Alfredo Vásquez Cobo International Airport",
+    "name": "Alfredo Vásquez Cobo International Airport",
+    "iataCode": "LET",
+    "city": {
+      "iataCode": "LET",
+      "name": "Leticia"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional de Faa'a",
+    "name": "Polinésia Francesa",
+    "iataCode": "PPT",
+    "city": {
+      "iataCode": "PPT",
+      "name": "Polinésia Francesa"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional de Malta",
+    "name": "Aeroporto Internacional de Malta",
+    "iataCode": "MLA",
+    "city": {
+      "iataCode": "MLA",
+      "name": "Malta"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Sabiha Gökçen",
+    "name": "Aeroporto Sabiha Gökçen",
+    "iataCode": "SAW",
+    "city": {
+      "iataCode": "SAW",
+      "name": "Istanbul"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto de Alghero",
+    "name": "Aeroporto de Alghero",
+    "iataCode": "AHO",
+    "city": {
+      "iataCode": "AHO",
+      "name": "Alghero"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "Aeroporto Internacional de El Alto",
+    "name": "Aeroporto Internacional de El Alto",
+    "iataCode": "LPB",
+    "city": {
+      "iataCode": "LPB",
+      "name": "La Paz"
+    },
+    "internacional": "1"
+  },
+  {
+    "label": "AEROPORTO DE ARACATI",
+    "name": "AEROPORTO DE ARACATI",
+    "iataCode": "ARX",
+    "city": {
+      "iataCode": "ARX",
+      "name": "Ceará"
+    },
+    "internacional": "0"
+  },
+  {
+    "label": "Aeroporto Internacional de Incheon",
+    "name": "Aeroporto Internacional de Incheon",
+    "iataCode": "ICN",
+    "city": {
+      "iataCode": "ICN",
+      "name": "Incheon"
+    },
+    "internacional": "1"
+  }
+]

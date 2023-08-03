@@ -1,0 +1,47 @@
+<?php
+
+namespace MilesBench\Controller\NFSe\BH\Signature;
+
+class Sig {
+
+	private $DigestValue;
+	private $SignatureValue;
+	private $X509Certificate;
+
+
+	public function __construct() {
+		$this->DigestValue = 'mMyQLAm4psxx52kaD8Jlta3ouPM';
+
+		$this->SignatureValue = 'BKfaNz6RbsYUxCOrjGZ9zrdgiGL7QSBxjlhYRlKDNlDERlDWvM8gi28yus8FoUb0v2CTKKIBz0tzfqxgk60rke4YCMkTzdWfpm7ofMIhYC9VHqbWdInC20znOKygJy5hyIx6JBoyXbejnw/0KF+2E1P1ZehqXJWZqY+KPaIGAY=';
+
+		$this->X509Certificate = 'MIIE7DCCA9SgAwIBAgIQZMlLC9ZEsHWsnvJNdMI2yzANBgkqhkiG9w0BAQUFADBqMQswCQYDVQQGEwJCUjETMBEGA1UEChMKSUNQLUJyYXNpbDEsMCoGA1UECxMjU2VjcmV0YXJpYSBkYSBSZWNlaXRhIEZlZGVyYWwgLSBTUkYxGDAWBgNVBAMTD0FDIFBST0RFTUdFIFNSRjAeFw0wNzEwMzEwMDAwMDBaFw0xMDEwMzAyMzU5NTlaMIGQMQswCQYDVQQGEwJCUjETMBEGA1UEChQKSUNQLUJyYXNpbDEqMCgGA1UECxQhU2VjcmV0YXJpYSBkYSBSZWNlaXRhIEZlZGVyYWwtU1JGMRIwEAYDVQQLFAlTUkYgZS1DUEYxLDAqBgNVBAMTI0VER0FSIERPIENBUk1PIEZFUlJFSVJBOjQzMjYwMTUyNjg3MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC6M+9XT5KLQN3IH8mAr+S6vxiochY/EwF8EhtNoxPTYl+zr0Dh+eZsRG31bN410nr2OrwncrRorMK8Ngq+j3FnNF0nIMigaaa5NAEfIk3Yy4kuqrTUZBpqUJvCqc3mkF3C3XD0MTmtbVTWCvYIk+qn3t5ShHyMnQcuah5Q0ItSbQIDAQABo4IB6TCCAeUwgZUGA1UdEQSBjTCBiqA9BgVgTAEDAaA0BDIyMTAzMTk2NDQzMjYwMTUyNjg3MDAwMDAwMDAwMDAwMDAwMDBNLTI4ODQwODVTU1BNR6AXBgVgTAEDBqAOBAwwMDAwMDAwMDAwMDCgHgYFYEwBAwWgFQQTMDAwMDAwMDAwMDAwMDAwMDAwMIEQZWRnYXJAcGJoLmdvdi5icjAJBgNVHRMEAjAAMF8GA1UdHwRYMFYwVKBSoFCGTmh0dHA6Ly9pY3AtYnJhc2lsLmNlcnRpc2lnbi5jb20uYnIvcmVwb3NpdG9yaW8vbGNyL0FDUFJPREVNR0VTUkYvTGF0ZXN0Q1JMLmNybDAfBgNVHSMEGDAWgBTdO9vtjZcRRUMBQ020Ev0O7niacDAOBgNVHQ8BAf8EBAMCBeAwVQYDVR0gBE4wTDBKBgZgTAECAxQwQDA+BggrBgEFBQcCARYyaHR0cDovL2ljcC1icmFzaWwuY2VydGlzaWduLmNvbS5ici9yZXBvc2l0b3Jpby9kcGMwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMCMDgGCCsGAQUFBwEBBCwwKjAoBggrBgEFBQcwAYYcaHR0cDovL29jc3AuY2VydGlzaWduLmNvbS5icjANBgkqhkiG9w0BAQUFAAOCAQEAYFcjZj4lGVEREHBaHtcRletWS6/mvpkxmodwj3ele5yXsxuqSZd7ebHbKewXx7gkyaWFkFAxFanQhls2tYKjg6haqt2b0AO1FsitVIHkMcxRwkU9G+1ec8yfdxymra2VdXazkxuvqKABgxkqKnaFdHjje7cjWDgwparymH64mTlHkSQz59GutJW0xfwBHcMGx0/9/iIug6pfMQivWf0NMVpFNzxO5ZNPEuOeBhVDxQr4+KB+4B9xDai/3J6f42UNbSy+z3xuB0K8/7V7BsFUYOYFSNnBrXhvbvXtZOtteX65V0r1+RJJX5OK+PAPhZ57T1LEmHMggdo5kli3Nr1KFQ==';
+	}
+
+
+	public function getDigestValue() {
+		return $this->DigestValue;
+	}
+
+	public function setDigestValue($DigestValue) {
+		$this->DigestValue = $DigestValue;
+	}
+
+
+	public function getSignatureValue() {
+		return $this->SignatureValue;
+	}
+
+	public function setSignatureValue($SignatureValue) {
+		$this->SignatureValue = $SignatureValue;
+	}
+
+
+	public function getX509Certificate() {
+		return $this->X509Certificate;
+	}
+
+	public function setX509Certificate($X509Certificate) {
+		$this->X509Certificate = $X509Certificate;
+	}
+
+}

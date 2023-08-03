@@ -1,0 +1,177 @@
+<div class="page page-dashboard" data-ng-controller="BalanceCardsCtrl">
+
+    <div class="row">
+        <div class="col-md-6">
+            <section class="panel panel-default table-dynamic">
+                <div class="panel-heading"><strong>Cartões por Prioridade</strong></div>
+                <div class="table-filters"></div>
+                <table class="table table-bordered table-striped table-responsive" name="table_costCenter">
+                    <thead>
+                        <tr>
+                            <th><div class="th">CIA</div></th>
+                            <th><div class="th">Prioridade</div></th>
+                            <th><div class="th">Data e Utilização</div></th>
+                            <th><div class="th">Vencimento Pontos</div></th>
+                            <th><div class="th">Vencimento Contrato</div></th>
+                            <th><div class="th">Observação</div></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="draggable" data-ng-repeat="airline in airlinesStatus" ng-click="findCards(airline)">
+                            <td>{{airline.name}}</td>
+                            <td>{{airline.priority1}}</td>
+                            <td>{{airline.priority2}}</td>
+                            <td>{{airline.priority3}}</td>
+                            <td>{{airline.priority4}}</td>
+                            <td>{{airline.priority5}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+        <div class="col-md-6">
+            <section class="panel panel-default table-dynamic">
+                <div class="panel-heading"><strong>Cartões por Saldo</strong></div>
+                <div class="table-filters"></div>
+                <table class="table table-bordered table-striped table-responsive" name="table_costCenter">
+                    <thead>
+                        <tr>
+                            <th><div class="th">CIA</div></th>
+                            <th ng-click="findCardsAirlines('1')" ><div class="th">4.000 a 9.999</div></th>
+                            <th ng-click="findCardsAirlines('2')" ><div class="th">10.000 a 49.999</div></th>
+                            <th ng-click="findCardsAirlines('3')" ><div class="th">50.000 a 99.999</div></th>
+                            <th ng-click="findCardsAirlines('4')" ><div class="th">100.000 a 999.999</div></th>
+                            <th ng-click="findCardsAirlines('5')" ><div class="th">> 1.000.000</div></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="airline in airlinesRange">
+                            <td>{{airline.name}}</td>
+                            <td>{{airline.range1}}</td>
+                            <td>{{airline.range2}}</td>
+                            <td>{{airline.range3}}</td>
+                            <td>{{airline.range4}}</td>
+                            <td>{{airline.range5}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+        <div class="col-md-12" ng-if="cards">
+            <section class="panel panel-default table-dynamic">
+                <div class="panel-heading"><strong>Cartões</strong></div>
+                <div class="table-filters"></div>
+                <table class="table table-bordered table-striped table-responsive" name="table_costCenter">
+                    <thead>
+                        <tr>
+                            <th><div class="th">Nome</div></th>
+                            <th><div class="th">CPF</div></th>
+                            <th><div class="th">Tipo Cartão</div></th>
+                            <th><div class="th">Vencimento Pontos</div></th>
+                            <th><div class="th">Vencimento Contrato</div></th>
+                            <th><div class="th">Estoque</div></th>
+                            <th><div class="th">Max Pax</div></th>
+                            <th><div class="th">utilizados</div></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="6"><b>Prioridade</td></b></tr>
+                        <tr class="draggable" data-ng-repeat="card in cards.priority1">
+                            <td>{{ card.name }}</td>
+                            <td>{{ card.registration_code }}</td>
+                            <td>{{ card.card_type }}</td>
+                            <td>{{ findDate(card.due_date) | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ findDate(card.contract_due_date) | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ formatNumber(card.leftover, 0)  }}</td>
+                            <td>{{ card.maxPerPax  }}</td>
+                            <td>{{ card.paxes.length  }}</td>
+                        </tr>
+                        <tr><td colspan="6"><b>Data e Utilização</b></td></tr>
+                        <tr class="draggable" data-ng-repeat="card in cards.priority2">
+                            <td>{{ card.name }}</td>
+                            <td>{{ card.registration_code }}</td>
+                            <td>{{ card.card_type }}</td>
+                            <td>{{ findDate(card.due_date) | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ findDate(card.contract_due_date) | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ formatNumber(card.leftover, 0)  }}</td>
+                            <td>{{ card.maxPerPax  }}</td>
+                            <td>{{ card.paxes.length  }}</td>
+                        </tr>
+                        <tr><td colspan="6"><b>Vencimento Pontos</b></td></tr>
+                        <tr class="draggable" data-ng-repeat="card in cards.priority3">
+                            <td>{{ card.name }}</td>
+                            <td>{{ card.registration_code }}</td>
+                            <td>{{ card.card_type }}</td>
+                            <td>{{ findDate(card.due_date) | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ findDate(card.contract_due_date) | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ formatNumber(card.leftover, 0)  }}</td>
+                            <td>{{ card.maxPerPax  }}</td>
+                            <td>{{ card.paxes.length  }}</td>
+                        </tr>
+                        <tr><td colspan="6"><b>Vencimento Contrato</b></td></tr>
+                        <tr class="draggable" data-ng-repeat="card in cards.priority4">
+                            <td>{{ card.name }}</td>
+                            <td>{{ card.registration_code }}</td>
+                            <td>{{ card.card_type }}</td>
+                            <td>{{ findDate(card.due_date) | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ findDate(card.contract_due_date) | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ formatNumber(card.leftover, 0)  }}</td>
+                            <td>{{ card.maxPerPax  }}</td>
+                            <td>{{ card.paxes.length  }}</td>
+                        </tr>
+                        <tr><td colspan="6"><b>Observação</td></b></tr>
+                        <tr class="draggable" data-ng-repeat="card in cards.priority5">
+                            <td>{{ card.name }}</td>
+                            <td>{{ card.registration_code }}</td>
+                            <td>{{ card.card_type }}</td>
+                            <td>{{ findDate(card.due_date) | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ findDate(card.contract_due_date) | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ formatNumber(card.leftover, 0)  }}</td>
+                            <td>{{ card.maxPerPax  }}</td>
+                            <td>{{ card.paxes.length  }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+        <div class="col-md-12" ng-if="cardsAirlines">
+            <section class="panel panel-default table-dynamic">
+                <div class="panel-heading"><strong>Cartões</strong></div>
+                <div class="table-filters"></div>
+                <table class="table table-bordered table-striped table-responsive" name="table_costCenter">
+                    <thead>
+                        <tr>
+                            <th><div class="th">Nome</div></th>
+                            <th><div class="th">CPF</div></th>
+                            <th><div class="th">Tipo Cartão</div></th>
+                            <th><div class="th">Vencimento Pontos</div></th>
+                            <th><div class="th">Vencimento Contrato</div></th>
+                            <th><div class="th">Estoque</div></th>
+                            <th><div class="th">Max Pax</div></th>
+                            <th><div class="th">utilizados</div></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="draggable" data-ng-repeat-start="card in cardsAirlines">
+                            <td colspan="6"><b>{{ card.name }}</b></td>
+                        </tr>
+                        <tr data-ng-repeat-end data-ng-repeat="person in card.range">
+                            <td>{{ person.name }}</td>
+                            <td>{{ person.registration_code }}</td>
+                            <td>{{ person.card_type }}</td>
+                            <td>{{ findDate(person.due_date) | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ findDate(person.contract_due_date) | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ formatNumber(person.leftover, 0)  }}</td>
+                            <td>{{ person.maxPerPax  }}</td>
+                            <td>{{ person.paxes.length  }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+
+</div>

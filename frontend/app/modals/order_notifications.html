@@ -1,0 +1,56 @@
+<div class="modal-header">
+    <h3>Notificação de pedido</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-4 small-th">
+            <button type="button" class="btn btn-line-primary smallBtn" ng-click="setNotification();">RETARIFADA</button>
+        </div>
+        <div class="col-md-4 small-th">
+            <button type="button" class="btn btn-line-primary smallBtn" ng-click="setNotificationOrder('4');">DADOS PASSAGEIRO INVALIDO</button>
+        </div>
+        <div class="col-md-4 small-th">
+            <button type="button" class="btn btn-line-primary smallBtn" ng-click="setNotificationOrder('5');">SITE CIA FORA AR</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 small-th">
+            <button type="button" class="btn btn-line-primary smallBtn" ng-click="setNotificationOrder('6');">VOOS INDISPONIVEIS</button>
+        </div>
+        <div class="col-md-8"></div>
+    </div>
+    <hr />
+    <div class="row" ng-if="retarifation">
+        <label for="" class="col-md-12">Novas Milhas</label>
+    </div>
+    <div class="row" ng-if="retarifation" ng-repeat="(key, path) in retarifation_opts">
+        <label for="" class="col-md-1">Milhas Adulto</label>
+        <div class="col-md-2">
+            <input type="number" class="form-control" ng-model="path.milhas_adulto">
+        </div>
+
+        <label for="" class="col-md-1" ng-if="chd > 0">Milhas Criança</label>
+        <div class="col-md-2" ng-if="chd > 0">
+            <input type="number" class="form-control" ng-model="path.milhas_crianca">
+        </div>
+
+        <label for="" class="col-md-1" ng-if="inf > 0">Milhas Colo</label>
+        <div class="col-md-2" ng-if="inf > 0">
+            <input type="number" class="form-control" ng-model="path.milhas_bebe">
+        </div>
+
+        <div class="col-md-3">Retarifação {{ path.path }}
+            <label class="switch">
+            <input type="checkbox" ng-model="path.retarifation" ng-checked="path.retarifation"><i></i></label>
+        </div>
+    </div>
+    <hr ng-if="retarifation" />
+    <div class="row" ng-if="retarifation">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-line-primary smallBtn" ng-click="setNotificationOrder('3');">CONFIMAR RETARIFAÇÂO</button>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" ng-click="cancel();">Cancel</button>
+</div>

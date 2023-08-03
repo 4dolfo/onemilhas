@@ -1,0 +1,35 @@
+{
+  "name": "idealmilhas",
+  "version": "1.0.0",
+  "description": "Sistema interno SRM",
+  "main": "fronted/index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ti-srm/idealMilhas.git"
+  },
+  "keywords": [
+    "php"
+  ],
+  "author": "SRM-IT",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ti-srm/idealMilhas/issues"
+  },
+  "homepage": "https://github.com/ti-srm/idealMilhas#readme",
+  "devDependencies": {},
+  "dependencies": {
+    "angular-animate": "^1.7.2",
+    "angular-file-saver": "^1.1.3",
+    "angular-input-masks": "^4.1.0",
+    "angular-touch": "^1.7.2",
+    "angular-ui-grid": "^4.0.1",
+    "fullcalendar": "^3.9.0",
+    "lodash": "^4.17.4",
+    "moment": "^2.22.2",
+    "socket.io-client": "^1.7.2",
+    "ui-select": "^0.19.8"
+  }
+}

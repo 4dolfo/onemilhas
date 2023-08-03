@@ -1,0 +1,393 @@
+<div id="manual_invoice_page" class="page page-table contention" data-ng-controller="ManualInvoiceCtrl">
+    <section class="panel panel-default table-dynamic" ng-show="tabindex == 0">
+      <div class="panel-heading"><strong>NFS Manual</strong>
+          <div class="btn-group dropdown" dropdown is-open="isopenManualInvoke">
+              <button type="button" class="btn btn-info dropdown-toggle smallBtn" dropdown-toggle ng-disabled="disabled">Relátórios</button>
+              <div class="dropdown-menu with-arrow panel panel-default">
+                  <ul class="list-group">
+                      <li class="list-group-item">
+                          <button ng-click="loadReportMensal();" class="btn btn-info">Mensal</button>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+          <button type="button" class="btn btn-info smallBtn" ng-click="toWebService();">WebService</button>
+      </div>
+      <div class="panel-body">
+          <div class="table-filters">
+            <div class="row">
+                <form>
+                  <div class="form-group">
+                        <div class="col-sm-4">
+                            <input type="text" ng-model="filter.client" class="form-control" 
+                            typeahead="client.name for client in clients | filter:$viewValue | limitTo:32"
+                            placeholder="Informe o Cliente/Agência e clique em próximo para analisar"
+                            ng-blur="updateClientInfo()">
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="month" ng-model="filter.dateFrom" class="form-control" data-ng-keyup="search()">
+                        </div>
+                        <div class="col-sm-3">
+                            <button class="btn btn-default" ng-click="search()">
+                                <span class="glyphicon glyphicon-search"></span> Pesquisar
+                            </button>
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="btn btn-default pull-right" ng-click="search()" copy-to-clipboard="{{getManualInvoiceText()}}">
+                                <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+                            </button>
+                            <button class="btn btn-default pull-right" ng-click="saveSelected();">Salvar</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2">
+                            Desconsiderar negativos
+                            <label class="switch">
+                                <input type="checkbox" ng-model="refund" ng-checked="refund">
+                                <i></i>
+                            </label>
+                        </div>
+                    </div>
+                  </div>
+                </form>
+            </div>
+          </div>
+          <br>
+          <div class="panel panel-default">
+            <div class="panel-heading" ng-click="showme=!(showme)">
+              <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 
+              &nbsp; Informações referente a pesquisa 
+            </div>
+            <div id="clientContent" class="panel-body" ng-show="showme">
+              <div class="col-md-8">
+                  <b>CNPJ/CPF</b> {{selectedClient.code}}
+                  <span class="btn btn-link glyphicon glyphicon-new-window pull-right" aria-hidden="true" copy-to-clipboard="{{getClientText()}}"></span><br>
+                  <b>Nome</b> {{selectedClient.name}}<br>
+                  <b>Razão Social</b> {{selectedClient.company_name}}<br>
+                  <b>Endereço</b> {{selectedClient.adress}}<br>
+                  <b>Cidade</b> {{selectedClient.city}}
+                  <hr>
+                  <b>Telefone</b> {{selectedClient.phone1}} {{selectedClient.phone2}} {{selectedClient.phone3}}<br>
+                  <b>Email</b> {{selectedClient.email}}
+              </div>
+              <div class="col-md-4">
+                <h4><b>Valor dos serviços</b> <span class="pull-right">R$ {{formatNumber(serviceValues)}}</span></h4>
+                <hr>
+                <h4><b>Deduções</b> <span class="pull-right">R$ {{formatNumber(serviceValues * -0.07)}}</span></h4>
+                <hr>
+                <h4><b>Resultante</b> <span class="pull-right">R$ {{formatNumber(serviceValues-(serviceValues * 0.07))}}</span></h4>
+              </div>
+            </div>
+          </div>
+
+          <table class="table table-bordered table-striped table-responsive">
+              <thead>
+                  <tr>
+                      <th><div class="th">
+                          Número
+                          <span class="fa fa-angle-up"
+                                data-ng-click=" order('ourNumber') "
+                                data-ng-class="{active: row == 'ourNumber'}"></span>
+                          <span class="fa fa-angle-down"
+                                data-ng-click=" order('-ourNumber') "
+                                data-ng-class="{active: row == '-ourNumber'}"></span>
+                      </div></th>
+                      <th><div class="th">
+                          Valor
+                          <span class="fa fa-angle-up"
+                                data-ng-click=" order('original_value') "
+                                data-ng-class="{active: row == 'original_value'}"></span>
+                          <span class="fa fa-angle-down"
+                                data-ng-click=" order('-original_value') "
+                                data-ng-class="{active: row == '-original_value'}"></span>
+                      </div></th>
+                      <th><div class="th">
+                          Vencimento
+                          <span class="fa fa-angle-up"
+                                data-ng-click=" order('due_date') "
+                                data-ng-class="{active: row == 'due_date'}"></span>
+                          <span class="fa fa-angle-down"
+                                data-ng-click=" order('-due_date') "
+                                data-ng-class="{active: row == '-due_date'}"></span>
+                      </div></th>
+                      <th><div class="th">
+                          Status
+                          <span class="fa fa-angle-up"
+                                data-ng-click=" order('status') "
+                                data-ng-class="{active: row == 'status'}"></span>
+                          <span class="fa fa-angle-down"
+                                data-ng-click=" order('-status') "
+                                data-ng-class="{active: row == '-status'}"></span>
+                      </div></th>
+                      <th><div class="th">Realizada</div></th>
+                      <th><div class="th"></div></th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr data-ng-repeat="billreceive in currentPageBillsReceive">
+                      <td>{{billreceive.ourNumber}}</td>
+                      <td><div class="text-right">{{formatNumber(billreceive.original_value,2)}}</div></td>
+                      <td>{{ findDate(billreceive.due_date) | date: 'dd/MM/yyyy'}}</td>
+                      <td>{{statusText(billreceive.status)}}</td>
+                      <td>
+                          <label class="switch">
+                          <input  type="checkbox" ng-model="billreceive.checkinState" ng-checked="billreceive.checkinState"><i></i></label>
+                      </td>
+                      <td>
+                        <button class="btn btn-default btn-sm" copy-to-clipboard="COMISSOES DE INTERMEDIACAO DE PASSAGENS AEREAS {{ findDate(billreceive.due_date) | date: 'MM/yyyy'}} {{quebraLinha()}}BORDERO {{billreceive.ourNumber}} - {{ findDate(billreceive.due_date) | date: 'dd/MM/yyyy'}} - R${{formatNumber(billreceive.original_value,2)}}" class="button">
+                          <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+                        </button> 
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+          <div><!--Footerd-->
+            <footer class="table-footer">
+              <div class="row">
+                  <div class="col-md-4 page-num-info">
+                      <span>
+                          Show 
+                          <select data-ng-model="numPerPage"
+                                  data-ng-options="num for num in numPerPageOpt"
+                                  data-ng-change="onNumPerPageChange()">
+                          </select> 
+                          entries per page
+                      </span>
+                  </div>
+                  <div class="col-md-4 page-num-info">
+                      <span>
+                          Showing {{filteredBillsPay.length}}/{{billspay.length}} entries
+                      </span>              
+                  </div>
+                  <div class="col-md-4 text-right pagination-container">
+                      <pagination class="pagination-sm"
+                                  ng-model="currentPage"
+                                  total-items="filteredBillsPay.length"
+                                  max-size="4"
+                                  ng-change="select(currentPage)"
+                                  items-per-page="numPerPage"
+                                  rotate="false"
+                                  previous-text="&lsaquo;" next-text="&rsaquo;"
+                                  boundary-links="true"></pagination>
+                  </div>
+              </div>
+          </footer>
+          </div><!--End-->
+          
+           <table class="table table-bordered table-striped table-responsive">
+               <thead>
+                <tr>
+                    <th><div class="th">
+                        ID
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" orderSale('id') "
+                              data-ng-class="{active: row == 'id'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderSale('id') "
+                              data-ng-class="{active: row == '-id'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Data Venda
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" orderSale('due_date') "
+                              data-ng-class="{active: row == 'due_date'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderSale('due_date') "
+                              data-ng-class="{active: row == '-due_date'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Cliente
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" orderSale('client') "
+                              data-ng-class="{active: row == 'client'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderSale('client') "
+                              data-ng-class="{active: row == '-client'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Companhia
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" orderSale('airline') "
+                              data-ng-class="{active: row == 'airline'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderSale('airline') "
+                              data-ng-class="{active: row == '-airline'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Quantia Paga
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" orderSale('amountPaid') "
+                              data-ng-class="{active: row == 'amountPaid'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderSale('amountPaid') "
+                              data-ng-class="{active: row == '-amountPaid'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Custo Total
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" orderSale('totalCost') "
+                              data-ng-class="{active: row == 'totalCost'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderSale('totalCost') "
+                              data-ng-class="{active: row == '-totalCost'}"></span>
+                    </div></th>
+                    <th><div class="th">
+                        Lucro
+                        <span class="fa fa-angle-up"
+                              data-ng-click=" orderSale('profit') "
+                              data-ng-class="{active: row == 'profit'}"></span>
+                        <span class="fa fa-angle-down"
+                              data-ng-click=" orderSale('profit') "
+                              data-ng-class="{active: row == '-profit'}"></span>
+                    </div></th></tr>
+            </thead>
+              <tbody>
+                <tr data-ng-repeat="sale in currentPageSales" class="draggable">
+            
+                    <td>{{sale.id}}</td>
+                    <td>{{sale.dateT | date:'dd/MM/yyyy' }}</td>
+                    <td>{{sale.client}}</td>
+                    <td>{{sale.airline}}</td>
+                    <td> R$ {{sale.amountPaid | number:2}}</td>
+                    <td> R$ {{sale.totalCost | number:2}}</td>
+                    <td> R$ {{ sale.amountPaid - sale.totalCost | number:2 }}</td>
+                </tr>
+                 <tr>
+                    <td colspan="4"></td>
+                    <td align="right"><span style="font-weight:bold" >Totais de Quantias Pagas:</span> R${{sumAmountPaid | number:2}} </td>
+                    <td align="right"><span style="font-weight:bold"> Totais de Custos </span> R$ {{sumTotalCost | number:2}}</td>
+                    <td align="right"><span style="font-weight:bold"> Totais de Lucro </span> R$ {{profit | number:2}}</td>
+                 </tr>
+            </tbody>
+        </table>
+        <div><!--Footerd-->
+            <footer class="table-footer">
+              <div class="row">
+                  <div class="col-md-4 page-num-info">
+                      <span>
+                          Show 
+                          <select data-ng-model="numPerPageSale"
+                                  data-ng-options="num for num in numPerPageOptSale"
+                                  data-ng-change="onNumPerPageChangeSale()">
+                          </select> 
+                          entries per page
+                      </span>
+                  </div>
+                  <div class="col-md-4 page-num-info">
+                      <span>
+                          Showing {{filteredBillsPay.length}}/{{billspay.length}} entries
+                      </span>              
+                  </div>
+                  <div class="col-md-4 text-right pagination-container">
+                      <pagination class="pagination-sm"
+                                  ng-model="currentPage"
+                                  total-items="totalData"
+                                  max-size="4"
+                                  ng-change="loadOrders()"
+                                  items-per-page="numPerPageSale"
+                                  rotate="false"
+                                  previous-text="&lsaquo;" next-text="&rsaquo;"
+                                  boundary-links="true"></pagination>
+                  </div>
+              </div>
+          </footer>
+          </div><!--End-->
+      </div>
+    </section>
+
+    <section class="panel panel-default table-dynamic" ng-show="tabindex == 1">
+        <div class="panel-heading">
+            <strong>NFS - WebService</strong>
+            <button type="button" class="btn btn-info smallBtn" ng-click="toManual();">NFS Manual</button>
+        </div>
+        <div class="panel-body">
+            <div class="table-filters">
+              <div class="row">
+                  <form>
+                    <div class="form-group">
+                      <div class="col-sm-5">
+                          <input type="text" ng-model="filter.client" class="form-control" 
+                             typeahead="client.name for client in clients | filter:$viewValue | limitTo:8"
+                             placeholder="Informe o Cliente/Agência e clique em próximo para analisar"
+                             ng-blur="updateClientInfo()">
+                      </div>
+                      <div class="col-sm-3">
+                          <input type="month" ng-model="filter.dateFrom" class="form-control" data-ng-keyup="search()">
+                      </div>
+                      <div class="col-sm-4">
+                          <button class="btn btn-default" ng-click="search()">
+                              <span class="glyphicon glyphicon-search"></span> Pesquisar
+                          </button>
+                          <button class="btn btn-default pull-right" ng-click="search()" copy-to-clipboard="{{getManualInvoiceText()}}">
+                              <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+                          </button>
+                          <button class="btn btn-default pull-right" ng-click="generateNFSe();" download>Salvar</button>
+                      </div>
+
+                    </div>
+                  </form>
+              </div>
+            </div>
+            <form class="form-horizontal ng-pristine ng-valid">
+                <div class="form-group">
+                    <div class="col-sm-10">
+                        <b>Numero Lote: </b> {{webservice.NumeroLote}}<br>
+                        <b>Cnpj: </b> {{webservice.Cnpj}}<br>
+                        <b>InscricaoMunicipal: </b> {{webservice.InscricaoMunicipal}}<br>
+                        <b>Quantidade Rps: </b> {{webservice.ListRps.length}}<br>
+
+                        <div ng-repeat="ListRps in webservice.ListRps">
+                            <b>InfRps</b>
+                            <b>IdentificacaoFromNames: </b> {{ListRps.InfRps.IdentificacaoFromNames}}<br>
+                            <b>NaturezaOperacao: </b> {{ListRps.InfRps.NaturezaOperacao}}<br>
+                            <b>RegimeEspecialTributacao: </b> {{ListRps.InfRps.RegimeEspecialTributacao}}<br>
+                            <b>OptanteSimplesNacional: </b> {{ListRps.InfRps.OptanteSimplesNacional}}<br>
+                            <b>IncentivadorCultural: </b> {{ListRps.InfRps.IncentivadorCultural}}<br>
+                            <b>Status: </b> {{ListRps.InfRps.Status}}<br><br><br>
+
+                            <b>Valores</b>
+                            <b>ValorServicos: </b> {{formatNumber(ListRps.Valores.ValorServicos)}}<br>
+                            <b>ValorPis: </b> {{formatNumber(ListRps.Valores.ValorPis)}}<br>
+                            <b>ValorCofins: </b> {{formatNumber(ListRps.Valores.ValorCofins)}}<br>
+                            <b>ValorInss: </b> {{formatNumber(ListRps.Valores.ValorInss)}}<br>
+                            <b>ValorIr: </b> {{formatNumber(ListRps.Valores.ValorIr)}}<br>
+                            <b>ValorCsll: </b> {{formatNumber(ListRps.Valores.ValorCsll)}}<br>
+                            <b>IssRetido: </b> {{formatNumber(ListRps.Valores.IssRetido)}}<br>
+                            <b>ValorIss: </b> {{formatNumber(ListRps.Valores.ValorIss)}}<br>
+                            <b>OutrasRetencoes: </b> {{formatNumber(ListRps.Valores.OutrasRetencoes)}}<br>
+                            <b>Aliquota: </b> {{formatNumber(ListRps.Valores.Aliquota)}}<br>
+                            <b>DescontoIncondicionado: </b> {{formatNumber(ListRps.Valores.DescontoIncondicionado)}}<br>
+                            <b>DescontoCondicionado: </b> {{formatNumber(ListRps.Valores.DescontoCondicionado)}}<br><br><br>
+
+                            <b>Servico</b>
+                            <b>ItemListaServico: </b> {{ListRps.Servico.ItemListaServico}}<br>
+                            <b>CodigoTributacaoMunicipio: </b> {{ListRps.Servico.CodigoTributacaoMunicipio}}<br>
+                            <b>Discriminacao: </b> {{ListRps.Servico.Discriminacao}}<br>
+                            <b>CodigoMunicipio: </b> {{ListRps.Servico.CodigoMunicipio}}<br><br><br>
+
+                            <b>Prestador</b>
+                            <b>Cnpj: </b> {{ListRps.Prestador.Cnpj}}<br>
+                            <b>InscricaoMunicipal: </b> {{ListRps.Prestador.InscricaoMunicipal}}<br><br><br>
+
+                            <b>Tomador</b>
+                            <b>RazaoSocial: </b> {{ListRps.Tomador.RazaoSocial}}<br>
+                            <b>IdentificacaoTomador: </b> {{ListRps.Tomador.IdentificacaoTomador}}<br>
+                            <b>Endereco: </b> {{ListRps.Tomador.Endereco}}<br><br><br>
+
+                            <b>IntermediarioServico</b>
+                            <b>CpfCnpj: </b> {{ListRps.IntermediarioServico.CpfCnpj}}<br>
+                            <b>RazaoSocial: </b> {{ListRps.IntermediarioServico.RazaoSocial}}<br>
+                            <b>InscricaoMunicipal: </b> {{ListRps.IntermediarioServico.InscricaoMunicipal}}<br><br><br>
+
+                            <b>ConstrucaoCivil</b>
+                            <b>CodigoObra: </b> {{ListRps.ConstrucaoCivil.CodigoObra}}<br>
+                            <b>Art: </b> {{ListRps.ConstrucaoCivil.Art}}<br><br><br>
+
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
