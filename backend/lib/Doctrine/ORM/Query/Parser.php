@@ -2763,12 +2763,17 @@ class Parser
             default:
                 $peek = $this->lexer->glimpse();
 
-                if ($peek['value'] == '(') {
-                    if ($this->isAggregateFunction($this->lexer->lookahead['type'])) {
-                        return $this->AggregateExpression();
-                    }
+                //ADOLFO CHANGE
+                //Foi adicionado o if
+                //Trying to access array offset on value of type null
+                if($peek){
+                    if ($peek['value'] == '(') {
+                        if ($this->isAggregateFunction($this->lexer->lookahead['type'])) {
+                            return $this->AggregateExpression();
+                        }
 
-                    return $this->FunctionDeclaration();
+                        return $this->FunctionDeclaration();
+                    }
                 }
 
                 return $this->Literal();
@@ -3101,13 +3106,18 @@ class Parser
 
         $escapeChar = null;
 
-        if ($this->lexer->lookahead['type'] === Lexer::T_ESCAPE) {
-            $this->match(Lexer::T_ESCAPE);
-            $this->match(Lexer::T_STRING);
+        //ADOLFO CHANGE
+        //Foi adicionado o if
+        //Trying to access array offset on value of type null
+        if($this->lexer->lookahead){
+            if ($this->lexer->lookahead['type'] === Lexer::T_ESCAPE) {
+                $this->match(Lexer::T_ESCAPE);
+                $this->match(Lexer::T_STRING);
 
-            $escapeChar = new AST\Literal(AST\Literal::STRING, $this->lexer->token['value']);
+                $escapeChar = new AST\Literal(AST\Literal::STRING, $this->lexer->token['value']);
+            }
         }
-
+        
         $likeExpr = new AST\LikeExpression($stringExpr, $stringPattern, $escapeChar);
         $likeExpr->not = $not;
 

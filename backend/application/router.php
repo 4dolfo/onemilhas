@@ -223,8 +223,10 @@ function __route($route, $routes) {
             }
 
             $response = new \MilesBench\Request\Response();
-            $controller->$parts[1]($request, $response);
-
+             //ADOLFO CHANGE
+             $name=$parts[1];
+             $controller->$name($request, $response);
+ 
             // seding response
             echo $response; die;
         };

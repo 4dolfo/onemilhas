@@ -1,5 +1,7 @@
 <?php
-function __autoload($class)
+//function __autoload($class)
+//ADOLFO CHANGE
+spl_autoload_register(function (string $class)
 {
     $ds = DIRECTORY_SEPARATOR;
     $vendorDir = dirname(__FILE__) . '/..'.$ds.'vendor';
@@ -94,5 +96,5 @@ function __autoload($class)
             var_dump($path);die;
         }
     }
-}
+});
 
